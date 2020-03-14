@@ -1,6 +1,10 @@
 import React from 'react';
 
 class App extends React.Component {
+    constructor() {
+        super()
+        this.handleClick = this.handleClick.bind(this)
+    }
 
     handleClick() {
         console.log(this)
@@ -9,7 +13,7 @@ class App extends React.Component {
     render() {
         return (
             <div className="app">
-                <button onClick={this.handleClick.bind(this)}>click Me</button>
+                <button onClick={this.handleClick}>click Me</button>
             </div>
         )
     }
