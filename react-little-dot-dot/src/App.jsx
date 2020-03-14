@@ -1,5 +1,6 @@
 import React from 'react'
 import HocChild from './hocDemo/hocChild'
+import RenderPropsDemo from './renderPropsDemo'
 
 class App extends React.Component {
     constructor() {
@@ -29,6 +30,7 @@ class App extends React.Component {
             <div className="app">
                 <button onClick={this.handleClick}>click Me</button>
                 <HocChild />
+                <RenderPropsDemo />
                 {count}
             </div>
         )
