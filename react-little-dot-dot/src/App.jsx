@@ -8,30 +8,25 @@ class App extends React.Component {
     }
 
     handleClick() {
-        this.setState(({count}) => ({count: count + 1}))
+        this.setState({count: this.state.count + 1})
+        console.log(this.state.count)
+        this.setState({count: this.state.count + 1})
+        console.log(this.state.count)
+        this.setState({count: this.state.count + 1})
+        console.log(this.state.count)
+        this.setState({count: this.state.count + 1})
         console.log(this.state.count)
         this.setState(({count}) => ({count: count + 1}))
         console.log(this.state.count)
-
-        setTimeout(() => {
-            this.setState(({count}) => ({count: count + 1}))
-            console.log(this.state.count)
-            this.setState(({count}) => ({count: count + 1}))
-            console.log(this.state.count)
-        }, 1e3);
+        this.setState(({count}) => ({count: count + 1}))
+        console.log(this.state.count)
     }
-
-    componentDidMount() {
-        this.btn2.addEventListener('click', this.handleClick)
-    }
-
 
     render() {
         const {count} = this.state
         return (
             <div className="app">
                 <button onClick={this.handleClick}>click Me</button>
-                <button ref={ref => {this.btn2 = ref}}>click Me2</button>
                 {count}
             </div>
         )
