@@ -1,4 +1,5 @@
-import React from 'react';
+import React from 'react'
+import ReactDOM from 'react-dom'
 
 class Child extends React.Component {
     constructor() {
@@ -49,6 +50,11 @@ class App extends React.Component {
         this.handleClick = this.handleClick.bind(this)
     }
 
+    renderPop() {
+        console.log('renderPop')
+        return ReactDOM.createPortal(<Child />, document.body)
+    }
+
     handleClick() {
         this.setState(({count}) => ({
             count: count + 1
@@ -56,10 +62,11 @@ class App extends React.Component {
     }
 
     render() {
+        const {count} = this.state
         return (
             <div className="app">
                 <button onClick={this.handleClick}>click Me</button>
-                <Child />
+                {!!(count % 2) && this.renderPop()}
             </div>
         )
     }
