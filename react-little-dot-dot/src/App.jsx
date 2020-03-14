@@ -1,73 +1,50 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 
+const ThemeContext = React.createContext('light')
+
+const FuncChild = () => <ThemeContext.Consumer>
+    {context => <div>i'm func Child ~ current theme {context}</div>}
+</ThemeContext.Consumer>
 class Child extends React.Component {
     constructor() {
         super()
         console.log('constructor')
     }
 
-    componentWillMount() {
-        console.log('componentWillMount')
-    }
-
-    shouldComponentUpdate() {
-        console.log('shouldComponentUpdate')
-        return true
-    }
-
-    componentWillReceiveProps() {
-        console.log('componentWillReceiveProps')
-    }
-
-    componentWillUpdate() {
-        console.log('componentWillUpdate')
-    }
+    static contextType = ThemeContext
 
     render() {
-        console.log('render')
-
-        return <div>i'm child ~</div>
-    }
-
-    componentDidMount() {
-        console.log('componentDidMount')
-    }
-
-    componentDidUpdate() {
-        console.log('componentDidUpdate')
+        const {context} = this
+        return <div>i'm child ~ current theme: {context}</div>
     }
 }
-
 class App extends React.Component {
     constructor() {
         super()
 
         this.state = {
-            count: 0
+            theme: 'light'
         }
 
         this.handleClick = this.handleClick.bind(this)
     }
 
-    renderPop() {
-        console.log('renderPop')
-        return ReactDOM.createPortal(<Child />, document.body)
-    }
-
     handleClick() {
-        this.setState(({count}) => ({
-            count: count + 1
+        this.setState(({theme}) => ({
+            theme: theme === 'light' ? 'black' : 'light'
         }))
     }
 
     render() {
-        const {count} = this.state
+        const {theme} = this.state
         return (
-            <div className="app">
-                <button onClick={this.handleClick}>click Me</button>
-                {!!(count % 2) && this.renderPop()}
-            </div>
+            <ThemeContext.Provider className="Provider" value={theme}>
+                <div className="app">
+                    <button onClick={this.handleClick}>click Me</button>
+                    <Child />
+                    <FuncChild />
+                </div>
+            </ThemeContext.Provider>
         )
     }
 }
