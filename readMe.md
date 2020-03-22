@@ -59,7 +59,6 @@
 
 #### 2019-12
 
-- [手写一个发布-订阅(中介者)模式](./simple-agency)
 - [手写一个观察者模式](./simple-observer)
 - [手写一个 promise](./simple-promise)
 - [手写一个 express](./simple-express)
