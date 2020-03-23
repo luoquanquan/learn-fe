@@ -1,6 +1,8 @@
 function Animal() {
     this.name = 'Animal'
+
+    return function() {}
 }
 
 const animal = new Animal()
-console.log(animal)
+console.log(animal.name)
