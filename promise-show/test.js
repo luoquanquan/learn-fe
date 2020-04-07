@@ -1,3 +1,5 @@
+const Promise = require('./promise')
+
 const p = new Promise((resolve) => {
     resolve('success')
 })
