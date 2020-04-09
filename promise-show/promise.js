@@ -1,15 +1,19 @@
+// promise.js
 class Promise {
     constructor(executor) {
+        this.value = null
+        this.onFulfilled = null
 
         const resolve = value => {
             this.value = value
+            this.onFulfilled(this.value)
         }
 
         executor(resolve)
     }
 
     then(onFulfilled) {
-        onFulfilled(this.value)
+        this.onFulfilled = onFulfilled
     }
 }
 
