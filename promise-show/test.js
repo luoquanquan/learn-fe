@@ -1,3 +1,4 @@
+// test.js
 const Promise = require('./promise')
 
 const p = new Promise((resolve) => {
@@ -8,4 +9,8 @@ const p = new Promise((resolve) => {
 
 p.then(value => {
     console.log('success: ', value)
+})
+
+p.then(value => {
+    console.log('success2: ', value)
 })

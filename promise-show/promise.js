@@ -2,18 +2,18 @@
 class Promise {
     constructor(executor) {
         this.value = null
-        this.onFulfilled = null
+        this.onFulfilledCallbacks = []
 
         const resolve = value => {
             this.value = value
-            this.onFulfilled(this.value)
+            this.onFulfilledCallbacks.forEach(fn => fn(this.value))
         }
 
         executor(resolve)
     }
 
     then(onFulfilled) {
-        this.onFulfilled = onFulfilled
+        this.onFulfilledCallbacks.push(onFulfilled)
     }
 }
 
