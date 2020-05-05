@@ -1,4 +1,4 @@
-import React, { useState, useRef, createRef, forwardRef } from 'react'
+import React, { useState, useRef, createRef, forwardRef, useImperativeHandle } from 'react'
 
 let lastRef
 let lastRef2
@@ -78,6 +78,25 @@ const CountChild5 = forwardRef((props, ref) => {
     )
 })
 
+const CountChild6 = forwardRef((props, ref) => {
+    const refObj = useRef()
+
+    // 使用这个 hook 可以对 ref 做一层包装和拦截
+    // 自定义暴露给外部的 current
+    useImperativeHandle(ref, () => ({
+        focus() {
+            refObj.current.focus()
+        },
+        setNumberZero() {
+            refObj.current.value = '0'
+        }
+    }))
+    return (
+        <>
+            <input ref={refObj}/>
+        </>
+    )
+})
 
 const Count = () => {
     const [state, setState] = useState(0)
@@ -92,6 +111,13 @@ const Count = () => {
         refObj5.current.focus()
     }
 
+    const refObj6 = useRef()
+    const getFocus6 = () => {
+        refObj6.current.focus()
+        refObj6.current.setNumberZero()
+
+    }
+
     console.log('render Count ~')
     return (
         <>
@@ -104,6 +130,8 @@ const Count = () => {
             <button onClick={getFocus4}>获得焦点</button>
             <CountChild5 ref={refObj5}></CountChild5>
             <button onClick={getFocus5}>获得焦点</button>
+            <CountChild6 ref={refObj6}></CountChild6>
+            <button onClick={getFocus6}>获得焦点</button>
         </>
     )
 }
