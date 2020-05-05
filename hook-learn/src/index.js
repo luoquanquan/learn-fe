@@ -7,6 +7,7 @@ import ReactDOM from 'react-dom';
 // import App from './useContext'
 // import App from './useEffect'
 // import App from './useRef'
-import App from './useLayoutEffect'
+// import App from './useLayoutEffect'
+import App from './customHook'
 
 ReactDOM.render(<App />, document.getElementById('root'));
