@@ -39,7 +39,7 @@
 - [手写实现 instanceof](./simple-instanceof/index.js)
 - [hash & history 前端路由](./fe-router)
 - [双向数据绑定](./data-binding)
-- [手写 bind & call & apply](./customize-this)
+- [手写 bind & call & apply & new](./customize-this)
 - [Server Cookie 操作](./simple-cookie/server.js)
 - [apiServer & CORS 跨域 & 携带 Cookie](./api-server)
 - [大文件分块上传 & 秒传 & 断点续传](./file-upload/split-upload)

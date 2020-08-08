@@ -1,4 +1,10 @@
-Function.prototype.customCall = function(context = {}, ...args) {
+// 如果多个 call 会让 call 执行, 并让 call 中的 this 指向参数
+// fn1.call.call.call(fn2)
+Function.prototype.customCall = function(context, ...args) {
+    // 保证 context 是一个对象类型
+    // 兼容用户使用 fn.call(hello) 这种
+    context = context ? Object(context) : window
+
     // 如果 context 已经有 func 方法, 就缓存该方法
     // func 不是确定的值, 甚至可以叫 a b c....
     const {func} = context
