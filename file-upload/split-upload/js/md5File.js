@@ -8,10 +8,11 @@
         let start = 0
         let end = 0
 
-        while (currentChunk++ < chunks) {
+        while (currentChunk < chunks) {
             start = currentChunk * chunkSize
             end = ((start + chunkSize) >= file.size) ? file.size : start + chunkSize
             ret.push(blobSlice.call(file, start, end))
+            currentChunk++
         }
 
         return ret
