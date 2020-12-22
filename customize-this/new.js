@@ -12,7 +12,7 @@ function myNew(Constructor, ...args) {
 
     // 如果构造函数中显式返回了一个引用类型的结果, new 直接返回引用类型
     const ret = Constructor.apply(obj, args)
-    return typeof (typeof ret === 'object' || typeof ret === 'function') ? ret : obj
+    return typeof ((ret && typeof ret === 'object') || typeof ret === 'function') ? ret : obj
 }
 
 const animal =  myNew(Animal, 'miao')
@@ -25,7 +25,7 @@ function myNew2(Constructor, ...args) {
 
     // 如果构造函数中显式返回了一个引用类型的结果, new 直接返回引用类型
     const ret = Constructor.apply(obj, args)
-    return (typeof ret === 'object' || typeof ret === 'function') ? ret : obj
+    return ((ret && typeof ret === 'object') || typeof ret === 'function') ? ret : obj
 }
 
 const animal =  myNew(Animal, 'miao')
