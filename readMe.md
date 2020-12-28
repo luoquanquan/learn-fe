@@ -2,6 +2,10 @@
 
 ### 目录
 
+#### 2020-12
+
+- [浅拷贝](./basic-js/shallowClone.js)
+
 #### 2020-03
 
 - [React 以前不知道的那些小点点](./react-little-dot-dot)
