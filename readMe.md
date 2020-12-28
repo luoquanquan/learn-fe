@@ -4,6 +4,7 @@
 
 #### 2020-12
 
+- [深拷贝](./basic-js/deepClone.js)
 - [浅拷贝](./basic-js/shallowClone.js)
 
 #### 2020-03
