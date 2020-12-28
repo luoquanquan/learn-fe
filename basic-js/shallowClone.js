@@ -23,6 +23,7 @@ const a = Object.create({
     age: 18
 })
 a.selfName = 'quanquan'
+a.sport = ['run']
 
 const b = shallowClone(a)
 
@@ -30,3 +31,4 @@ console.log(a)
 console.log(a.name)
 console.log(b)
 console.log(b === a)
+console.log(b.sport === a.sport)
