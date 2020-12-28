@@ -12,12 +12,14 @@ const deepClone = src => {
 
     return ret
 }
-
+const a = {}
 const b = {
     name: 'quanquan',
     age: 18,
-    sport: ['run', 'swim']
+    sport: ['run', 'swim'],
+    fans: a
 }
+a.idol = b
 
 const c = deepClone(b)
 console.log(c)
