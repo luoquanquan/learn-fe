@@ -1,12 +1,14 @@
 const isObject = obj => (typeof obj === 'object' && obj) || typeof obj === 'function'
 
-const deepClone = src => {
+const deepClone = (src, weekSet = new WeakSet()) => {
+    if (weekSet.has(src)) return src
     if (!isObject(src)) return src
 
+    weekSet.add(src)
     const ret = Array.isArray(src) ? [] : {}
     for (const i in src) {
         if (Object.prototype.hasOwnProperty.call(src, i)) {
-            ret[i] = deepClone(src[i])
+            ret[i] = deepClone(src[i], weekSet)
         }
     }
 
