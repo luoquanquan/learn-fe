@@ -4,7 +4,11 @@
 
 #### 2020-12
 
-- [二分搜索](./algorithm/grokkingAlgorithms/binarySearch.ts)
+- [选择排序](./algorithm/grokkingAlgorithms/selectionSort.js)
+
+#### 2020-12
+
+- [二分搜索](./algorithm/grokkingAlgorithms/binarySearch.js)
 - [图解算法笔记](./algorithm/grokkingAlgorithms)
 - [深拷贝](./basic-js/deepClone.js)
 - [浅拷贝](./basic-js/shallowClone.js)
