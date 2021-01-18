@@ -2,6 +2,12 @@
 
 ### 目录
 
+#### 2021-01
+
+- [4.3 找出列表中最大的数](./algorithm/grokkingAlgorithms/4/3.js)
+- [4.2 编写一个递归函数来计算列表包含的元素数](./algorithm/grokkingAlgorithms/4/2.js)
+- [4.1 使用递归实现 sum 函数](./algorithm/grokkingAlgorithms/4/1.js)
+
 #### 2020-12
 
 - [选择排序](./algorithm/grokkingAlgorithms/selectionSort.js)
