@@ -22,7 +22,7 @@ const routes = [
 
 const router = new VueRouter({
   mode: 'history',
-  base: '/vue-child',
+  base: process.env.BASE_URL,
   routes
 })
 
