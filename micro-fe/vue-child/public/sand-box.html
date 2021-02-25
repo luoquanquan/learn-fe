@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script>
+        // 单应用切换, 创建一个沙箱, 干净的环境给这个应用使用当切换时可以选择丢弃属性和恢复属性
+        // js 沙箱 Proxy
+        // 快照沙箱 1年前怕一张 1年后拍一张(将区别保存起来)在会到一年前
+        // 单个子应用可以这样, 但是多个的话就不能这样了, 需要用 es6 Proxy
+        class SnapshotSandBox {
+            constructor() {
+                this.proxy = window
+                this.modifyPropsMap = {}
+                this.active()
+            }
+
+            active() {
+                this.windowSnapShot = {}
+                for (const prop in window) {
+                    if (window.hasOwnProperty(prop)) {
+                        this.windowSnapShot[prop] = window[prop]
+                    }
+                }
+                Object.keys(this.modifyPropsMap).forEach(p => {
+                    window[p] = this.modifyPropsMap[p]
+                })
+            }
+
+            inactive() {
+                for (const prop in window) {
+                    if (window.hasOwnProperty(prop)) {
+                        if (this.windowSnapShot[prop] !== window[prop]) {
+                            this.modifyPropsMap[prop] = window[prop]
+                            window[prop] = this.windowSnapShot[prop]
+                        }
+                    }
+                }
+            }
+        }
+
+
+        const sandBox = new SnapshotSandBox()
+
+        ;(window => {
+            window.a = 1
+            window.b = 2
+            console.log(`当前时间 ${Date.now()}: debug 的数据是 window.a, window.b: `, window.a, window.b)
+            sandBox.inactive()
+            console.log(`当前时间 ${Date.now()}: debug 的数据是 window.a, window.b: `, window.a, window.b)
+            sandBox.active()
+            console.log(`当前时间 ${Date.now()}: debug 的数据是 window.a, window.b: `, window.a, window.b)
+        })(sandBox.proxy)
+
+        // 代理沙箱, 可以把不同的应用用不同的代理来处理
+    </script>
+</body>
+
+</html>
