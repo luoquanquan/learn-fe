@@ -236,8 +236,7 @@
      * @param {Object} context 上下文对象, 也就是回调函数里边的 this
      * @param {Number} argCount 参数个数
      * @eg1 _.map([1,2,3]) // [1,2,3] 不传入 iteratee 参数, 直接返回传入的 obj
-     * @eg2 _.map([1,2,3], (i) => i * i) // [1, 4, 9] iteratee 参数传入一个函数征程处理
-     *      和 Array.prototype.map 处理方案一致
+     * @eg2 _.map([1,2,3], (i) => i * i) // [1, 4, 9] iteratee 参数传入一个函数和 Array.prototype.map 处理方案一致
      * @eg3 _.map([{name: 'qq'}, {name: 'gl', age: 18}], {name: 'qq'}) // [true, false]
      *      iteratee 参数传入一个对象字面量 (高大上名字叫属性匹配器) 返回元素是否能匹配指定属性
      *      匹配器的数组
@@ -249,12 +248,10 @@
      *      不说了自己体会吧, 就像是按照数组的路径取出了这个玩意儿一样, 好嗨哟
      * @eg6
      *    看下边这一段代码 _.iteratee = builtinIteratee 来说 _.iteratee !== builtinIteratee
-     *    应该始终是 false 不会执行的, 但是如果用户在外部手动重写了 _.iteratee 函数(注意:
-     *    builtinIteratee 不会被重写因为这个变量根本没有向外暴露)
-     *    第一步: 重写 _.iteratee 代码在这里 https://github.com/luoquanquan/underscore/blob/analysis/demos/cb.html
-     *    第二步: 添加两个 _.map 方法
-     *    此时, cb 函数就会运行至 return _.iteratee(value, context); 也就是说如果用户(开发者)
-     *    重写了 _.iteratee 方法, 此处会直接调用开发者定义的方法
+     *    应该始终是 false 不会执行的, 但是如果用户在外部手动重写了 _.iteratee 函数(注意: builtinIteratee 不会被重写因为这个变量根本没有向外暴露)
+     *    这里可以参考 冴羽的博客 https://github.com/mqyqingfeng/Blog/issues/58
+     *    cb 函数就会运行至 return _.iteratee(value, context); 也就是说如果用户(开发者)
+     *    重写 _.iteratee 会直接调用开发者定义的方法
      *    ps: 重写该方法会影响很多 underscore 的方法, 包括 map、find、filter、reject、every、some、max、min、sortBy、groupBy、indexBy、countBy、sortedIndex、partition、和 unique
      */
     var cb = function (value, context, argCount) {
