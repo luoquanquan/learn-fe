@@ -1,0 +1,18 @@
+{
+  "name": "handle-font",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "spider": "font-spider index.html",
+    "min": "fontmin .font-sider/**.ttf ./miniFont/",
+    "build": "npm run spider & npm run min"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "font-spider": "^1.3.5",
+    "fontmin": "^0.9.9"
+  }
+}
