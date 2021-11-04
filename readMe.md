@@ -4,6 +4,7 @@
 
 #### 2021-11
 
+- [检测当前环境是否支持 webp](./basic-js/isWebpSupport.js)
 - [+new Date vs new Date().getTime vs Date.now](./basic-js/getTimestamp.js)
 
 #### 2021-10
