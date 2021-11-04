@@ -2,6 +2,10 @@
 
 ### 目录
 
+#### 2021-11
+
+- [+new Date vs new Date().getTime vs Date.now](./basic-js/getTimestamp.js)
+
 #### 2021-10
 
 - [字体处理](./handle-font)
