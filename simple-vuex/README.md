@@ -1,21 +1,17 @@
 # simple-vuex
 
-> A Vue.js project
+> 尝试写一个 vuex
 
-## Build Setup
+## state 初始化
 
-``` bash
-# install dependencies
-npm install
+为了保证 `vuex` 数据的响应式, `state` 核心为初始化一个 `Vue` 实例, 如下...
 
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
+```js
+// 初始化一个 Vue 实例, 保证数据响应式
+this._vm = new Vue({
+    data: {
+        state
+    }
+})
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
