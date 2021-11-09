@@ -12,5 +12,10 @@ export default new Vuex.Store({
     newCount(state) {
       return state.count + 1
     }
+  },
+  mutations: {
+    addCount(state) {
+      state.count += 1
+    }
   }
 })

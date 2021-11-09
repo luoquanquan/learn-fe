@@ -25,25 +25,35 @@ const forEach = (obj, cb) => {
 class Store {
   constructor(options) {
     this.getters = {}
-    const {state}  = options
+    this.mutations = {}
+    const { state, getters, mutations }  = options
 
+    // 初始化一个 Vue 实例, 保证数据响应式
     this._vm = new Vue({
       data: {
         state
       }
     })
-
-    const {getters} = options
     
+    // 初始化 getters
     forEach(getters, (name, getterFun) => {
       Object.defineProperty(this.getters, name, {
         get: () => getterFun(state)
       })
     })
+
+    // 初始化 mutations
+    forEach(mutations, (mutationName, mutationFun) => {
+      this.mutations[mutationName] = () => mutationFun(state)
+    })
   }
 
   get state() {
     return this._vm.state
+  }
+
+  commit(mutationName) {
+    this.mutations[mutationName]()
   }
 }
 
