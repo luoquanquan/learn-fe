@@ -7,5 +7,10 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     count: 1
+  },
+  getters: {
+    newCount(state) {
+      return state.count + 1
+    }
   }
 })

@@ -14,14 +14,31 @@ const install = _Vue => {
   })
 }
 
+const forEach = (obj, cb) => {
+  for (const idx in obj) {
+    if (obj.hasOwnProperty(idx)) {
+      cb(idx, obj[idx])
+    }
+  }
+}
+
 class Store {
   constructor(options) {
+    this.getters = {}
     const {state}  = options
 
     this._vm = new Vue({
       data: {
         state
       }
+    })
+
+    const {getters} = options
+    
+    forEach(getters, (name, getterFun) => {
+      Object.defineProperty(this.getters, name, {
+        get: () => getterFun(state)
+      })
     })
   }
 
