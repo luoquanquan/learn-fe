@@ -52,6 +52,15 @@ class Store {
         forEach(actions, (actionName, actionFun) => {
             this.actions[actionName] = () => actionFun(this)
         })
+
+        // optimize dispatch and commit ensure the context of the function
+        const {dispatch, commit} = this
+        this.dispatch = actionName => {
+            dispatch.call(this, actionName)
+        } 
+        this.commit = actionName => {
+            commit.call(this, actionName)
+        } 
     }
 
     get state() {
