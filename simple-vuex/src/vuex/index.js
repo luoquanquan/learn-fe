@@ -26,7 +26,8 @@ class Store {
     constructor(options) {
         this.getters = {}
         this.mutations = {}
-        const { state, getters, mutations } = options
+        this.actions = {}
+        const { state, getters, mutations, actions } = options
 
         // 初始化一个 Vue 实例, 保证数据响应式
         this._vm = new Vue({
@@ -46,14 +47,25 @@ class Store {
         forEach(mutations, (mutationName, mutationFun) => {
             this.mutations[mutationName] = () => mutationFun(state)
         })
+
+        // 初始化 actions
+        forEach(actions, (actionName, actionFun) => {
+            this.actions[actionName] = () => actionFun(this)
+        })
     }
 
     get state() {
         return this._vm.state
     }
 
+    // 触发 mutation
     commit(mutationName) {
         this.mutations[mutationName]()
+    }
+
+    // 触发 action
+    dispatch(actionName) {
+        this.actions[actionName]()
     }
 }
 

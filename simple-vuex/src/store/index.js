@@ -17,5 +17,10 @@ export default new Vuex.Store({
         addCount(state) {
             state.count += 1
         }
+    },
+    actions: {
+        addCount(store) {
+            store.commit('addCount')
+        }
     }
 })
