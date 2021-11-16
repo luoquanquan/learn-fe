@@ -34,7 +34,7 @@ const useLogger = (reducer, initialState) => {
         console.log('old state', state)
         dispatch(action)
     }
-    useEffect(() => console.log('new state', state))
+    useEffect(() => console.log('new state', state), [state])
     return [state, loggerDispatch]
 }
 
