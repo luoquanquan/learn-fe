@@ -8,8 +8,7 @@ export default {
     mounted() {
         const {dispatch} = this.$store
         dispatch('addCount')
-        console.log(`当前时间 ${Date.now()}: debug 的数据是 this.$store.getters.newCount: `, this.$store.getters.newCount)
-        console.log(`当前时间 ${Date.now()}: debug 的数据是 this.$store.state.count: `, this.$store.state.count)
+        console.log(`当前时间 ${Date.now()}: debug 的数据是 this.$store.moduleA: `, this.$store.state.moduleA.count)
     }
 }
 </script>

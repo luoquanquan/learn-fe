@@ -4,7 +4,7 @@ const install = _Vue => {
     const Vue = _Vue
 
     Vue.mixin({
-        beforeCreate() {
+        beforeCreate () {
             if (this.$options && this.$options.store) {
                 this.$store = this.$options.store
             } else {
@@ -23,7 +23,7 @@ const forEach = (obj, cb) => {
 }
 
 class Store {
-    constructor(options) {
+    constructor (options) {
         this.getters = {}
         this.mutations = {}
         this.actions = {}
@@ -54,26 +54,26 @@ class Store {
         })
 
         // optimize dispatch and commit ensure the context of the function
-        const {dispatch, commit} = this
+        const { dispatch, commit } = this
         this.dispatch = actionName => {
             dispatch.call(this, actionName)
-        } 
+        }
         this.commit = actionName => {
             commit.call(this, actionName)
-        } 
+        }
     }
 
-    get state() {
+    get state () {
         return this._vm.state
     }
 
     // 触发 mutation
-    commit(mutationName) {
+    commit (mutationName) {
         this.mutations[mutationName]()
     }
 
     // 触发 action
-    dispatch(actionName) {
+    dispatch (actionName) {
         this.actions[actionName]()
     }
 }

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  </head>
+  <body>
+    <p>外部的 P 标签</p>
+    <div id="shadow"></div>
+    <script>
+        // 外界无法访问 shadow-dom
+        const shadowDom = shadow.attachShadow({mode: 'closed'})
+
+        const pEle = document.createElement('p')
+        pEle.innerHTML = '内部的 P 标签'
+
+        // 设置的样式只在 shadow-dom 内部可以生效, 可以实现样式的隔离
+        const styleEle = document.createElement('style')
+        styleEle.innerHTML = `
+            p {
+                color: blue;
+            }
+        `
+
+        shadowDom.appendChild(pEle)
+        shadowDom.appendChild(styleEle)
+    </script>
+  </body>
+</html>
