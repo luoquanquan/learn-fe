@@ -1,15 +1,17 @@
 <script setup>
 import { ref, onMounted } from "vue";
-import * as pdfjs from "pdfjs-dist";
-import * as workerSrc from "pdfjs-dist/build/pdf.worker.entry";
-pdfjs.workerSrc = workerSrc;
+import structuredClone from '@ungap/structured-clone'
+import * as pdfjs from 'pdfjs-dist'
+import 'pdfjs-dist/build/pdf.worker.entry'
 
 const pdfHolderRef = ref([]);
 const pages = ref([]);
 
+window.structuredClone = structuredClone
+
 onMounted(async () => {
   console.log(`current-time ${Date.now()}: onMounted`);
-  const pdf = await pdfjs.getDocument({ url: "/jmyf.pdf" }).promise;
+  const pdf = await pdfjs.getDocument({ url: "https://jinmao-jmf.oss-cn-beijing.aliyuncs.com/p_act/07280763795a83d3f0839e65b2b3017c" }).promise;
   console.log(`current-time ${Date.now()} pdf.numPages: `, pdf.numPages);
   pages.value = Array.from({ length: pdf.numPages });
   let winW = document.documentElement.clientWidth * 0.9;
