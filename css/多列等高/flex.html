@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>基于 flex 实现多列等高</title>
+    <style>
+        .wrapper {
+            display: flex;
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        .wrapper div {
+            flex: 1;
+            color: #fff;
+            text-align: center;
+            line-height: 800px;
+        }
+
+        .left {
+            background-color: #333;
+            height: 800px;
+        }
+
+        .middle {
+            background-color: #666;
+        }
+
+        .right {
+            background-color: #999;
+        }
+    </style>
+
+</head>
+<body>
+    <h1>基于 flex 实现多列等高</h1>
+
+    <ul>
+        <li>flex 布局中的 align-item 属性默认为 stretch</li>
+        <li>如果子项目 item 没有设置高度或者高度设置为 auto, 将会默认填充满父元素的高度</li>
+        <li>正如以下项目所示, 父级 wrapper 设置为 flex 布局</li>
+        <li>只需要其中一个子元素设置高度, 其他的子元素也会自动适应为等高</li>
+    </ul>
+
+    <div class="wrapper">
+        <div class="left">left 高度为 800 px</div>
+        <div class="middle">middle 未设置高度</div>
+        <div class="right">right 未设置高度</div>
+    </div>
+</body>
+</html>
