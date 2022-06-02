@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>基于 table-cell 实现多列等高</title>
+    <style>
+        .wrapper {
+            display: table;
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        .wrapper div {
+            display: table-cell;
+            color: #fff;
+            text-align: center;
+            line-height: 800px;
+        }
+
+        .left {
+            background-color: #333;
+            height: 800px;
+        }
+
+        .middle {
+            background-color: #666;
+        }
+
+        .right {
+            background-color: #999;
+        }
+    </style>
+</head>
+<body>
+
+    <h3>利用 table 布局中行列属性, 也可以实现多列的等高布局 ~</h3>
+
+    <div class="wrapper">
+        <div class="left">left 高度为 800 px</div>
+        <div class="middle">middle 未设置高度</div>
+        <div class="right">right 未设置高度</div>
+    </div>
+</body>
+</html>
