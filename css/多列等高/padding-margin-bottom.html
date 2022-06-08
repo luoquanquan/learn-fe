@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>padding-margin-bottom 实现多列等高</title>
+
+    <style>
+        .wrapper {
+            width: 80%;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .wrapper div {
+            float: left;
+            color: #fff;
+            text-align: center;
+            padding-bottom: 1999px;
+            margin-bottom: -1999px;
+        }
+
+        .left {
+            background-color: #333;
+            width: 30%;
+        }
+
+        .middle {
+            background-color: #666;
+            width: 30%;
+        }
+
+        .right {
+            background-color: #999;
+            width: 40%;
+        }
+    </style>
+</head>
+<body>
+    <h1>基于 padding-margin-bottom 实现多列等高</h1>
+
+    <ul>
+        <li>利用 float 实现三列元素水平对齐</li>
+        <li>父级 overflow: hidden; 清除浮动, 此时就能实现父级高度就是最高元素的高度</li>
+        <li>每个列元素添加一个极大 padding 就能把父级撑得很高</li>
+        <li>在给每个元素相同大小的负 marigin 还原布局</li>
+        <li>由于 padding 可以填充元素得背景, 如果兄弟子元素高度大于当前元素, 看到的就是之前的 padding 区域. 由此来实现看上去多列等高的效果</li>
+    </ul>
+
+    <div class="wrapper">
+        <div class="left">
+            <p>left</p>
+            <p>left</p>
+            <p>left</p>
+            <p>left</p>
+            <p>left</p>
+            <p>left</p>
+            <p>left</p>
+            <p>left</p>
+            <p>left</p>
+            <p>left</p>
+            <p>left</p>
+            <p>left</p>
+            <p>left</p>
+            <p>left</p>
+            <p>left</p>
+            <p>left</p>
+            <p>left</p>
+            <p>left</p>
+            <p>left</p>
+            <p>left</p>
+        </div>
+        <div class="middle">middle</div>
+        <div class="right">right</div>
+    </div>
+</body>
+</html>
