@@ -1,0 +1,1 @@
+{"version":3,"file":"index.js","names":["func","console","log"],"sources":["index.js"],"sourcesContent":["const func = () => {\n    console.log('hello world ~')\n}\n"],"mappings":";;AAAA,IAAMA,IAAI,GAAG,SAAPA,IAAO,GAAM;EACfC,OAAO,CAACC,GAAR,CAAY,eAAZ;AACH,CAFD"}
