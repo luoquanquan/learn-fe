@@ -71,5 +71,4 @@ parcel 是快速, 零配置的 web 应用打包工具, 目前它只能用来构�
 ### 缺点
 
 - 不支持 sourceMap
-- 不支持 tree-shaking
 - 配置不灵活
