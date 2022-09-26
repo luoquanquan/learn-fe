@@ -1,5 +1,7 @@
+dist
 node_modules
 .DS_Store
 *.log
 .vscode
+.cache
 package-lock.json
