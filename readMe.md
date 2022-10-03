@@ -2,6 +2,10 @@
 
 ### 目录
 
+#### 2022-10
+
+- [pump 使用](./metamask-learn/pump-learn)
+
 #### 2022-09
 
 - [使用 patch-package 给 npm 包打补丁](./patch-package-learn/)
