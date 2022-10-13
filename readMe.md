@@ -4,6 +4,7 @@
 
 #### 2022-10
 
+- [插件连接硬件钱包方案](./metamask-learn/hw-link-demo)
 - [pump 使用](./metamask-learn/pump-learn)
 
 #### 2022-09
