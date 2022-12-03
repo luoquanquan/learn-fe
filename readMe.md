@@ -2,6 +2,17 @@
 
 ### 目录
 
+#### 2022-10
+
+- [插件连接硬件钱包方案](./metamask-learn/hw-link-demo)
+- [pump 使用](./metamask-learn/pump-learn)
+
+#### 2022-09
+
+- [使用 patch-package 给 npm 包打补丁](./patch-package-learn/)
+- [post-message-stream 使用](./metamask-learn/post-message-stream-learn/)
+- [metamask-learn](./metamask-learn/)
+
 #### 2022-06
 
 - [css 多列等高实现](./css/%E5%A4%9A%E5%88%97%E7%AD%89%E9%AB%98/)
@@ -99,24 +110,3 @@
 - [手写一个观察者模式](./simple-observer)
 - [手写一个 promise](./simple-promise)
 - [手写一个 express](./simple-express)
-
-### 同时推送多个 GIT 源
-
-如果不方便科学上网, 访问 `github` 往往卡的一批. 所以这个学习项目采用了双源的方案. clone 项目后在 `.git/config` 文件 `[remote "origin"]` 配置项中添加另外一个源的远程地址即可.
-
-PS: 参考[这篇文章](https://note.niubishanshan.top/Tips/GitHub/tips/%E5%90%8C%E6%97%B6%E9%85%8D%E7%BD%AE%20gitlab%20%E5%92%8C%20github/)可以设置多个 git 源的秘钥.
-
-```conf
-# ............................................................
-# .................... 其他配置  ..............................
-# ............................................................
-[remote "origin"]
-	# gitee
-	url = https://gitee.com/quanquandequan/learn-fe.git
-	# github
-	url = https://github.com/luoquanquan/learn-fe.git
-	fetch = +refs/heads/*:refs/remotes/origin/*
-# ............................................................
-# .................... 其他配置  ..............................
-# ............................................................
-```

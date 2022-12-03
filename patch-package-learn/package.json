@@ -1,0 +1,19 @@
+{
+  "name": "patch-package-learn",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "patch-package"
+  },
+  "keywords": [],
+  "author": "",
+  "description": "",
+  "dependencies": {
+    "@esbuild-plugins/node-modules-polyfill": "^0.1.4"
+  },
+  "devDependencies": {
+    "patch-package": "^6.4.7"
+  }
+}

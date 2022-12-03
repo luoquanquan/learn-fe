@@ -1,0 +1,30 @@
+diff --git a/node_modules/@esbuild-plugins/node-modules-polyfill/dist/polyfills.js b/node_modules/@esbuild-plugins/node-modules-polyfill/dist/polyfills.js
+index 4f4f953..6f6263e 100644
+--- a/node_modules/@esbuild-plugins/node-modules-polyfill/dist/polyfills.js
++++ b/node_modules/@esbuild-plugins/node-modules-polyfill/dist/polyfills.js
+@@ -43,18 +43,18 @@ function builtinsPolyfills() {
+     libs.set('repl', EMPTY_PATH);
+     libs.set('tls', EMPTY_PATH);
+     libs.set('fs', EMPTY_PATH);
+-    libs.set('crypto', EMPTY_PATH);
++    // libs.set('crypto', EMPTY_PATH);
+     // libs.set(
+     //     'fs',
+     //     require.resolve('rollup-plugin-node-polyfills/polyfills/browserify-fs'),
+     // )
+     // TODO enable crypto and fs https://github.com/ionic-team/rollup-plugin-node-polyfills/issues/20
+-    // libs.set(
+-    //     'crypto',
+-    //     require.resolve(
+-    //         'rollup-plugin-node-polyfills/polyfills/crypto-browserify',
+-    //     ),
+-    // )
++    libs.set(
++        'crypto',
++        require.resolve(
++            'rollup-plugin-node-polyfills/polyfills/crypto-browserify',
++        ),
++    )
+     return libs;
+ }
+ exports.builtinsPolyfills = builtinsPolyfills;
