@@ -44,7 +44,11 @@
     "chrome >= 88"
   ],
   "dependencies": {
+    "@keystonehq/animated-qr": "^0.8.0",
+    "@keystonehq/keystone-sdk": "^0.1.5",
+    "@ledgerhq/hw-app-btc": "^10.0.1",
     "@ledgerhq/hw-app-eth": "^6.29.9",
+    "@ledgerhq/hw-app-solana": "^7.0.8",
     "@ledgerhq/hw-transport-webhid": "^6.27.6",
     "@ledgerhq/logs": "^6.10.1",
     "react": "^17.0.1",
