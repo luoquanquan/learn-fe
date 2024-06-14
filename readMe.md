@@ -2,7 +2,9 @@
 
 ### 目录
 
+#### 2024-06
 
+- [如何区分 EOA 和合约地址](./web3/evm/EOA_ContractAddress)
 
 #### 2023-10
 
