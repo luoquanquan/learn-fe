@@ -48,4 +48,5 @@ fatal: fetch-pack: invalid index-pack output
 ## 参考资料
 
 - [git shallow clone (clone --depth) misses remote branches](https://stackoverflow.com/questions/23708231/git-shallow-clone-clone-depth-misses-remote-branches)
+- [重命名分支](https://docs.github.com/zh/repositories/configuring-branches-and-merges-in-your-repository/managing-branches-in-your-repository/renaming-a-branch)
 
