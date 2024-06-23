@@ -4,6 +4,7 @@
 
 #### 2024-06
 
+- [私钥签名和公钥验签的过程](./web3/crypto/signAndVerify)
 - [创建 evm 账户](./web3/evm/generateAccount)
 - [高效下载 GitHub 仓库](./tips/git/cloneBigRepo)
 - [如何区分 EOA 和合约地址](./web3/evm/EOA_ContractAddress)
