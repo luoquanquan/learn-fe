@@ -1,5 +1,7 @@
+const { ethRpcUrl } = require('../const')
+
 module.exports = {
-    rpcUrl: 'https://rpc.mevblocker.io',
+    rpcUrl: ethRpcUrl,
     // 币安冷钱包
     eoa: '0xBE0eB53F46cd790Cd13851d5EFf43D12404d33E8',
     // 以太坊主网 USDT 地址
