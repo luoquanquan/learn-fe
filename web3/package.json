@@ -1,8 +1,8 @@
 {
-  "name": "generateaccount",
+  "name": "web3",
   "version": "1.0.0",
   "description": "",
-  "main": "by-ethereumjs-wallet.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,9 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@ethereumjs/wallet": "^2.0.3",
-    "bip39": "^3.1.0",
-    "eip55": "^2.1.1",
-    "keccak": "^3.0.4"
+    "bignumber.js": "^9.1.2"
   }
 }
