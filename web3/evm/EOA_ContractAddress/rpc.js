@@ -1,5 +1,5 @@
 const axios = require('axios')
-const { echoAddressType, rpcUrl, eoa, USDT } = require('./utils')
+const { echoAddressType, rpcUrl, eoa, USDT } = require('./const')
 
 const checkAddressType = (address) => {
     axios.post(rpcUrl, {

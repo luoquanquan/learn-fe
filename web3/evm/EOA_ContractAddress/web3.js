@@ -1,7 +1,7 @@
-const { Web3 } = require('web3')
-const { rpcUrl, eoa, USDT, echoAddressType } = require('./utils')
+const { getWeb3 } = require('../utils')
+const { rpcUrl, eoa, USDT, echoAddressType } = require('./const')
 
-const web3 = new Web3(rpcUrl)
+const web3 = getWeb3(rpcUrl)
 
 const checkAddressType = (address) => {
     web3.eth.getCode(address).then(resp => {
