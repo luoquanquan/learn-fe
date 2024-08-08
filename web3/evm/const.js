@@ -1,5 +1,0 @@
-exports.ethRpcUrl = 'https://rpc.mevblocker.io'
-exports.testRpcUrl = 'https://rpc.ankr.com/eth_holesky'
-// exports.testRpcUrl = 'https://rpc.mevblocker.io'
-exports.myEvmAddress = '0xEa722c115325760349F0950e9448967f26dE4991'
-exports.myEvmAddress2 = '0x816bc213a604B63e7E4BfCE46bA920EAD6119E3C'
