@@ -1,10 +1,10 @@
-const sendSignedTransaction = require('../getChainInfo/sendSignedTransaction')
+const sendSignedTransaction = require('../../getChainInfo/sendSignedTransaction')
 const { Chain, Common, Hardfork } = require('@ethereumjs/common')
 const { LegacyTransaction } = require('@ethereumjs/tx')
-const { myEvmAddress, myEvmAddress2 } = require('../const')
-const getLegacyGas = require('../getChainInfo/getLegacyGas')
-const getNonce = require('../getChainInfo/getNonce')
-const { getWeb3 } = require('../utils')
+const { myEvmAddress, myEvmAddress2 } = require('../../const')
+const getLegacyGas = require('../../getChainInfo/getLegacyGas')
+const getNonce = require('../../getChainInfo/getNonce')
+const { getWeb3 } = require('../../utils')
 const web3 = getWeb3()
 
 const txParams = {
