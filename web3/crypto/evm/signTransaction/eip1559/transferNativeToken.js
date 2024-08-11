@@ -4,13 +4,13 @@ const { TransactionFactory } = require('@ethereumjs/tx')
 const { myEvmAddress, myEvmAddress2, etherScanUrl } = require('../../const')
 const getNonce = require('../../getChainInfo/getNonce')
 const { getWeb3 } = require('../../utils')
+const estimateGas = require('../../getChainInfo/estimateGas')
 const web3 = getWeb3()
 
 const txParams = {
     from: myEvmAddress,
     to: myEvmAddress2,
     value: web3.utils.numberToHex(10 ** 15),
-    gasLimit: web3.utils.numberToHex(21000),
     chainId: Chain.Holesky,
     maxFeePerGas: web3.utils.numberToHex(2 * 10 ** 9),
     maxPriorityFeePerGas: web3.utils.numberToHex(1.5 * 10 ** 9),
@@ -20,6 +20,9 @@ const txParams = {
 const main = async () => {
     const nonce = await getNonce(myEvmAddress)
     txParams.nonce = web3.utils.numberToHex(nonce)
+
+    const gasLimit = await estimateGas(txParams)
+    txParams.gasLimit = web3.utils.numberToHex(gasLimit)
 
     const tx = TransactionFactory.fromTxData(txParams)
 

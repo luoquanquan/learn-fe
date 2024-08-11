@@ -1,17 +1,18 @@
 const sendSignedTransaction = require('../../getChainInfo/sendSignedTransaction')
 const { Chain, Common, Hardfork } = require('@ethereumjs/common')
 const { LegacyTransaction } = require('@ethereumjs/tx')
-const { myEvmAddress, myEvmAddress2 } = require('../../const')
+const { myEvmAddress, tokenContractAddress, etherScanUrl } = require('../../const')
 const getLegacyGas = require('../../getChainInfo/getLegacyGas')
 const getNonce = require('../../getChainInfo/getNonce')
 const { getWeb3 } = require('../../utils')
+const encodeData = require('../encodeData')
 const estimateGas = require('../../getChainInfo/estimateGas')
 const web3 = getWeb3()
 
 const txParams = {
     from: myEvmAddress,
-    to: myEvmAddress2,
-    value: web3.utils.numberToHex(10 ** 15)
+    to: tokenContractAddress,
+    data: encodeData()
 }
 
 const main = async () => {
@@ -36,6 +37,7 @@ const main = async () => {
     console.log('Current log: serializedTx: ', serializedTx)
     console.log('Current log: txHash: ', txHash)
     await sendSignedTransaction(signedTx.serialize())
+    console.log(`Tx published you can see the detail ${etherScanUrl}/tx/0x${txHash}`)
 }
 
 main()
