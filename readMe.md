@@ -4,6 +4,7 @@
 
 #### 2024-08
 
+- [EIP 6963 接入方式](./web3/crypto/evm/eip-6963)
 - [Eip 1559 发送代币](./web3/crypto/evm/signTransaction/eip1559/transferToken.js)
 - [Legacy 发送代币](./web3/crypto/evm/signTransaction/legacy/transferToken.js)
 
