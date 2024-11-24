@@ -13,7 +13,7 @@
  * Total Submissions: 2.6M
  * Testcase Example:  '[2,4,3]\n[5,6,4]'
  *
- * 给你两个 非空 的链表，表示两个非负的整数。它们每位数字都是按照 逆序 的方式存储的，并且每个节点只能存储 一位 数字。
+ * 给你两个非空 的链表，表示两个非负的整数。它们每位数字都是按照 逆序 的方式存储的，并且每个节点只能存储 一位 数字。
  *
  * 请你将两个数相加，并以相同形式返回一个表示和的链表。
  *
@@ -68,38 +68,67 @@
  * @param {ListNode} l2
  * @return {ListNode}
  */
-var addTwoNumbers = function (l1, l2) {
-    // 先创建一个队列的队头
-    const head = new ListNode(-1)
-    // 定义游标标量, 运算过程中使用
-    let cursor = head
-    // 计算加法满十要进一位
+// const addTwoNumbers = function (l1, l2) {
+//     // 先创建一个队列的队头
+//     const head = new ListNode(-1)
+//     // 定义游标标量, 运算过程中使用
+//     let cursor = head
+//     // 计算加法满十要进一位
+//     let carry = 0
+
+//     // 只要两个队列中有一个不为空就继续
+//     while (l1 || l2) {
+//         // 读取值
+//         const num1 = l1?.val || 0
+//         const num2 = l2?.val || 0
+
+//         // 当前位求和
+//         const sum = num1 + num2 + carry
+//         // 满十进一
+//         carry = Math.floor(sum / 10)
+//         // 结果链表添加一环
+//         cursor.next = new ListNode(sum % 10)
+//         cursor = cursor.next
+//         // 原链表往后移动
+//         l1 = l1?.next
+//         l2 = l2?.next
+//     }
+
+//     // 每位加法算玩之后如果还有前进一位, 则给结果链表添加一环
+//     if (carry === 1) {
+//         cursor.next = new ListNode(1)
+//     }
+
+//     return head.next
+// }
+
+const addTwoNumbers = function (l1, l2) {
+    let p1 = l1
+    let p2 = l2
+    const l3 = new ListNode(0)
+    let p3 = l3
     let carry = 0
 
-    // 只要两个队列中有一个不为空就继续
-    while (l1 || l2) {
-        // 读取值
-        const num1 = l1?.val || 0
-        const num2 = l2?.val || 0
+    while (p1 || p2) {
+        const v1 = p1?.val || 0
+        const v2 = p2?.val || 0
 
-        // 当前位求和
-        const sum = num1 + num2 + carry
-        // 满十进一
-        carry = Math.floor(sum / 10)
-        // 结果链表添加一环
-        cursor.next = new ListNode(sum % 10)
-        cursor = cursor.next
-        // 原链表往后移动
-        l1 = l1?.next
-        l2 = l2?.next
+        const targetValue = v1 + v2 + carry
+        p3.next = new ListNode(targetValue % 10)
+        // 是否进位
+        carry = Math.floor(targetValue / 10)
+
+        p1 = p1?.next
+        p2 = p2?.next
+
+        p3 = p3.next
     }
 
-    // 每位加法算玩之后如果还有前进一位, 则给结果链表添加一环
-    if (carry === 1) {
-        cursor.next = new ListNode(1)
+    if (carry) {
+        p3.next = new ListNode(carry)
     }
 
-    return head.next
-};
+    return l3.next
+}
+
 // @lc code=end
-
