@@ -64,26 +64,41 @@
  * @param {number} target
  * @return {number[]}
  */
+// var twoSum = function (nums, target) {
+//     const len = nums.length
+
+//     // 外层遍历
+//     for (let i = 0; i < len; i++) {
+//         // 获取外层变量
+//         const outter = nums[i]
+
+//         // 因为题目中是 **两个** 整数相加,
+//         // 所以内层循环的游标应该从 i + 1 起步
+//         for (let j = i + 1; j < len; j++) {
+//             // 获取内层变量
+//             const inner = nums[j]
+
+//             // 如果内外层变量只和正好等于目标值, 则直接返回
+//             if (inner + outter === target) {
+//                 return [i, j]
+//             }
+//         }
+//     }
+// };
 var twoSum = function (nums, target) {
-    const len = nums.length
+    const map = new Map()
 
-    // 外层遍历
-    for (let i = 0; i < len; i++) {
-        // 获取外层变量
-        const outter = nums[i]
+    for (let idx = 0; idx < nums.length; idx++) {
+        const num = nums[idx];
 
-        // 因为题目中是 **两个** 整数相加,
-        // 所以内层循环的游标应该从 i + 1 起步
-        for (let j = i + 1; j < len; j++) {
-            // 获取内层变量
-            const inner = nums[j]
-
-            // 如果内外层变量只和正好等于目标值, 则直接返回
-            if (inner + outter === target) {
-                return [i, j]
-            }
+        if (map.has(num)) {
+            return [idx, map.get(num)]
+        } else {
+            map.set(target - num, idx)
         }
     }
+
+    return []
 };
 // @lc code=end
 
