@@ -39,9 +39,7 @@ const mergeSort = array => {
     return merge(mergeSort(left), mergeSort(right))
 }
 
-let mergeSortArray = randomArr.slice()
+const mergeSortArray = randomArr.slice()
 console.time('mergeSort')
-mergeSortArray = mergeSort(mergeSortArray)
+mergeSort(mergeSortArray)
 console.timeEnd('mergeSort')
-
-

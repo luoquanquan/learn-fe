@@ -1,4 +1,4 @@
-const {swap, createRandomArr} = require('./utils')
+const { swap, createRandomArr } = require('./utils')
 const randomArr = createRandomArr(1e6, 0, 1e8)
 
 const quickSort = array => {
@@ -30,7 +30,7 @@ console.timeEnd('quickSort')
 
 const partition = (array, left, right) => {
     const pivot = array[Math.floor((left + right) / 2)]
-    let i = left, j = right
+    let i = left; let j = right
 
     while (i <= j) {
         while (array[i] < pivot) {

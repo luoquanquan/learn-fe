@@ -6,7 +6,7 @@ const insertionSort = array => {
     let outerIndex, innerIndex, temp
 
     for (outerIndex = 1; outerIndex < len; outerIndex++) {
-        temp = array[outerIndex]  // 待排元素
+        temp = array[outerIndex] // 待排元素
         innerIndex = outerIndex - 1 // 已经排好的队伍
         // 拿当前的待排元素到已经排好的队伍里边找他合适的位置
         while (innerIndex >= 0 && array[innerIndex] > temp) {
@@ -17,9 +17,7 @@ const insertionSort = array => {
     }
 }
 
-
 const insertionSortArray = randomArr.slice()
 console.time('insertionSort')
 insertionSort(insertionSortArray)
 console.timeEnd('insertionSort')
-

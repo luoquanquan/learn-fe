@@ -1,8 +1,8 @@
-const {swap, createRandomArr} = require('./utils')
+const { swap, createRandomArr } = require('./utils')
 const randomArr = createRandomArr(10, 0, 20)
 
 const selectionSort = array => {
-    let len = array.length
+    const len = array.length
     let outerIndex, innerIndex, indexMin
 
     for (outerIndex = 0; outerIndex < len - 1; outerIndex++) {
@@ -18,7 +18,6 @@ const selectionSort = array => {
         }
     }
 }
-
 
 const selectionSortArray = randomArr.slice()
 console.time('selectionSort')

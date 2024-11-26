@@ -1,6 +1,5 @@
-const {swap, createRandomArr} = require('./utils')
+const { swap, createRandomArr } = require('./utils')
 const randomArr = createRandomArr(1e4, 0, 1e8)
-
 
 const bubbleSort = array => {
     const len = array.length
@@ -35,5 +34,3 @@ const modifiedBubbleSortArray = randomArr.slice()
 console.time('modifiedBubbleSort')
 modifiedBubbleSort(modifiedBubbleSortArray)
 console.timeEnd('modifiedBubbleSort')
-
-
