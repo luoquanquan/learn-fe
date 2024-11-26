@@ -2,6 +2,10 @@
 
 ### 目录
 
+#### 2024-11
+
+- [图解算法笔记](./algorithm/grokkingAlgorithms)
+
 #### 2024-08
 
 - [EIP 6963 接入方式](./web3/crypto/evm/eip-6963)
@@ -71,8 +75,6 @@
 
 #### 2020-12
 
-- [二分搜索](./algorithm/grokkingAlgorithms/binarySearch.js)
-- [图解算法笔记](./algorithm/grokkingAlgorithms)
 - [深拷贝](./js/deepClone.js)
 - [浅拷贝](./js/shallowClone.js)
 
