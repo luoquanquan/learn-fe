@@ -1,11 +1,7 @@
-const sendSignedTransaction = require('../../getChainInfo/sendSignedTransaction')
 const { Chain, Common, Hardfork } = require('@ethereumjs/common')
 const { LegacyTransaction } = require('@ethereumjs/tx')
 const { myEvmAddress, myEvmAddress2 } = require('../../const')
-const getLegacyGas = require('../../getChainInfo/getLegacyGas')
-const getNonce = require('../../getChainInfo/getNonce')
-const { getWeb3 } = require('../../utils')
-const estimateGas = require('../../getChainInfo/estimateGas')
+const { getWeb3, getTransactionCount, estimateGas, getGasPrice, sendSignedTransaction } = require('../../utils')
 const web3 = getWeb3()
 
 const txParams = {
@@ -15,13 +11,13 @@ const txParams = {
 }
 
 const main = async () => {
-    const nonce = await getNonce(myEvmAddress)
+    const nonce = await getTransactionCount(myEvmAddress)
     txParams.nonce = web3.utils.numberToHex(nonce)
 
     const gasLimit = await estimateGas(txParams)
     txParams.gasLimit = web3.utils.numberToHex(gasLimit)
 
-    const { gasPrice } = await getLegacyGas(txParams)
+    const gasPrice = await getGasPrice(txParams)
     txParams.gasPrice = web3.utils.numberToHex(gasPrice)
 
     const common = new Common({ chain: Chain.Holesky, hardfork: Hardfork.Istanbul })

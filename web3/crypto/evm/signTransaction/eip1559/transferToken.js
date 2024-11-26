@@ -1,10 +1,7 @@
-const sendSignedTransaction = require('../../getChainInfo/sendSignedTransaction')
 const { Chain } = require('@ethereumjs/common')
 const { TransactionFactory } = require('@ethereumjs/tx')
 const { myEvmAddress, etherScanUrl, tokenContractAddress } = require('../../const')
-const getNonce = require('../../getChainInfo/getNonce')
-const { getWeb3 } = require('../../utils')
-const estimateGas = require('../../getChainInfo/estimateGas')
+const { getWeb3, getTransactionCount, estimateGas, sendSignedTransaction } = require('../../utils')
 const encodeData = require('../encodeData')
 const web3 = getWeb3()
 
@@ -19,7 +16,7 @@ const txParams = {
 }
 
 const main = async () => {
-    const nonce = await getNonce(myEvmAddress)
+    const nonce = await getTransactionCount(myEvmAddress)
     txParams.nonce = web3.utils.numberToHex(nonce)
 
     const gasLimit = await estimateGas(txParams)

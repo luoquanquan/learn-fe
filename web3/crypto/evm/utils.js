@@ -13,6 +13,8 @@ const getWeb3 = (rpcUrl = testRpcUrl) => {
 exports.getWeb3 = getWeb3
 
 const web3 = getWeb3()
+
+// 进制转化
 const unitConversionFromWei = (unit) => (originValue) => {
     return web3.utils.fromWei(originValue, unit)
 }
@@ -28,3 +30,10 @@ const gweiToWei = unitConversionToWei('gwei')
 exports.gweiToWei = gweiToWei
 const ethToWei = unitConversionToWei('ether')
 exports.ethToWei = ethToWei
+
+// 获取链上信息
+exports.estimateGas = (txParams) => web3.eth.estimateGas(txParams)
+exports.getChainId = () => web3.eth.getChainId()
+exports.getGasPrice = () => web3.eth.getGasPrice()
+exports.getTransactionCount = (from) => web3.eth.getTransactionCount(from)
+exports.sendSignedTransaction = (signedTx) => web3.eth.sendSignedTransaction(signedTx)
