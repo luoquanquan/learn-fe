@@ -94,13 +94,9 @@ var inorderTraversal = function(root) {
             head = head.left
         }
 
-        // 这尼玛, 我看懂了, 但是不会描述
-        // 太难了...
-        if (stack.length) {
-            head = stack.pop()
-            ret.push(head.val)
-            head = head.right
-        }
+        head = stack.pop()
+        ret.push(head.val)
+        head = head.right
     }
 
     return ret
