@@ -1,0 +1,19 @@
+{
+  "name": "tx-analysis",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "devDependencies": {
+    "@typescript-eslint/parser": "^8.54.0",
+    "typescript": "^5.6.0"
+  },
+  "dependencies": {
+    "bs58": "^6.0.0",
+    "protobufjs": "^8.0.0",
+    "tronweb": "^6.2.0",
+    "viem": "^2.31.1"
+  }
+}
