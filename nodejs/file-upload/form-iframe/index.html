@@ -1,18 +1,22 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Form + Iframe 实现文件无刷新上传</title>
-</head>
-<body>
-
+  </head>
+  <body>
     <iframe name="quanquandequan" frameborder="0" width="0" height="0"></iframe>
-    <form enctype="multipart/form-data" action="/upload" target="quanquandequan" method="post">
-        <input type="file" name="file">
-        <input type="text" name="ext-info">
-        <input type="submit" value="提交">
+    <form
+      enctype="multipart/form-data"
+      action="/upload"
+      target="quanquandequan"
+      method="post"
+    >
+      <input type="file" name="file" />
+      <input type="text" name="ext-info" />
+      <input type="submit" value="提交" />
     </form>
-</body>
+  </body>
 </html>

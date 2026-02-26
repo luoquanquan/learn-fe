@@ -18,21 +18,21 @@
  * @return {number[]}
  */
 const preorderTraversal = function (root) {
-    const ret = []
-    const stack = []
+  const ret = [];
+  const stack = [];
 
-    if (root) {
-        stack.push(root)
-    }
+  if (root) {
+    stack.push(root);
+  }
 
-    while (stack.length) {
-        const { val, left, right } = stack.pop()
+  while (stack.length) {
+    const { val, left, right } = stack.pop();
 
-        ret.push(val)
-        right && stack.push(right)
-        left && stack.push(left)
-    }
+    ret.push(val);
+    right && stack.push(right);
+    left && stack.push(left);
+  }
 
-    return ret
-}
+  return ret;
+};
 // @lc code=end

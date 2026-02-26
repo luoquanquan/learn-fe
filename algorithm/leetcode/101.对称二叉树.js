@@ -19,15 +19,17 @@
  */
 // https://leetcode.cn/problems/symmetric-tree/solutions/6694/hua-jie-suan-fa-101-dui-cheng-er-cha-shu-by-guanpe
 const isMirror = (t1, t2) => {
-    if (t1 == null && t2 == null) return true
-    if (t1 == null || t2 == null) return false
-    return (t1.val === t2.val) &&
-        isMirror(t1.right, t2.left) &&
-        isMirror(t1.left, t2.right)
-}
+  if (t1 == null && t2 == null) return true;
+  if (t1 == null || t2 == null) return false;
+  return (
+    t1.val === t2.val &&
+    isMirror(t1.right, t2.left) &&
+    isMirror(t1.left, t2.right)
+  );
+};
 
 // eslint-disable-next-line no-unused-vars
 const isSymmetric = function (root) {
-    return isMirror(root, root)
-}
+  return isMirror(root, root);
+};
 // @lc code=end

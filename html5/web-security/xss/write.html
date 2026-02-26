@@ -1,14 +1,17 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>存储型 XSS 写</title>
-</head>
-<body>
-
+  </head>
+  <body>
     <form action="/write" method="POST">
-        <input type="text" name="userName" value="<img src=# onerror=alert('存储型XSS')>">
+      <input
+        type="text"
+        name="userName"
+        value="<img src=# onerror=alert('存储型XSS')>"
+      />
     </form>
-</body>
+  </body>
 </html>

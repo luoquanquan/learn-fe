@@ -1,43 +1,44 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Api-Server Demo</title>
-</head>
-<body>
-
-
+  </head>
+  <body>
     <script>
-        const handleData = data => {
-            console.log(`当前时间 ${Date.now()}: debug 的数据是 data: `, data)
-        }
+      const handleData = (data) => {
+        console.log(`当前时间 ${Date.now()}: debug 的数据是 data: `, data);
+      };
 
-        const xhr = new XMLHttpRequest()
-        xhr.withCredentials = true
-        xhr.open('get', 'http://b.quanquan.com:3333/user')
-        xhr.onreadystatechange = () => {
-            if (xhr.readyState === 4) {
-                if ((xhr.status >= 200 && xhr.status < 300) || xhr.status === 304) {
-                    handleData(xhr.responseText)
-                }
-            }
+      const xhr = new XMLHttpRequest();
+      xhr.withCredentials = true;
+      xhr.open("get", "http://b.quanquan.com:3333/user");
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4) {
+          if ((xhr.status >= 200 && xhr.status < 300) || xhr.status === 304) {
+            handleData(xhr.responseText);
+          }
         }
-        xhr.send()
+      };
+      xhr.send();
 
-        const xhr2 = new XMLHttpRequest()
-        xhr2.open('put', 'http://b.quanquan.com:3333/user')
-        xhr2.setRequestHeader('token', 'quanquan')
-        xhr2.withCredentials = true
-        xhr2.onreadystatechange = () => {
-            if (xhr2.readyState === 4) {
-                if ((xhr2.status >= 200 && xhr2.status < 300) || xhr2.status === 304) {
-                    handleData(xhr2.responseText)
-                }
-            }
+      const xhr2 = new XMLHttpRequest();
+      xhr2.open("put", "http://b.quanquan.com:3333/user");
+      xhr2.setRequestHeader("token", "quanquan");
+      xhr2.withCredentials = true;
+      xhr2.onreadystatechange = () => {
+        if (xhr2.readyState === 4) {
+          if (
+            (xhr2.status >= 200 && xhr2.status < 300) ||
+            xhr2.status === 304
+          ) {
+            handleData(xhr2.responseText);
+          }
         }
-        xhr2.send()
+      };
+      xhr2.send();
     </script>
-</body>
+  </body>
 </html>

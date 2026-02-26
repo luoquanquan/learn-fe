@@ -1,17 +1,12 @@
 {
-    "manifest_version": 3,
-    "name": "EIP 6963",
-    "version": "1.0.0",
-    "content_scripts": [
-        {
-            "matches": [
-                "http://*/*",
-                "https://*/*"
-            ],
-            "js": [
-                "injected.js"
-            ],
-            "run_at": "document_start"
-        }
-    ]
+  "manifest_version": 3,
+  "name": "EIP 6963",
+  "version": "1.0.0",
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["injected.js"],
+      "run_at": "document_start"
+    }
+  ]
 }

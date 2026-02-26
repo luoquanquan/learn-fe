@@ -81,25 +81,25 @@
  * @return {number[]}
  */
 // 迭代版本
-var inorderTraversal = function(root) {
-    const ret = []
+var inorderTraversal = function (root) {
+  const ret = [];
 
-    const stack = []
-    let head = root
+  const stack = [];
+  let head = root;
 
-    while (stack.length || head) {
-        // 先深度优先遍历所有的左子树
-        while (head) {
-            stack.push(head)
-            head = head.left
-        }
-
-        head = stack.pop()
-        ret.push(head.val)
-        head = head.right
+  while (stack.length || head) {
+    // 先深度优先遍历所有的左子树
+    while (head) {
+      stack.push(head);
+      head = head.left;
     }
 
-    return ret
+    head = stack.pop();
+    ret.push(head.val);
+    head = head.right;
+  }
+
+  return ret;
 };
 // @lc code=end
 

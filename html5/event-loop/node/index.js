@@ -1,18 +1,18 @@
-console.log('start')
+console.log("start");
 
 setTimeout(() => {
-    console.log('timeout')
+  console.log("timeout");
 }, 0);
 
 Promise.resolve().then(() => {
-    console.log('then')
-})
+  console.log("then");
+});
 
 process.nextTick(() => {
-    console.log('nextTick')
-})
+  console.log("nextTick");
+});
 
-console.log('end')
+console.log("end");
 
 // start
 // end

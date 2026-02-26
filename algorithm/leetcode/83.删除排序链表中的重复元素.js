@@ -59,21 +59,21 @@
  */
 // 背题大佬的方法, 不得不服气. 大佬是真的牛逼
 var deleteDuplicates = function (head) {
-    // 添加一个游标
-    let cursor = head
+  // 添加一个游标
+  let cursor = head;
 
-    // 迭代链表的每一个节点
-    while (cursor && cursor.next) {
-        // 如果游标节点的值和下一个节点的值相同直接链接下一个节点
-        if (cursor.val === cursor.next.val) {
-            cursor.next = cursor.next.next
-        } else {
-            // 否则移动游标
-            cursor = cursor.next
-        }
+  // 迭代链表的每一个节点
+  while (cursor && cursor.next) {
+    // 如果游标节点的值和下一个节点的值相同直接链接下一个节点
+    if (cursor.val === cursor.next.val) {
+      cursor.next = cursor.next.next;
+    } else {
+      // 否则移动游标
+      cursor = cursor.next;
     }
+  }
 
-    return head
+  return head;
 };
 // @lc code=end
 

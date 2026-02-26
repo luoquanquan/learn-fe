@@ -1,18 +1,18 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>存储型 XSS 读</title>
-</head>
-<body>
+  </head>
+  <body>
     <ul></ul>
     <script>
-        (async () => {
-            document.querySelector('ul').innerHTML = await fetch('/users')
-                .then(d => d.json())
-                .then(data => data.map(user => `<li>${user}</li>`).join(''))
-        })()
+      (async () => {
+        document.querySelector("ul").innerHTML = await fetch("/users")
+          .then((d) => d.json())
+          .then((data) => data.map((user) => `<li>${user}</li>`).join(""));
+      })();
     </script>
-</body>
+  </body>
 </html>

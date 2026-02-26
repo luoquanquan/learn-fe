@@ -1,41 +1,43 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>jQ 学习, 演示代码</title>
-</head>
-<body>
-
+  </head>
+  <body>
     <!-- <script src="./jquery@2.0.3.js"></script> -->
     <script src="./custom.js"></script>
 
     <script>
-        const info = {
-            name: 'quanquan',
-            sex: 'male',
-            age: 27,
-            like: {
-                run: '5km',
-                eat: ['rice', 'mantou']
-            }
-        }
+      const info = {
+        name: "quanquan",
+        sex: "male",
+        age: 27,
+        like: {
+          run: "5km",
+          eat: ["rice", "mantou"],
+        },
+      };
 
-        const extInfo = {
-            sport: 'running',
-            age: 28,
-            like: {
-                run: '10km',
-                eat: ['youtiao'],
-            },
-        }
+      const extInfo = {
+        sport: "running",
+        age: 28,
+        like: {
+          run: "10km",
+          eat: ["youtiao"],
+        },
+      };
 
-        extInfo.extInfo = info
-        info.extInfo = info
-        const totalInfo = $.extend(true, info, extInfo)
+      extInfo.extInfo = info;
+      info.extInfo = info;
+      const totalInfo = $.extend(true, info, extInfo);
 
-        console.log(`当前时间 ${Date.now()}: debug 的数据是 totalInfo: `, totalInfo)
+      console.log(
+        `当前时间 ${Date.now()}: debug 的数据是 totalInfo: `,
+        totalInfo,
+      );
     </script>
-</body>
+  </body>
 </html>

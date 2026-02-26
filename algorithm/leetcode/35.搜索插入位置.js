@@ -74,20 +74,20 @@
  * @return {number}
  */
 // 背题达人解法
-var searchInsert = function(nums, target) {
-    // 由于两个地方可能用到 length 单独定义一个变量
-    const {length} = nums
+var searchInsert = function (nums, target) {
+  // 由于两个地方可能用到 length 单独定义一个变量
+  const { length } = nums;
 
-    // 遍历数组
-    for (let i = 0; i < length; i++) {
-        // 添加到数组中的情况
-        if (nums[i] >= target) {
-            return i
-        }
+  // 遍历数组
+  for (let i = 0; i < length; i++) {
+    // 添加到数组中的情况
+    if (nums[i] >= target) {
+      return i;
     }
+  }
 
-    // 添加到数组末尾的情况
-    return length
+  // 添加到数组末尾的情况
+  return length;
 };
 // @lc code=end
 
@@ -106,4 +106,3 @@ var searchInsert = function(nums, target) {
 //     nums.push(target)
 //     return nums.length - 1
 // };
-

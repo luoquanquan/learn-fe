@@ -61,34 +61,34 @@
  * @return {number[]}
  */
 var plusOne = function (digits) {
-    // 默认 + 1
-    let addNum = 1
-    for (let i = digits.length - 1; i >= 0; i--) {
-        // 如果当前没有进位, 跳出循环
-        if (!addNum) {
-            break
-        }
-
-        // 加了进位以后的当前位的数
-        const newNumI = digits[i] + addNum
-
-        // 如果新算出的当前位小于 10,说明无需再次进位, 直接修改数组上的当前
-        // 位置上的数即可, 并且进位数要清零
-        if (newNumI < 10) {
-            digits[i] = newNumI
-            addNum = 0
-        } else {
-            // 否则, 当前位只保留个位的数进一即可
-            digits[i] = newNumI % 10
-        }
+  // 默认 + 1
+  let addNum = 1;
+  for (let i = digits.length - 1; i >= 0; i--) {
+    // 如果当前没有进位, 跳出循环
+    if (!addNum) {
+      break;
     }
 
-    // 如果 digits 数组处理完成后还要进一, 说明之前的最高位为 9
-    // 且有进位, 那么添加最高位补 1 即可
-    if (addNum) {
-        digits.unshift(1)
-    }
+    // 加了进位以后的当前位的数
+    const newNumI = digits[i] + addNum;
 
-    return digits
+    // 如果新算出的当前位小于 10,说明无需再次进位, 直接修改数组上的当前
+    // 位置上的数即可, 并且进位数要清零
+    if (newNumI < 10) {
+      digits[i] = newNumI;
+      addNum = 0;
+    } else {
+      // 否则, 当前位只保留个位的数进一即可
+      digits[i] = newNumI % 10;
+    }
+  }
+
+  // 如果 digits 数组处理完成后还要进一, 说明之前的最高位为 9
+  // 且有进位, 那么添加最高位补 1 即可
+  if (addNum) {
+    digits.unshift(1);
+  }
+
+  return digits;
 };
 // @lc code=end

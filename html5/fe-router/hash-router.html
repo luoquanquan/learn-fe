@@ -1,66 +1,63 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Hash 路由实现</title>
-</head>
+  </head>
 
-<body>
-
+  <body>
     <nav>
-        <a href="#/">主页</a>
-        <a href="#/Detail">详情</a>
-        <a href="#/Contact">联系我们</a>
-        <a href="#/About">关于</a>
+      <a href="#/">主页</a>
+      <a href="#/Detail">详情</a>
+      <a href="#/Contact">联系我们</a>
+      <a href="#/About">关于</a>
     </nav>
 
-    <hr>
+    <hr />
 
     <main></main>
 
     <script>
-        const ele = document.querySelector('main')
+      const ele = document.querySelector("main");
 
-        class Router {
-            constructor(ele) {
-                this.ele = ele
-                this.routerMap = {}
-                this.bindHashEvent()
-            }
-
-            register(path = '/', renderFun) {
-                this.routerMap[path] = renderFun
-                return this
-            }
-
-            bindHashEvent() {
-                const render = () => {
-                    const curPath = location.hash.slice(1)
-                    const renderFun = this.routerMap[curPath]
-                    let ret = '404'
-                    if (typeof renderFun === 'function') {
-                        ret = renderFun()
-                    }
-                    this.ele.innerHTML = ret
-                }
-
-                window.addEventListener('load', render)
-                window.addEventListener('hashchange', render)
-            }
+      class Router {
+        constructor(ele) {
+          this.ele = ele;
+          this.routerMap = {};
+          this.bindHashEvent();
         }
 
-        // 使用
-        const router = new Router(ele)
+        register(path = "/", renderFun) {
+          this.routerMap[path] = renderFun;
+          return this;
+        }
 
-        router
-            .register('/', () => '主页')
-            .register('/Detail', () => '详情')
-            .register('/Contact', () => '联系我们')
-            .register('/About', () => '关于')
+        bindHashEvent() {
+          const render = () => {
+            const curPath = location.hash.slice(1);
+            const renderFun = this.routerMap[curPath];
+            let ret = "404";
+            if (typeof renderFun === "function") {
+              ret = renderFun();
+            }
+            this.ele.innerHTML = ret;
+          };
+
+          window.addEventListener("load", render);
+          window.addEventListener("hashchange", render);
+        }
+      }
+
+      // 使用
+      const router = new Router(ele);
+
+      router
+        .register("/", () => "主页")
+        .register("/Detail", () => "详情")
+        .register("/Contact", () => "联系我们")
+        .register("/About", () => "关于");
     </script>
-</body>
-
+  </body>
 </html>

@@ -1,41 +1,41 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Document</title>
-</head>
-<body>
+  </head>
+  <body>
     <script>
-        setTimeout(() => {
-            console.log(`当前时间 ${Date.now()}: 代码走到了这里 timeout1`)
-            Promise.resolve().then(() => {
-                console.log(`当前时间 ${Date.now()}: 代码走到了这里 then1`)
-            })
-        }, 0);
-
+      setTimeout(() => {
+        console.log(`当前时间 ${Date.now()}: 代码走到了这里 timeout1`);
         Promise.resolve().then(() => {
-            console.log(`当前时间 ${Date.now()}: 代码走到了这里 then2`)
-            setTimeout(() => {
-                console.log(`当前时间 ${Date.now()}: 代码走到了这里 timeout2`)
-            }, 0);
-        })
+          console.log(`当前时间 ${Date.now()}: 代码走到了这里 then1`);
+        });
+      }, 0);
 
-        /** 我目前的理解应该是这样的
-         * 第一步, 执行主程序把 timeout1 投递给 webApi, 把 then2 放到微任务执行队列 -> 同步代码完成
-         * 第二步, 清空微任务队列, 把 timeout2 投递给 webApi -> then2
-         * 第三步, timeout1 时间到了, webApi 把它放到宏任务执行队列
-         * 第四步, 主进程队列空, 微任务队列空, 执行 timeout1, 并把 then1 放到微任务执行队列  -> timeout1
-         * 第五步, 主进程队列空, 清空微任务执行队列 -> then1
-         * 第六步, timeout2 时间到 webApi 把它放到宏任务执行队列
-         * 第七步, 主进程队列空, 微任务队列空, 执行 timeout2 -> timeout2
-         */
+      Promise.resolve().then(() => {
+        console.log(`当前时间 ${Date.now()}: 代码走到了这里 then2`);
+        setTimeout(() => {
+          console.log(`当前时间 ${Date.now()}: 代码走到了这里 timeout2`);
+        }, 0);
+      });
 
-        // 当前时间 1578572187795: 代码走到了这里 then2
-        // 当前时间 1578572187820: 代码走到了这里 timeout1
-        // 当前时间 1578572187820: 代码走到了这里 then1
-        // 当前时间 1578572187820: 代码走到了这里 timeout2
+      /** 我目前的理解应该是这样的
+       * 第一步, 执行主程序把 timeout1 投递给 webApi, 把 then2 放到微任务执行队列 -> 同步代码完成
+       * 第二步, 清空微任务队列, 把 timeout2 投递给 webApi -> then2
+       * 第三步, timeout1 时间到了, webApi 把它放到宏任务执行队列
+       * 第四步, 主进程队列空, 微任务队列空, 执行 timeout1, 并把 then1 放到微任务执行队列  -> timeout1
+       * 第五步, 主进程队列空, 清空微任务执行队列 -> then1
+       * 第六步, timeout2 时间到 webApi 把它放到宏任务执行队列
+       * 第七步, 主进程队列空, 微任务队列空, 执行 timeout2 -> timeout2
+       */
+
+      // 当前时间 1578572187795: 代码走到了这里 then2
+      // 当前时间 1578572187820: 代码走到了这里 timeout1
+      // 当前时间 1578572187820: 代码走到了这里 then1
+      // 当前时间 1578572187820: 代码走到了这里 timeout2
     </script>
-</body>
+  </body>
 </html>

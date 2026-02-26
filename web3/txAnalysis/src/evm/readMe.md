@@ -5,6 +5,7 @@
 ## ERC721
 
 需要关注的事件:
+
 - Transfer 资产变动
 - Approval 单个授权
 - ApprovalForAll 全局授权
@@ -54,10 +55,13 @@
 #### 为什么 personal_sign 就是安全的
 
 personal_sign 并非没有钓鱼的可能, 它只是比 eth_sign 好一点. 两者的本质是一样的:
+
 ```
 keccak256("\x19Ethereum Signed Message:\n" + len + message)
 ```
+
 主要区别在于 personal_sign 是明文签名, 钱包 UI 会展示实际签名的内容, 用户可以直接看到. 只要合约是通过 toEthSignedMessageHash 验签就有可能会被钓鱼. 前提是:
+
 1. 用户忽略了钱包 UI 的提示内容, 直接签名
 2. Hacker 对签名内容做了混淆. 用户看到的是 hex 字符串. 但是实际上是上架 NFT 请求
 
@@ -67,10 +71,10 @@ keccak256("\x19Ethereum Signed Message:\n" + len + message)
 
 根据 primaryType 字段可以判断当前 V4 签名是否为 Permit(Eip 2612) 或者 Permit2(Uniswap).
 
-primaryType | 类型 | verifyingContract
---- | --- | ---
-Permit | Permit(Eip 2612) | 代币合约地址
-PermitSingle | 单个代币 Permit2 | 0x000000000022D473030F116dDEE9F6B43aC78BA3(Uniswap 部署的固定标准地址)
-PermitBatch | 多个代币 Permit2 | 0x000000000022D473030F116dDEE9F6B43aC78BA3(Uniswap 部署的固定标准地址)
+| primaryType  | 类型             | verifyingContract                                                      |
+| ------------ | ---------------- | ---------------------------------------------------------------------- |
+| Permit       | Permit(Eip 2612) | 代币合约地址                                                           |
+| PermitSingle | 单个代币 Permit2 | 0x000000000022D473030F116dDEE9F6B43aC78BA3(Uniswap 部署的固定标准地址) |
+| PermitBatch  | 多个代币 Permit2 | 0x000000000022D473030F116dDEE9F6B43aC78BA3(Uniswap 部署的固定标准地址) |
 
 安全层面需要注意, Permit(2) 的 spender 地址. 如果你将代币 Permit 给了恶意合约. 它可以转移你所有的代币(授权给 Permit2 合约的).

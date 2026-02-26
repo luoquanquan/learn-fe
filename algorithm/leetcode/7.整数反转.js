@@ -63,28 +63,27 @@
  * @param {number} x
  * @return {number}
  */
-var reverse = function(x) {
-    // 先把传入的数字转字符串备用
-    let str = x.toString()
+var reverse = function (x) {
+  // 先把传入的数字转字符串备用
+  let str = x.toString();
 
-    // 记录下正负号
-    let symbol = '+'
-    if (str[0] === '-') {
-        symbol = '-'
-        str = str.slice(1)
-    }
+  // 记录下正负号
+  let symbol = "+";
+  if (str[0] === "-") {
+    symbol = "-";
+    str = str.slice(1);
+  }
 
-    // 反转后再把标点符号加回来
-    const newStr = symbol + str.split('').reverse().join('')
-    // 转回数字
-    const newNumber = Number(newStr)
+  // 反转后再把标点符号加回来
+  const newStr = symbol + str.split("").reverse().join("");
+  // 转回数字
+  const newNumber = Number(newStr);
 
-    // 边界处理
-    if (newNumber < (-2) ** 31 || newNumber > 2 ** 31 - 1) {
-        return 0
-    }
+  // 边界处理
+  if (newNumber < (-2) ** 31 || newNumber > 2 ** 31 - 1) {
+    return 0;
+  }
 
-    return newNumber
+  return newNumber;
 };
 // @lc code=end
-

@@ -46,19 +46,19 @@
  */
 // 动态规划
 var climbStairs = function (n) {
-    if (n <= 2) return n
+  if (n <= 2) return n;
 
-    // 防止空指针, 添加 1级 2级 台阶的情况
-    const obj = Object.create(null)
-    obj[1] = 1 // 一级阶梯的时候有 1 种方法
-    obj[2] = 2 // 两级阶梯的时候有 2 种方法
+  // 防止空指针, 添加 1级 2级 台阶的情况
+  const obj = Object.create(null);
+  obj[1] = 1; // 一级阶梯的时候有 1 种方法
+  obj[2] = 2; // 两级阶梯的时候有 2 种方法
 
-    for (let i = 3; i <= n; i++) {
-        // 上到第 i 级台阶方程类似斐波那契
-        obj[i] = obj[i - 1] + obj[i - 2]
-    }
+  for (let i = 3; i <= n; i++) {
+    // 上到第 i 级台阶方程类似斐波那契
+    obj[i] = obj[i - 1] + obj[i - 2];
+  }
 
-    return obj[n]
+  return obj[n];
 };
 
 // @lc code=end

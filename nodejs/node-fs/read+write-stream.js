@@ -1,12 +1,12 @@
-const fs = require('fs')
+const fs = require("fs");
 
-const rs = fs.createReadStream('./files/demo-file', {
-    highWaterMark: 3
-})
+const rs = fs.createReadStream("./files/demo-file", {
+  highWaterMark: 3,
+});
 
-const ws = fs.createWriteStream('./files/write-demo-file', {
-    highWaterMark: 1
-})
+const ws = fs.createWriteStream("./files/write-demo-file", {
+  highWaterMark: 1,
+});
 
 // rs.on('data', chunk => {
 //     const canDeal = ws.write(chunk)
@@ -25,4 +25,4 @@ const ws = fs.createWriteStream('./files/write-demo-file', {
 // })
 
 // 使用 pipe 把可读流导入到可写流
-rs.pipe(ws)
+rs.pipe(ws);

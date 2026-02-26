@@ -17,16 +17,16 @@
  * @return {ListNode}
  */
 const reverseList = function (head) {
-    let i = head
-    let j = null
+  let i = head;
+  let j = null;
 
-    while (i) {
-        const tempNext = i.next
-        i.next = j
-        j = i
-        i = tempNext
-    }
+  while (i) {
+    const tempNext = i.next;
+    i.next = j;
+    j = i;
+    i = tempNext;
+  }
 
-    return j
-}
+  return j;
+};
 // @lc code=end

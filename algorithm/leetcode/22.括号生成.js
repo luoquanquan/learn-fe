@@ -46,26 +46,26 @@
  * @param {number} n
  * @return {string[]}
  */
-const generate = (n, ret, l = 0, r = 0, str = '') => {
-    if (l + r === 2 * n) {
-        ret.push(str)
-        console.log(str)
-    }
+const generate = (n, ret, l = 0, r = 0, str = "") => {
+  if (l + r === 2 * n) {
+    ret.push(str);
+    console.log(str);
+  }
 
-    // 如果左括号个数小于 n 继续添加左括号
-    if (l < n) {
-        generate(n, ret, l + 1, r, str + '(')
-    }
+  // 如果左括号个数小于 n 继续添加左括号
+  if (l < n) {
+    generate(n, ret, l + 1, r, str + "(");
+  }
 
-    // 如果右括号的个数小于左括号, 则继续追加右括号
-    if (r < l) {
-        generate(n, ret, l, r + 1, str + ')')
-    }
-}
+  // 如果右括号的个数小于左括号, 则继续追加右括号
+  if (r < l) {
+    generate(n, ret, l, r + 1, str + ")");
+  }
+};
 
 var generateParenthesis = function (n) {
-    const ret = []
-    generate(n, ret)
-    return ret
+  const ret = [];
+  generate(n, ret);
+  return ret;
 };
 // @lc code=end

@@ -51,34 +51,34 @@
  * @return {string}
  */
 var longestCommonPrefix = function (strs) {
-    let commonPrefix = ''
+  let commonPrefix = "";
 
-    // 取出第一个字符串
-    const firstArr = strs.shift()
+  // 取出第一个字符串
+  const firstArr = strs.shift();
 
-    for (let i = 0; i < firstArr.length; i++) {
-        // 当前下标字符
-        const char = firstArr[i];
-        // 当前下标字符相同的 string 个数
-        let commonCount = 0
-        // 统计当前下标相同 string 个数
-        strs.forEach(str => {
-            if (str[i] === char) {
-                commonCount++
-            }
-        })
+  for (let i = 0; i < firstArr.length; i++) {
+    // 当前下标字符
+    const char = firstArr[i];
+    // 当前下标字符相同的 string 个数
+    let commonCount = 0;
+    // 统计当前下标相同 string 个数
+    strs.forEach((str) => {
+      if (str[i] === char) {
+        commonCount++;
+      }
+    });
 
-        // 如果 strs 中所有字符串当前下标字符都相等, 共同前缀加一个字符
-        if (commonCount === strs.length) {
-            commonPrefix += char
-        } else {
-            // 这里必须 break 兼容 case cir  car
-            // 如果不 break 就会返回 cr
-            break
-        }
+    // 如果 strs 中所有字符串当前下标字符都相等, 共同前缀加一个字符
+    if (commonCount === strs.length) {
+      commonPrefix += char;
+    } else {
+      // 这里必须 break 兼容 case cir  car
+      // 如果不 break 就会返回 cr
+      break;
     }
+  }
 
-    return commonPrefix
+  return commonPrefix;
 };
 // @lc code=end
 

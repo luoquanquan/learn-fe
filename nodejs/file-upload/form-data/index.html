@@ -1,50 +1,49 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>FormData 实现文件无刷新上传</title>
-</head>
+  </head>
 
-<body>
-    <input type="file" id="file" name="file">
+  <body>
+    <input type="file" id="file" name="file" />
 
     <script>
-        const oFile = document.getElementById('file')
+      const oFile = document.getElementById("file");
 
-        oFile.onchange = e => {
-            const { target: { files } } = e
-            const file = files[0]
-            if (file) {
-                const fd = new FormData()
-                fd.append('file', file)
-                const xhr = new XMLHttpRequest()
-                xhr.open('POST', '/upload')
-                xhr.responseType = 'json'
-                xhr.onreadystatechange = () => {
-                    if (
-                        xhr.readyState === 4
-                        && (
-                            (xhr.status >= 200 && xhr.status < 300)
-                            || xhr.status === 304
-                        )
-                    ) {
-                        console.log(xhr.response)
-                    }
-                }
-
-                xhr.upload.onprogress = ({ loaded, total, lengthComputable }) => {
-                    console.log(`当前上传了 ${(loaded / total * 100).toFixed(2)} %`)
-                    if (lengthComputable) {
-                        console.log(`当前上传了 ${(loaded / total * 100).toFixed(2)} %`)
-                    }
-                }
-                xhr.send(fd)
+      oFile.onchange = (e) => {
+        const {
+          target: { files },
+        } = e;
+        const file = files[0];
+        if (file) {
+          const fd = new FormData();
+          fd.append("file", file);
+          const xhr = new XMLHttpRequest();
+          xhr.open("POST", "/upload");
+          xhr.responseType = "json";
+          xhr.onreadystatechange = () => {
+            if (
+              xhr.readyState === 4 &&
+              ((xhr.status >= 200 && xhr.status < 300) || xhr.status === 304)
+            ) {
+              console.log(xhr.response);
             }
-        }
-    </script>
-</body>
+          };
 
+          xhr.upload.onprogress = ({ loaded, total, lengthComputable }) => {
+            console.log(`当前上传了 ${((loaded / total) * 100).toFixed(2)} %`);
+            if (lengthComputable) {
+              console.log(
+                `当前上传了 ${((loaded / total) * 100).toFixed(2)} %`,
+              );
+            }
+          };
+          xhr.send(fd);
+        }
+      };
+    </script>
+  </body>
 </html>

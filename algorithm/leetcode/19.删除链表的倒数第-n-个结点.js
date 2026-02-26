@@ -69,30 +69,30 @@
  * @return {ListNode}
  */
 var removeNthFromEnd = function (head, n) {
-    // 创建一个虚拟节点指向链表的头节点
-    let dummyHead = new ListNode(0, head)
+  // 创建一个虚拟节点指向链表的头节点
+  let dummyHead = new ListNode(0, head);
 
-    // 左右两个指针分别指向虚拟节点
-    let idxL = dummyHead
-    let idxR = dummyHead
+  // 左右两个指针分别指向虚拟节点
+  let idxL = dummyHead;
+  let idxR = dummyHead;
 
-    // 先让又指针走到第 n + 1 个节点
-    // 这是因为走完所有节点以后还要再走一个才能算结束
-    for (let i = 0; i < n + 1; i++) {
-        idxR = idxR.next
-    }
+  // 先让又指针走到第 n + 1 个节点
+  // 这是因为走完所有节点以后还要再走一个才能算结束
+  for (let i = 0; i < n + 1; i++) {
+    idxR = idxR.next;
+  }
 
-    // 此时让左指针跟着又指针一起跑, 知道跑完整个链表
-    while (idxR) {
-        idxR = idxR.next
-        idxL = idxL.next
-    }
+  // 此时让左指针跟着又指针一起跑, 知道跑完整个链表
+  while (idxR) {
+    idxR = idxR.next;
+    idxL = idxL.next;
+  }
 
-    // 删除此时左指针的下一个节点即可
-    idxL.next = idxL.next.next
+  // 删除此时左指针的下一个节点即可
+  idxL.next = idxL.next.next;
 
-    // 这里一定要返回 dummyHead.next 要不有可能需要删除的就是 head 节点
-    // 直接返回 head 肯定就错了
-    return dummyHead.next
+  // 这里一定要返回 dummyHead.next 要不有可能需要删除的就是 head 节点
+  // 直接返回 head 肯定就错了
+  return dummyHead.next;
 };
 // @lc code=end

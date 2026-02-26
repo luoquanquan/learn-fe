@@ -1,17 +1,19 @@
 <script setup>
 import { ref, onMounted } from "vue";
-import structuredClone from '@ungap/structured-clone'
-import * as pdfjs from 'pdfjs-dist'
-import 'pdfjs-dist/build/pdf.worker.entry'
+import structuredClone from "@ungap/structured-clone";
+import * as pdfjs from "pdfjs-dist";
+import "pdfjs-dist/build/pdf.worker.entry";
 
 const pdfHolderRef = ref([]);
 const pages = ref([]);
 
-window.structuredClone = structuredClone
+window.structuredClone = structuredClone;
 
 onMounted(async () => {
   console.log(`current-time ${Date.now()}: onMounted`);
-  const pdf = await pdfjs.getDocument({ url: "https://jinmao-jmf.oss-cn-beijing.aliyuncs.com/p_act/07280763795a83d3f0839e65b2b3017c" }).promise;
+  const pdf = await pdfjs.getDocument({
+    url: "https://jinmao-jmf.oss-cn-beijing.aliyuncs.com/p_act/07280763795a83d3f0839e65b2b3017c",
+  }).promise;
   console.log(`current-time ${Date.now()} pdf.numPages: `, pdf.numPages);
   pages.value = Array.from({ length: pdf.numPages });
   let winW = document.documentElement.clientWidth * 0.9;
@@ -19,10 +21,10 @@ onMounted(async () => {
 
   pages.value.forEach((i, j) => {
     const k = j + 1;
-    pdf.getPage(k).then(function(page) {
+    pdf.getPage(k).then(function (page) {
       // 获取原始大小的数据
       var viewport = page.getViewport({
-        scale: 1
+        scale: 1,
       });
 
       let scale = (winW / viewport.width).toFixed(2);
@@ -31,7 +33,7 @@ onMounted(async () => {
         scale = (winH / viewport.height).toFixed(2);
       }
       viewport = page.getViewport({
-        scale: scale
+        scale: scale,
       });
       var canvas = document.createElement("canvas");
       pdfHolderRef.value[j].appendChild(canvas);
@@ -42,7 +44,7 @@ onMounted(async () => {
       // 创建了一个canvas画板用来存放
       var renderContext = {
         canvasContext: context,
-        viewport: viewport
+        viewport: viewport,
       };
       page.render(renderContext);
     });
@@ -55,7 +57,7 @@ onMounted(async () => {
     <div
       v-for="(i, j) in pages"
       :key="j"
-      :ref="ele =>pdfHolderRef.push(ele) "
+      :ref="(ele) => pdfHolderRef.push(ele)"
       :class="['pdf-holder', `pdf-holder-${j}`]"
     ></div>
   </div>

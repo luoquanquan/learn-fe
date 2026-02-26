@@ -4,30 +4,32 @@
 
 ```js
 // 监听钱包注册事件
-window.addEventListener('eip6963:announceProvider', (event) => {
-    // add event.detail to providers
+window.addEventListener("eip6963:announceProvider", (event) => {
+  // add event.detail to providers
 });
 
 // 通知插件钱包注册 eip6963
-window.dispatchEvent(new Event('eip6963:requestProvider'));
+window.dispatchEvent(new Event("eip6963:requestProvider"));
 ```
 
 ## 钱包 injected 代码
 
 ```js
 const announce6963Provider = () => {
-    window.dispatchEvent(new CustomEvent('eip6963:announceProvider', {
-        detail: Object.freeze({ info, provider: {} })
-    }))
-}
+  window.dispatchEvent(
+    new CustomEvent("eip6963:announceProvider", {
+      detail: Object.freeze({ info, provider: {} }),
+    }),
+  );
+};
 
 // 注册 eip6963
-announce6963Provider()
+announce6963Provider();
 
 // 监听到 Dapp 发起的请求 eip6963 之后再次注册 eip6963, 兼容钱包注入代码先跑而 dapp 代码后跑的情况
-window.addEventListener('eip6963:requestProvider', () => {
-    announce6963Provider()
-})
+window.addEventListener("eip6963:requestProvider", () => {
+  announce6963Provider();
+});
 ```
 
 ## 参考文档

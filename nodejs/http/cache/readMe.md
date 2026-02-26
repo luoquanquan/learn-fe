@@ -20,6 +20,7 @@
 - 结束
 
 PS: 如果文件设置了 `Last-Modified`, 下次访问时会命中浏览器默认的强缓存策略(浏览器来自上方说的 bug 版本浏览器 Chrome)
+
 1. 没有关闭浏览器在当前页面刷新重新获取该图片的话返回 statusCode 为 200, Size tab 展示内容来自 memory cache
 2. 没有关闭浏览器在当前页面刷新重新获取该图片的话返回 statusCode 为 200, Size tab 展示内容来自 disk cache
 3. 关闭浏览器再打开当前 url index.html 甚至都会命中强缓存 statusCode 为 200, Size tab 展示内容来自 disk cache

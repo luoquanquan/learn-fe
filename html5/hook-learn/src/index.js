@@ -1,5 +1,5 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from "react";
+import ReactDOM from "react-dom";
 
 // import App from './useState'
 // import App from './useCallback-useMemo'
@@ -9,6 +9,6 @@ import ReactDOM from 'react-dom';
 // import App from './useRef'
 // import App from './useLayoutEffect'
 // import App from './customHook'
-import App from './useAjax'
+import App from "./useAjax";
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById("root"));

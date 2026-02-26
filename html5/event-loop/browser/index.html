@@ -1,54 +1,55 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>浏览器 event - loop</title>
-</head>
-<body>
-
+  </head>
+  <body>
     <div id="app"></div>
     <script>
-        // 宏任务
-        setTimeout(() => {
-            console.log(`当前时间 ${Date.now()}: 代码走到了这里 timeout`)
-        }, 0);
+      // 宏任务
+      setTimeout(() => {
+        console.log(`当前时间 ${Date.now()}: 代码走到了这里 timeout`);
+      }, 0);
 
-        // 微任务
-        Promise.resolve().then(() => {
-            console.log(`当前时间 ${Date.now()}: 代码走到了这里 promise.then`)
-        })
+      // 微任务
+      Promise.resolve().then(() => {
+        console.log(`当前时间 ${Date.now()}: 代码走到了这里 promise.then`);
+      });
 
-        // 当前时间 1578570299987: 代码走到了这里 promise.then
-        // 当前时间 1578570300030: 代码走到了这里 timeout
+      // 当前时间 1578570299987: 代码走到了这里 promise.then
+      // 当前时间 1578570300030: 代码走到了这里 timeout
 
-        // 微任务
-        const observer = new MutationObserver(() => {
-            console.log(`当前时间 ${Date.now()}: 代码走到了这里 MutationObserver`)
-        })
+      // 微任务
+      const observer = new MutationObserver(() => {
+        console.log(`当前时间 ${Date.now()}: 代码走到了这里 MutationObserver`);
+      });
 
-        const app = document.getElementById('app')
+      const app = document.getElementById("app");
 
-        observer.observe(app, {
-            childList: true
-        })
+      observer.observe(app, {
+        childList: true,
+      });
 
-        for (let i = 0; i < 20; i++) {
-            app.append('1')
-        }
+      for (let i = 0; i < 20; i++) {
+        app.append("1");
+      }
 
-        for (let i = 0; i < 20; i++) {
-            app.append('1')
-        }
+      for (let i = 0; i < 20; i++) {
+        app.append("1");
+      }
 
-        // 宏任务
-        const channel = new MessageChannel()
-        channel.port1.postMessage('你好')
-        channel.port2.onmessage = ({data}) => {
-            console.log(`当前时间 ${Date.now()}: debug 的数据是 MessageChannel data: `, data)
-        }
-
+      // 宏任务
+      const channel = new MessageChannel();
+      channel.port1.postMessage("你好");
+      channel.port2.onmessage = ({ data }) => {
+        console.log(
+          `当前时间 ${Date.now()}: debug 的数据是 MessageChannel data: `,
+          data,
+        );
+      };
     </script>
-</body>
+  </body>
 </html>

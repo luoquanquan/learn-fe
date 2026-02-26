@@ -14,13 +14,11 @@ console.log("Current log: mnemonic: ", mnemonic);
 
 ```js
 const generateAccount = (privateKey) => {
-    const wallet = Wallet.fromPrivateKey(
-        Buffer.from(privateKey.slice(2), "hex")
-    );
+  const wallet = Wallet.fromPrivateKey(Buffer.from(privateKey.slice(2), "hex"));
 
-    // checkSum
-    const address = eip55.encode(wallet.getAddressString());
-    console.log("Current log: address: ", address);
+  // checkSum
+  const address = eip55.encode(wallet.getAddressString());
+  console.log("Current log: address: ", address);
 };
 ```
 
@@ -31,19 +29,19 @@ const generateAccount = (privateKey) => {
 ```js
 // 导入助记词
 const importMnemonic = () => {
-    const mnemonic =
-        "sheriff educate diet concert token join pizza lend mixture tower shiver arrive";
-    // 根据助记词获取拓展公 / 私钥
-    const wallet = hdkey.EthereumHDKey.fromMnemonic(mnemonic);
-    const childHdKey = wallet.derivePath("m/44'/60'/0'");
-    const privateExtendedKey = childHdKey.privateExtendedKey();
-    const extendedPrivateHdKey =
-        hdkey.EthereumHDKey.fromExtendedKey(privateExtendedKey);
-    // 其中，index 为派生位置
-    const privateHdKey = extendedPrivateHdKey.derivePath("m/0/{index}");
-    const childPrivateWallet = privateHdKey.getWallet();
-    const privateKey = childPrivateWallet.getPrivateKeyString();
-    generateAccount(privateKey);
+  const mnemonic =
+    "sheriff educate diet concert token join pizza lend mixture tower shiver arrive";
+  // 根据助记词获取拓展公 / 私钥
+  const wallet = hdkey.EthereumHDKey.fromMnemonic(mnemonic);
+  const childHdKey = wallet.derivePath("m/44'/60'/0'");
+  const privateExtendedKey = childHdKey.privateExtendedKey();
+  const extendedPrivateHdKey =
+    hdkey.EthereumHDKey.fromExtendedKey(privateExtendedKey);
+  // 其中，index 为派生位置
+  const privateHdKey = extendedPrivateHdKey.derivePath("m/0/{index}");
+  const childPrivateWallet = privateHdKey.getWallet();
+  const privateKey = childPrivateWallet.getPrivateKeyString();
+  generateAccount(privateKey);
 };
 importMnemonic();
 ```

@@ -52,27 +52,27 @@
  * @return {number}
  */
 var mySqrt = function (x) {
-    // 使用二分法解决
-    // x 的算数平方根一定是 <= x 的
-    let left = 0
-    let right = x
+  // 使用二分法解决
+  // x 的算数平方根一定是 <= x 的
+  let left = 0;
+  let right = x;
 
-    // left < right: 说明两者中间还有区间可以查找
-    // left === right:
-    while (left <= right) {
-        // 查找 left 和 right 的中间值
-        const midIdx = Math.floor((right + left) / 2)
+  // left < right: 说明两者中间还有区间可以查找
+  // left === right:
+  while (left <= right) {
+    // 查找 left 和 right 的中间值
+    const midIdx = Math.floor((right + left) / 2);
 
-        // 如果中间值的平方比 x 大, 说明真正的算数平方根在左区间
-        if (midIdx * midIdx > x) {
-            right = midIdx - 1
-        } else {
-            // 否则想要的算数平方根在右区间
-            left = midIdx + 1
-        }
+    // 如果中间值的平方比 x 大, 说明真正的算数平方根在左区间
+    if (midIdx * midIdx > x) {
+      right = midIdx - 1;
+    } else {
+      // 否则想要的算数平方根在右区间
+      left = midIdx + 1;
     }
+  }
 
-    return right
+  return right;
 };
 // @lc code=end
 

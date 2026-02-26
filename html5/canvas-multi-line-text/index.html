@@ -1,85 +1,92 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>canvas 中书写多行文本</title>
-</head>
+  </head>
 
-<body style="display: flex; flex-direction: column; align-items: center;">
-
-    <textarea id="area" style="border: 1px solid #333; width: 300px; height: 300px; resize: none; padding: 0;"></textarea>
-    <br>
-    <canvas id='cns' style="border: 1px solid #333;"></canvas>
+  <body style="display: flex; flex-direction: column; align-items: center">
+    <textarea
+      id="area"
+      style="
+        border: 1px solid #333;
+        width: 300px;
+        height: 300px;
+        resize: none;
+        padding: 0;
+      "
+    ></textarea>
+    <br />
+    <canvas id="cns" style="border: 1px solid #333"></canvas>
     <script>
-        const cns = document.querySelector('#cns')
-        const area = document.querySelector('#area')
-        const ctx = cns.getContext('2d')
+      const cns = document.querySelector("#cns");
+      const area = document.querySelector("#area");
+      const ctx = cns.getContext("2d");
 
-        ratio = window.devicePixelRatio || 1
+      ratio = window.devicePixelRatio || 1;
 
-        cns.width = ratio * 300
-        cns.height = ratio * 300
+      cns.width = ratio * 300;
+      cns.height = ratio * 300;
 
-        cns.style.width = 300 + 'px'
-        cns.style.height = 300 + 'px'
-        area.oninput = function (e) {
-            const { value } = e.target
-            fillMultiplelinesText(ctx, 26, 32, value)
+      cns.style.width = 300 + "px";
+      cns.style.height = 300 + "px";
+      area.oninput = function (e) {
+        const { value } = e.target;
+        fillMultiplelinesText(ctx, 26, 32, value);
+      };
+
+      const getRealLength = (str) => {
+        let realLen = 0;
+
+        for (let i = 0, len = str.length; i < len; i++) {
+          if (str.charCodeAt(i) > 128) {
+            realLen += 2;
+          } else {
+            realLen += 1;
+          }
         }
 
-        const getRealLength = str => {
-            let realLen = 0;
+        return realLen;
+      };
 
-            for (let i = 0, len = str.length; i < len; i++) {
-                if (str.charCodeAt(i) > 128) {
-                    realLen += 2;
-                } else {
-                    realLen += 1;
-                }
+      const cutString = (str, leng) => {
+        const len = str.length;
+        let textLen = len;
+        let byteLen = 0;
+        for (let i = 0; i < len; i++) {
+          if (str.charCodeAt(i) > 128) {
+            if (byteLen + 2 <= leng) {
+              byteLen += 2;
+            } else {
+              textLen = i;
+              break;
             }
-
-            return realLen;
-        }
-
-        const cutString = (str, leng) => {
-            const len = str.length;
-            let textLen = len;
-            let byteLen = 0;
-            for (let i = 0; i < len; i++) {
-                if (str.charCodeAt(i) > 128) {
-                    if (byteLen + 2 <= leng) {
-                        byteLen += 2;
-                    } else {
-                        textLen = i;
-                        break;
-                    }
-                } else {
-                    if (byteLen + 1 <= leng) {
-                        byteLen += 1;
-                    } else {
-                        textLen = i;
-                        break;
-                    }
-                }
+          } else {
+            if (byteLen + 1 <= leng) {
+              byteLen += 1;
+            } else {
+              textLen = i;
+              break;
             }
-            return textLen;
+          }
         }
+        return textLen;
+      };
 
-        const fillMultiplelinesText = (ctx, lh, byteLen, text, x = 0, y = 0) => {
-            ctx.clearRect(0,0, 300, 300)
-            for (var i = 0; getRealLength(text) > 0; i++) {
-                const currentEnd = cutString(text, byteLen);
-                const currentLine = text.substr(0, currentEnd).replace(/^\s+|\s+$/, "");
-                ctx.font = `bold 18px 'PingFang SC','Microsoft Yahei'`;
-                ctx.textBaseline="top";
-                ctx.fillText(currentLine, x, i * lh + y);
-                text = text.substr(currentEnd);
-            }
+      const fillMultiplelinesText = (ctx, lh, byteLen, text, x = 0, y = 0) => {
+        ctx.clearRect(0, 0, 300, 300);
+        for (var i = 0; getRealLength(text) > 0; i++) {
+          const currentEnd = cutString(text, byteLen);
+          const currentLine = text
+            .substr(0, currentEnd)
+            .replace(/^\s+|\s+$/, "");
+          ctx.font = `bold 18px 'PingFang SC','Microsoft Yahei'`;
+          ctx.textBaseline = "top";
+          ctx.fillText(currentLine, x, i * lh + y);
+          text = text.substr(currentEnd);
         }
+      };
     </script>
-
-</body>
-
+  </body>
 </html>

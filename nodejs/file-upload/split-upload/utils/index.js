@@ -1,2 +1,2 @@
-exports.getReqData = require('./getReqData')
-exports.db = require('./db')
+exports.getReqData = require("./getReqData");
+exports.db = require("./db");

@@ -15,9 +15,11 @@ fetch-pack: unexpected disconnect while reading sideband packet
 fatal: early EOF
 fatal: fetch-pack: invalid index-pack output
 ```
+
 ## 原因
 
 出现这个问题的原因有二:
+
 - 网络环境遥遥领先
 - 项目实在太大
 
@@ -29,19 +31,24 @@ fatal: fetch-pack: invalid index-pack output
 
 - 执行 `git remote set-branches origin '*'` 修改 config 文件
 
-    这是因为通过 --depth 克隆的项目中 `.git/config` 下的 `remote "origin"` 字段为:
-    ```bash
-    [remote "origin"]
-        url = https://github.com/luoquanquan/dapp-demo-private
-        fetch = +refs/heads/main:refs/remotes/origin/main
-    ```
-    通过上述命令可以将固定的 main 分支号改成 *, 修改后的结果:
-    ```bash
-    [remote "origin"]
-        url = https://github.com/luoquanquan/dapp-demo-private
-        fetch = +refs/heads/*:refs/remotes/origin/*
-    ```
-    **当然,也可以手动修改 config 文件**
+  这是因为通过 --depth 克隆的项目中 `.git/config` 下的 `remote "origin"` 字段为:
+
+  ```bash
+  [remote "origin"]
+      url = https://github.com/luoquanquan/dapp-demo-private
+      fetch = +refs/heads/main:refs/remotes/origin/main
+  ```
+
+  通过上述命令可以将固定的 main 分支号改成 \*, 修改后的结果:
+
+  ```bash
+  [remote "origin"]
+      url = https://github.com/luoquanquan/dapp-demo-private
+      fetch = +refs/heads/*:refs/remotes/origin/*
+  ```
+
+  **当然,也可以手动修改 config 文件**
+
 - 执行 `git fetch -v --depth=1` 请求远程分支信息
 - 通过 `git checkout -t origin/branchName` 在本地创建远程分支的同名分支
 
@@ -49,4 +56,3 @@ fatal: fetch-pack: invalid index-pack output
 
 - [git shallow clone (clone --depth) misses remote branches](https://stackoverflow.com/questions/23708231/git-shallow-clone-clone-depth-misses-remote-branches)
 - [重命名分支](https://docs.github.com/zh/repositories/configuring-branches-and-merges-in-your-repository/managing-branches-in-your-repository/renaming-a-branch)
-

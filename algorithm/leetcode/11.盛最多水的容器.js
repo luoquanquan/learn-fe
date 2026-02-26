@@ -67,32 +67,32 @@
  * @param {number[]} height
  * @return {number}
  */
-var maxArea = function(height) {
-    // 根据木桶原理, 短板决定了盛水的多少
-    // 左板的下标
-    let idxL = 0
-    // 右板的下标
-    let idxR = height.length - 1
-    let ret = 0
+var maxArea = function (height) {
+  // 根据木桶原理, 短板决定了盛水的多少
+  // 左板的下标
+  let idxL = 0;
+  // 右板的下标
+  let idxR = height.length - 1;
+  let ret = 0;
 
-    // 只要左板坐标小于右板坐标就一直循环
-    while (idxL < idxR) {
-        // 取出左板 & 右板并选出两者中的短板
-        const woodL = height[idxL]
-        const woodR = height[idxR]
-        const shortWood = Math.min(woodL, woodR)
+  // 只要左板坐标小于右板坐标就一直循环
+  while (idxL < idxR) {
+    // 取出左板 & 右板并选出两者中的短板
+    const woodL = height[idxL];
+    const woodR = height[idxR];
+    const shortWood = Math.min(woodL, woodR);
 
-        // 根据短板和板间距计算容积
-        ret = Math.max(ret, shortWood * (idxR - idxL))
+    // 根据短板和板间距计算容积
+    ret = Math.max(ret, shortWood * (idxR - idxL));
 
-        // 如果当前左板是短板则向右移动坐标, 尝试找长板和右板搭配
-        shortWood === woodL && idxL++
-        // 如果右板是短板, 同理
-        shortWood === woodR && idxR--
-        // 综上, 你总不能知道了当前的板是短板还留着它吧
-    }
+    // 如果当前左板是短板则向右移动坐标, 尝试找长板和右板搭配
+    shortWood === woodL && idxL++;
+    // 如果右板是短板, 同理
+    shortWood === woodR && idxR--;
+    // 综上, 你总不能知道了当前的板是短板还留着它吧
+  }
 
-    return ret
+  return ret;
 };
 // @lc code=end
 

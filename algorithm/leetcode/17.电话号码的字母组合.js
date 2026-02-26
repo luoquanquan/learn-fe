@@ -59,37 +59,37 @@
  * @return {string[]}
  */
 var letterCombinations = function (digits) {
-    // 创建字典
-    const obj = {
-        2: ['a', 'b', 'c'],
-        3: ['d', 'e', 'f'],
-        4: ['g', 'h', 'i'],
-        5: ['j', 'k', 'l'],
-        6: ['m', 'n', 'o'],
-        7: ['p', 'q', 'r', 's'],
-        8: ['t', 'u', 'v'],
-        9: ['w', 'x', 'y', 'z']
-    }
-    let ret = [];
+  // 创建字典
+  const obj = {
+    2: ["a", "b", "c"],
+    3: ["d", "e", "f"],
+    4: ["g", "h", "i"],
+    5: ["j", "k", "l"],
+    6: ["m", "n", "o"],
+    7: ["p", "q", "r", "s"],
+    8: ["t", "u", "v"],
+    9: ["w", "x", "y", "z"],
+  };
+  let ret = [];
 
-    for (let i = 0; i < digits.length; i++) {
-        const num = digits[i];
+  for (let i = 0; i < digits.length; i++) {
+    const num = digits[i];
 
-        // 读取第一个字符的时候 ret 为空, 直接把字典里对应的数组给 ret
-        if (!ret.length) {
-            ret = obj[num]
-        } else {
-            const list = [];
-            // 从第二个数字开始进入二层循环, 之前已经加入的 item 作为下次循环中可能出现的前缀
-            for (let j = 0; j < ret.length; j++) {
-                // 遍历当前位数字对应字典中的数组, 和之前已经出现的前缀分别组合
-                for (let k = 0; k < obj[num].length; k++) {
-                    list.push(ret[j] + obj[num][k])
-                }
-            }
-            ret = list
+    // 读取第一个字符的时候 ret 为空, 直接把字典里对应的数组给 ret
+    if (!ret.length) {
+      ret = obj[num];
+    } else {
+      const list = [];
+      // 从第二个数字开始进入二层循环, 之前已经加入的 item 作为下次循环中可能出现的前缀
+      for (let j = 0; j < ret.length; j++) {
+        // 遍历当前位数字对应字典中的数组, 和之前已经出现的前缀分别组合
+        for (let k = 0; k < obj[num].length; k++) {
+          list.push(ret[j] + obj[num][k]);
         }
+      }
+      ret = list;
     }
-    return ret;
+  }
+  return ret;
 };
 // @lc code=end

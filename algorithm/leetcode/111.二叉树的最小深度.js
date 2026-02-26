@@ -17,22 +17,21 @@
  * @param {TreeNode} root
  * @return {number}
  */
-var minDepth = function(root) {
-    if (!root) {
-        return 0
+var minDepth = function (root) {
+  if (!root) {
+    return 0;
+  }
+
+  const queue = [[root, 1]];
+
+  while (queue.length) {
+    const [node, level] = queue.pop();
+    if (!node.left && !node.right) {
+      return level;
     }
 
-    const queue = [[root, 1]]
-
-    while (queue.length) {
-        const [node, level] = queue.pop();
-        if (!node.left && !node.right) {
-            return level
-        }
-
-        node.left && queue.unshift([node.left, level + 1])
-        node.right && queue.unshift([node.right, level + 1])
-    }
+    node.left && queue.unshift([node.left, level + 1]);
+    node.right && queue.unshift([node.right, level + 1]);
+  }
 };
 // @lc code=end
-

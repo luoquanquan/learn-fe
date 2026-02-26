@@ -8,7 +8,9 @@ const App = () => {
 
   return (
     <div>
-      <button type="button" onClick={handleClick}>Click Me to Connect Ledger</button>
+      <button type='button' onClick={handleClick}>
+        Click Me to Connect Ledger
+      </button>
     </div>
   );
 };

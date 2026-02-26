@@ -1,21 +1,27 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>XSS 攻击演示项目</title>
-</head>
-<body>
-
+  </head>
+  <body>
     <h1>hello XSS</h1>
 
     <!-- hash 值: encodeURIComponent('<img src=# onerror=alert("DOM型XSS")>') -->
-    <a href="./dom.html#%3Cimg%20src%3D%23%20onerror%3Dalert(%22DOM%E5%9E%8BXSS%22)%3E">DOM 型</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a
+      href="./dom.html#%3Cimg%20src%3D%23%20onerror%3Dalert(%22DOM%E5%9E%8BXSS%22)%3E"
+      >DOM 型</a
+    >
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <!-- userName 值: encodeURIComponent('<img src=# onerror=alert("反射型XSS")>') -->
-    <a href="./reflect.html?userName=%3Cimg%20src%3D%23%20onerror%3Dalert(%22反射%E5%9E%8BXSS%22)%3E">reflect 型</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a
+      href="./reflect.html?userName=%3Cimg%20src%3D%23%20onerror%3Dalert(%22反射%E5%9E%8BXSS%22)%3E"
+      >reflect 型</a
+    >
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <!-- 存储型 -->
     <a href="./write.html">存储型-写</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <a href="./read.html">存储型-读</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-</body>
+  </body>
 </html>

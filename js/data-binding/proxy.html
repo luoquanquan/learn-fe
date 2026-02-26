@@ -1,56 +1,63 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>使用 Proxy 实现双向数据绑定</title>
-</head>
+  </head>
 
-<body>
-
+  <body>
     <div class="box">
-        <p>当前值为: <b id="count"></b></p>
-        <input type="text" onkeyup="updateCount(event)">
+      <p>当前值为: <b id="count"></b></p>
+      <input type="text" onkeyup="updateCount(event)" />
 
-        <button>创建一个随机数</button>
+      <button>创建一个随机数</button>
     </div>
 
     <script>
-        const data = {
-            count: 100
-        }
+      const data = {
+        count: 100,
+      };
 
-        const obj = new Proxy(data, {
-            get(target, key, receiver) {
-                console.log(`当前时间 ${Date.now()}: debug 的数据是 target, key, receiver: `, target, key, receiver)
-                if (target[key]) {
-                    return target[key]
-                } else {
-                    return '我没有这个属性呀~'
-                }
-            },
-            set(target, key, value, receiver) {
-                console.log(`当前时间 ${Date.now()}: debug 的数据是 target, key, value, receiver: `, target, key, value, receiver)
-                if (key === 'count') {
-                    document.querySelector('#count').innerHTML = value
-                    document.querySelector('input').value = value
-                }
-            }
-        })
+      const obj = new Proxy(data, {
+        get(target, key, receiver) {
+          console.log(
+            `当前时间 ${Date.now()}: debug 的数据是 target, key, receiver: `,
+            target,
+            key,
+            receiver,
+          );
+          if (target[key]) {
+            return target[key];
+          } else {
+            return "我没有这个属性呀~";
+          }
+        },
+        set(target, key, value, receiver) {
+          console.log(
+            `当前时间 ${Date.now()}: debug 的数据是 target, key, value, receiver: `,
+            target,
+            key,
+            value,
+            receiver,
+          );
+          if (key === "count") {
+            document.querySelector("#count").innerHTML = value;
+            document.querySelector("input").value = value;
+          }
+        },
+      });
 
-        function updateCount(e) {
-            obj.count = e.target.value
-        }
+      function updateCount(e) {
+        obj.count = e.target.value;
+      }
 
-        document.querySelector('button').onclick = function() {
-            var random = Math.random()
+      document.querySelector("button").onclick = function () {
+        var random = Math.random();
 
-            obj.count = random
-        }
-
+        obj.count = random;
+      };
     </script>
-</body>
-
+  </body>
 </html>

@@ -78,16 +78,15 @@
  * @param {number} val
  * @return {number}
  */
-var removeElement = function(nums, val) {
-    // 遍历 nums
-    for (let i = 0; i < nums.length; i++) {
-        // 找到和 val 相等的值
-        if (nums[i] === val) {
-            // 就地删除
-            nums.splice(i, 1)
-            i--
-        }
+var removeElement = function (nums, val) {
+  // 遍历 nums
+  for (let i = 0; i < nums.length; i++) {
+    // 找到和 val 相等的值
+    if (nums[i] === val) {
+      // 就地删除
+      nums.splice(i, 1);
+      i--;
     }
+  }
 };
 // @lc code=end
-

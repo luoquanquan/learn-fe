@@ -1,20 +1,22 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+import Vue from "vue";
+import VueRouter from "vue-router";
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
-import Foo from '../components/Foo.vue'
-import Bar from '../components/Bar.vue'
+import Foo from "../components/Foo.vue";
+import Bar from "../components/Bar.vue";
 
-export default () => new VueRouter({
-    mode: 'history',
+export default () =>
+  new VueRouter({
+    mode: "history",
     routes: [
-        {
-            path: '/',
-            component: Foo
-        }, {
-            path: '/bar',
-            component: Bar
-        }
-    ]
-})
+      {
+        path: "/",
+        component: Foo,
+      },
+      {
+        path: "/bar",
+        component: Bar,
+      },
+    ],
+  });

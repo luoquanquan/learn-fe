@@ -1,18 +1,17 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DOM 型 XSS</title>
-</head>
-<body>
-
+  </head>
+  <body>
     <h1>Hi, <span id="user-name"></span></h1>
 
     <script>
-        const userName = decodeURIComponent(location.hash.slice(1))
-        const userNameDom = document.querySelector('#user-name')
-        userNameDom.innerHTML = userName
+      const userName = decodeURIComponent(location.hash.slice(1));
+      const userNameDom = document.querySelector("#user-name");
+      userNameDom.innerHTML = userName;
     </script>
-</body>
+  </body>
 </html>

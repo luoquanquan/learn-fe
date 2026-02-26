@@ -1,12 +1,12 @@
 class Animal {
-    constructor() {
-        this.name = 'Animal'
-    }
+  constructor() {
+    this.name = "Animal";
+  }
 
-    eat() {
-        console.log('i can eat~')
-    }
+  eat() {
+    console.log("i can eat~");
+  }
 }
 
-const animal = new Animal()
-console.log(Animal.prototype)
+const animal = new Animal();
+console.log(Animal.prototype);

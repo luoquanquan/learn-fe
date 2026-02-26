@@ -33,7 +33,7 @@
  *
  *
  * I 可以放在 V (5) 和 X (10) 的左边，来表示 4 和 9。
- * X 可以放在 L (50) 和 C (100) 的左边，来表示 40 和 90。 
+ * X 可以放在 L (50) 和 C (100) 的左边，来表示 40 和 90。
  * C 可以放在 D (500) 和 M (1000) 的左边，来表示 400 和 900。
  *
  *
@@ -89,25 +89,24 @@
  * @param {number} num
  * @return {string}
  */
-var intToRoman = function(num) {
-    // ==========  罗马数字  ====================================================
-    // 个位
-    const I = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX']
-    // 十位
-    const X = ['', 'X', 'XX', 'XXX', 'XL', 'L', 'LX', 'LXX', 'LXXX', 'XC']
-    // 百位
-    const C = ['', 'C', 'CC', 'CCC', 'CD', 'D', 'DC', 'DCC', 'DCCC', 'CM']
-    // 千位
-    const M = ['', 'M', 'MM', 'MMM']
+var intToRoman = function (num) {
+  // ==========  罗马数字  ====================================================
+  // 个位
+  const I = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"];
+  // 十位
+  const X = ["", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC"];
+  // 百位
+  const C = ["", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM"];
+  // 千位
+  const M = ["", "M", "MM", "MMM"];
 
-    // ==========  各位取值  ====================================================
-    const m = Math.floor(num / 1e3)
-    const c = Math.floor((num % 1e3) / 1e2)
-    const x = Math.floor((num % 1e2) / 10)
-    const i = num % 10
+  // ==========  各位取值  ====================================================
+  const m = Math.floor(num / 1e3);
+  const c = Math.floor((num % 1e3) / 1e2);
+  const x = Math.floor((num % 1e2) / 10);
+  const i = num % 10;
 
-    // 返回
-    return `${M[m]}${C[c]}${X[x]}${I[i]}`
+  // 返回
+  return `${M[m]}${C[c]}${X[x]}${I[i]}`;
 };
 // @lc code=end
-

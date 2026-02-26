@@ -67,9 +67,8 @@
  * @param {string} needle
  * @return {number}
  */
-var strStr = function(haystack, needle) {
-    // 这题, 不太适合用来考 js
-    return haystack.indexOf(needle)
+var strStr = function (haystack, needle) {
+  // 这题, 不太适合用来考 js
+  return haystack.indexOf(needle);
 };
 // @lc code=end
-

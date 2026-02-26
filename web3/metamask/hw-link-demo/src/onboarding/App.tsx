@@ -3,10 +3,9 @@ import './app.scss';
 import TransportWebHID from '@ledgerhq/hw-transport-webhid';
 import Eth from '@ledgerhq/hw-app-eth';
 import Btc from '@ledgerhq/hw-app-btc';
-import Solana from '@ledgerhq/hw-app-solana'
-import KeystoneSDK, {UR, URType} from "@keystonehq/keystone-sdk"
-import {AnimatedQRScanner} from "@keystonehq/animated-qr"
-
+import Solana from '@ledgerhq/hw-app-solana';
+import KeystoneSDK, { UR, URType } from '@keystonehq/keystone-sdk';
+import { AnimatedQRScanner } from '@keystonehq/animated-qr';
 
 const App = () => {
   const transportRef: any = useRef();
@@ -66,16 +65,16 @@ const App = () => {
       addressObj[k] = address;
     }
 
-    console.table(addressObj)
+    console.table(addressObj);
   };
 
   const signMessageWithSolana = async () => {
-    const message = 'hello world'
-    const bufferMsg = Buffer.from(message)
+    const message = 'hello world';
+    const bufferMsg = Buffer.from(message);
     const solanaApp = new Solana(transportRef.current);
     try {
-      const ret = await solanaApp.signOffchainMessage("44'/501'/0'", bufferMsg)
-      console.log(`Current timestamp ${Date.now()} ret: `, ret)
+      const ret = await solanaApp.signOffchainMessage("44'/501'/0'", bufferMsg);
+      console.log(`Current timestamp ${Date.now()} ret: `, ret);
     } catch (error) {
       // console.log(error)
       // i will get an errir like that
@@ -87,31 +86,30 @@ const App = () => {
       //   "statusText": "UNKNOWN_ERROR"
       // }
     }
-  }
+  };
 
-  let keystoneSDK:any = null
+  let keystoneSDK: any = null;
   // useEffect(() => {
   //   keystoneSDK = new KeystoneSDK()
   // }, [])
 
-  const onSucceed = ({type, cbor}) => {
-    const account = KeystoneSDK.parseHDKey(new UR(Buffer.from(cbor, "hex"), type))
-    console.log("account: ", account);
-  }
+  const onSucceed = ({ type, cbor }) => {
+    const account = KeystoneSDK.parseHDKey(
+      new UR(Buffer.from(cbor, 'hex'), type),
+    );
+    console.log('account: ', account);
+  };
   const onError = (errorMessage) => {
-    console.log("error: ",errorMessage);
-  }
+    console.log('error: ', errorMessage);
+  };
 
-
-//   const onSucceed = ({type, cbor}) => {
-//     const multiAccounts = KeystoneSDK.parseMultiAccounts(new UR(Buffer.from(cbor, "hex"), type))
-//     console.log("multiAccounts: ", multiAccounts);
-// }
-// const onError = (errorMessage) => {
-//     console.log("error: ",errorMessage);
-// }
-
-
+  //   const onSucceed = ({type, cbor}) => {
+  //     const multiAccounts = KeystoneSDK.parseMultiAccounts(new UR(Buffer.from(cbor, "hex"), type))
+  //     console.log("multiAccounts: ", multiAccounts);
+  // }
+  // const onError = (errorMessage) => {
+  //     console.log("error: ",errorMessage);
+  // }
 
   return (
     <div>
@@ -123,7 +121,11 @@ const App = () => {
 
       <h2> 打开控制台吧靓仔 ~ </h2>
 
-      <AnimatedQRScanner handleScan={onSucceed} handleError={onError} urTypes={[URType.CryptoHDKey]} />
+      <AnimatedQRScanner
+        handleScan={onSucceed}
+        handleError={onError}
+        urTypes={[URType.CryptoHDKey]}
+      />
 
       {/* <AnimatedQRScanner handleScan={onSucceed} handleError={onError} urTypes={[URType.CryptoMultiAccounts]} /> */}
     </div>

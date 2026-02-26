@@ -1,4 +1,4 @@
-const bt = require('./bt')
+const bt = require("./bt");
 
 // 前序遍历 - 递归版本
 // const preOrder = (root) => {
@@ -14,17 +14,17 @@ const bt = require('./bt')
 // preOrder(bt)
 
 const preOrder = (root) => {
-    if (!root) {
-        return
-    }
+  if (!root) {
+    return;
+  }
 
-    const stack = [root]
-    while (stack.length) {
-        const node = stack.pop()
-        console.log(node.val)
-        node.right && stack.push(node.right)
-        node.left && stack.push(node.left)
-    }
-}
+  const stack = [root];
+  while (stack.length) {
+    const node = stack.pop();
+    console.log(node.val);
+    node.right && stack.push(node.right);
+    node.left && stack.push(node.left);
+  }
+};
 
-preOrder(bt)
+preOrder(bt);

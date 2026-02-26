@@ -2,9 +2,26 @@
 
 ### 目录
 
+#### 2025-12
+
+- [Tron Dapp 交易解析](./web3/txAnalysis/src/tron)
+- [Tron Proto 转 ts 脚本](./web3/txAnalysis/src/tron/utils/pbjs.sh)
+
+#### 2025-09
+
+- [Web 加密和解密](./web3/metamask/basic-learn/app/pages/encrypt/README.md)
+
 #### 2025-05
 
 - [EVM 系 Dapp 交易解析](./web3/txAnalysis/src/evm/readMe.md)
+
+#### 2025-02
+
+- [端到端加密](./web3/e2ee/readMe.md)
+
+#### 2024-12
+
+- [私钥签名和公钥验签的过程](./web3/crypto/signAndVerify)
 
 #### 2024-11
 
@@ -24,7 +41,6 @@
 
 #### 2024-06
 
-- [私钥签名和公钥验签的过程](./web3/crypto/signAndVerify)
 - [创建 evm 账户](./web3/crypto/evm/generateAccount)
 - [高效下载 GitHub 仓库](./tips/git/cloneBigRepo)
 - [如何区分 EOA 和合约地址](./web3/crypto/evm/EOA_ContractAddress)

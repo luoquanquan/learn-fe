@@ -1,80 +1,76 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>History 路由实现</title>
-</head>
+  </head>
 
-<body>
-
+  <body>
     <nav>
-        <a href="/">主页</a>
-        <a href="/Detail">详情</a>
-        <a href="/Contact">联系我们</a>
-        <a href="/About">关于</a>
+      <a href="/">主页</a>
+      <a href="/Detail">详情</a>
+      <a href="/Contact">联系我们</a>
+      <a href="/About">关于</a>
     </nav>
 
-    <hr>
+    <hr />
 
     <main></main>
 
     <script>
-        const ele = document.querySelector('main')
-        const nav = document.querySelector('nav')
+      const ele = document.querySelector("main");
+      const nav = document.querySelector("nav");
 
-        class Router {
-            constructor(ele, nav) {
-                this.ele = ele
-                this.nav = nav
-                this.routerMap = {}
+      class Router {
+        constructor(ele, nav) {
+          this.ele = ele;
+          this.nav = nav;
+          this.routerMap = {};
 
-                this.bindLinkEvent()
-                this.bindPopstateEvent()
-            }
-
-            register(path = '/', renderFun) {
-                this.routerMap[path] = renderFun
-                return this
-            }
-
-            bindLinkEvent() {
-                this.nav.addEventListener('click', e => {
-                    e.preventDefault();
-                    const { target } = e
-                    const path = target.getAttribute('href')
-                    history.pushState(null, '', path)
-                    this.render()
-                })
-            }
-
-            bindPopstateEvent() {
-                window.addEventListener('load', this.render.bind(this))
-                window.addEventListener('popstate', this.render.bind(this))
-            }
-
-            render() {
-                const curPath = location.pathname
-                const renderFun = this.routerMap[curPath]
-                let ret = '404'
-                if (typeof renderFun === 'function') {
-                    ret = renderFun()
-                }
-                this.ele.innerHTML = ret
-            }
+          this.bindLinkEvent();
+          this.bindPopstateEvent();
         }
 
-        const router = new Router(ele, nav)
+        register(path = "/", renderFun) {
+          this.routerMap[path] = renderFun;
+          return this;
+        }
 
-        router
-            .register('/', () => '主页')
-            .register('/Detail', () => '详情')
-            .register('/Contact', () => '联系我们')
-            .register('/About', () => '关于')
+        bindLinkEvent() {
+          this.nav.addEventListener("click", (e) => {
+            e.preventDefault();
+            const { target } = e;
+            const path = target.getAttribute("href");
+            history.pushState(null, "", path);
+            this.render();
+          });
+        }
 
+        bindPopstateEvent() {
+          window.addEventListener("load", this.render.bind(this));
+          window.addEventListener("popstate", this.render.bind(this));
+        }
+
+        render() {
+          const curPath = location.pathname;
+          const renderFun = this.routerMap[curPath];
+          let ret = "404";
+          if (typeof renderFun === "function") {
+            ret = renderFun();
+          }
+          this.ele.innerHTML = ret;
+        }
+      }
+
+      const router = new Router(ele, nav);
+
+      router
+        .register("/", () => "主页")
+        .register("/Detail", () => "详情")
+        .register("/Contact", () => "联系我们")
+        .register("/About", () => "关于");
     </script>
-</body>
-
+  </body>
 </html>

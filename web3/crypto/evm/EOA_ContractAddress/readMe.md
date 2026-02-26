@@ -21,14 +21,14 @@ eoa 地址和合约地址的本质区别在于 eoa 地址由用户控制, 用户
 
 ```js
 // eoa 地址, 你将得到 '0x'
-web3.eth.getCode('0xBE0eB53F46cd790Cd13851d5EFf43D12404d33E8').then(resp => {
-    console.log(resp);
-})
+web3.eth.getCode("0xBE0eB53F46cd790Cd13851d5EFf43D12404d33E8").then((resp) => {
+  console.log(resp);
+});
 
 // 合约地址, 你将得到合约绑定的代码二进制信息
-web3.eth.getCode('0xdac17f958d2ee523a2206206994597c13d831ec7').then(resp => {
-    console.log(resp);
-})
+web3.eth.getCode("0xdac17f958d2ee523a2206206994597c13d831ec7").then((resp) => {
+  console.log(resp);
+});
 ```
 
 ### 通过组装 rpc 请求链上
@@ -37,18 +37,28 @@ web3.js 实际上就是对 rpc 请求的封装, 因此我们自己拼装 rpc 请
 
 ```js
 // eoa 地址, 你将得到 '0x'
-axios.post(rpcUrl, {
-    id: 1, jsonrpc: '2.0', method: 'eth_getCode', params: ['0xBE0eB53F46cd790Cd13851d5EFf43D12404d33E8', 'latest']
-}).then(resp => {
+axios
+  .post(rpcUrl, {
+    id: 1,
+    jsonrpc: "2.0",
+    method: "eth_getCode",
+    params: ["0xBE0eB53F46cd790Cd13851d5EFf43D12404d33E8", "latest"],
+  })
+  .then((resp) => {
     console.log(resp);
-})
+  });
 
 // 合约地址, 你将得到合约绑定的代码二进制信息
-axios.post(rpcUrl, {
-    id: 1, jsonrpc: '2.0', method: 'eth_getCode', params: ['0xdac17f958d2ee523a2206206994597c13d831ec7', 'latest']
-}).then(resp => {
+axios
+  .post(rpcUrl, {
+    id: 1,
+    jsonrpc: "2.0",
+    method: "eth_getCode",
+    params: ["0xdac17f958d2ee523a2206206994597c13d831ec7", "latest"],
+  })
+  .then((resp) => {
     console.log(resp);
-})
+  });
 ```
 
 ### 直接使用 curl 发送 rpc 请求
