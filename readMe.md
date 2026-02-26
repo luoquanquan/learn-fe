@@ -5,7 +5,7 @@
 #### 2025-12
 
 - [Tron Dapp 交易解析](./web3/txAnalysis/src/tron)
-- [Tron Proto 转 ts 脚本](./web3/txAnalysis/src/tron/utils/pbjs.sh)
+- [Tron Proto 转 js 脚本](./web3/txAnalysis/src/tron/utils/pbjs.sh)
 
 #### 2025-09
 
