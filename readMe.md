@@ -1,78 +1,76 @@
-## 记录下前端学习路上的小点点
+## 目录
 
-### 目录
-
-#### 2025-12
+### 2025-12
 
 - [Tron Dapp 交易解析](./web3/txAnalysis/src/tron)
 - [Tron Proto 转 js 脚本](./web3/txAnalysis/src/tron/utils/pbjs.sh)
 
-#### 2025-09
+### 2025-09
 
 - [Web 加密和解密](./web3/metamask/basic-learn/app/pages/encrypt/README.md)
 
-#### 2025-05
+### 2025-05
 
 - [EVM 系 Dapp 交易解析](./web3/txAnalysis/src/evm/readMe.md)
 
-#### 2025-02
+### 2025-02
 
 - [端到端加密](./web3/e2ee/readMe.md)
 
-#### 2024-12
+### 2024-12
 
 - [私钥签名和公钥验签的过程](./web3/crypto/signAndVerify)
 
-#### 2024-11
+### 2024-11
 
 - [图解算法笔记](./algorithm/grokkingAlgorithms)
 - [JavaScript版数据结构与算法](./algorithm/jsInterview/)
 
-#### 2024-08
+### 2024-08
 
 - [EIP 6963 接入方式](./web3/crypto/evm/eip-6963)
 - [Eip 1559 发送代币](./web3/crypto/evm/signTransaction/eip1559/transferToken.js)
 - [Legacy 发送代币](./web3/crypto/evm/signTransaction/legacy/transferToken.js)
 
-#### 2024-07
+### 2024-07
 
 - [Eip 1559 发送主币](./web3/crypto/evm/signTransaction/eip1559/transferNativeToken.js)
 - [Legacy 发送主币](./web3/crypto/evm/signTransaction/legacy/transferNativeToken.js)
 
-#### 2024-06
+### 2024-06
 
 - [创建 evm 账户](./web3/crypto/evm/generateAccount)
 - [高效下载 GitHub 仓库](./tips/git/cloneBigRepo)
 - [如何区分 EOA 和合约地址](./web3/crypto/evm/EOA_ContractAddress)
 
-#### 2023-10
+### 2023-10
 
 - [js 继承](./js/extends)
 
-#### 2023-06
+### 2023-06
 
 - [js 源码解析](./js/simple-jquery)
 
-#### 2022-10
+### 2022-10
 
 - [插件连接硬件钱包方案](./web3/metamask/hw-link-demo)
 - [pump 使用](./web3/metamask/pump-learn)
 
-#### 2022-09
+### 2022-09
 
 - [使用 patch-package 给 npm 包打补丁](./nodejs/patch-package-learn/)
 - [post-message-stream 使用](./web3/metamask/post-message-stream-learn/)
 - [metamask-learn](./web3/metamask/)
 
-#### 2022-06
+### 2022-06
 
 - [css 多列等高实现](./css/%E5%A4%9A%E5%88%97%E7%AD%89%E9%AB%98/)
 
-#### 2022-05
+### 2022-05
 
 - [pdf 页内预览](./html5/pdf-viewer/)
 
-#### 2021-11
+### 2021-11
 
 - [leetCode](./algorithm/leetcode)
 - [尝试手写下 vuex](./js/simple-vuex)
@@ -80,32 +78,32 @@
 - [检测当前环境是否支持 webp](./js/isWebpSupport.js)
 - [+new Date vs new Date().getTime vs Date.now](./js/getTimestamp.js)
 
-#### 2021-10
+### 2021-10
 
 - [从字体库文件中提取可能用到的字符](./html5/font-picker)
 
-#### 2021-01
+### 2021-01
 
 - [4.3 找出列表中最大的数](./algorithm/grokkingAlgorithms/4/3.js)
 - [4.2 编写一个递归函数来计算列表包含的元素数](./algorithm/grokkingAlgorithms/4/2.js)
 - [4.1 使用递归实现 sum 函数](./algorithm/grokkingAlgorithms/4/1.js)
 
-#### 2020-12
+### 2020-12
 
 - [选择排序](./algorithm/grokkingAlgorithms/selectionSort.js)
 
-#### 2020-12
+### 2020-12
 
 - [深拷贝](./js/deepClone.js)
 - [浅拷贝](./js/shallowClone.js)
 
-#### 2020-03
+### 2020-03
 
-- [React 以前不知道的那些小点点](./html5/react/react-little-dot-dot)
+- [React 以前不知道的那些](./html5/react/react-little-dot-dot)
 - [点击按钮弹出执行 index](./js/click-index-btn)
 - [queryURLParameter](./js/queryURLParameter.js)
 
-#### 2020-02
+### 2020-02
 
 - [模块化循环依赖](./html5/webpack/webpack-in-action/circular-reference)
 - [bundlers](./html5/bundlers)
@@ -121,7 +119,7 @@
 - [隐藏滚动条](./css/hidden-scroll-bar)
 - [数组去重](./js/array-unique.js)
 
-#### 2020-01
+### 2020-01
 
 - [Proxy 工具, 用于处理跨域请求](./nodejs/koa-proxy)
 - [mongo 基础 & mongoose](./nodejs/mongo-learn)
@@ -156,7 +154,7 @@
 - [浏览器事件环](./html5/event-loop/browser)
 - [generator 使用 & 自己实现的 co 库](./js/simple-generator)
 
-#### 2019-12
+### 2019-12
 
 - [手写一个观察者模式](./js/simple-observer)
 - [手写一个 promise](./js/simple-promise)
