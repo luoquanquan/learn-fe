@@ -11,47 +11,47 @@
  * @return {string}
  */
 var minWindow = function (s, t) {
-  let l = 0;
-  let r = 0;
-  let ret = "";
+  let l = 0
+  let r = 0
+  let ret = ''
 
-  const needed = new Map();
+  const needed = new Map()
   for (char of t) {
-    needed.set(char, needed.has(char) ? needed.get(char) + 1 : 1);
+    needed.set(char, needed.has(char) ? needed.get(char) + 1 : 1)
   }
-  let neededChars = needed.size;
+  let neededChars = needed.size
 
   while (r < s.length) {
-    const charRight = s[r];
+    const charRight = s[r]
 
     if (needed.has(charRight)) {
-      needed.set(charRight, needed.get(charRight) - 1);
+      needed.set(charRight, needed.get(charRight) - 1)
 
       if (needed.get(charRight) === 0) {
-        neededChars--;
+        neededChars--
       }
     }
 
     while (neededChars === 0) {
-      const targetStr = s.substring(l, r + 1);
+      const targetStr = s.substring(l, r + 1)
       if (!ret || ret.length > targetStr.length) {
-        ret = targetStr;
+        ret = targetStr
       }
 
-      const charLeft = s[l];
+      const charLeft = s[l]
       if (needed.has(charLeft)) {
-        needed.set(charLeft, needed.get(charLeft) + 1);
+        needed.set(charLeft, needed.get(charLeft) + 1)
         if (needed.get(charLeft) === 1) {
-          neededChars++;
+          neededChars++
         }
       }
 
-      l++;
+      l++
     }
 
-    r++;
+    r++
   }
 
-  return ret;
-};
+  return ret
+}
 // @lc code=end

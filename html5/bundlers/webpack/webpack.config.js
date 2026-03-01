@@ -1,17 +1,17 @@
 module.exports = {
-  mode: "development",
-  devtool: "source-map",
+  mode: 'development',
+  devtool: 'source-map',
   module: {
     rules: [
       {
         test: /.js$/,
         use: {
-          loader: "babel-loader",
+          loader: 'babel-loader',
           options: {
-            presets: [["@babel/preset-env", { targets: "defaults" }]],
-          },
-        },
-      },
-    ],
-  },
-};
+            presets: [['@babel/preset-env', { targets: 'defaults' }]]
+          }
+        }
+      }
+    ]
+  }
+}

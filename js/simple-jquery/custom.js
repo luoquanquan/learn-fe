@@ -1,19 +1,19 @@
-((root, undefined) => {
+;((root, undefined) => {
   const jQuery = function () {
-    return new jQuery.fn.init();
-  };
+    return new jQuery.fn.init()
+  }
 
   jQuery.fn = jQuery.prototype = {
     init: function () {
-      this.name = "quanquan";
-      return this;
+      this.name = 'quanquan'
+      return this
     },
     css() {
-      console.log(`当前时间 ${Date.now()}: 代码走到了这里 我是 Css method`);
-    },
-  };
+      console.log(`当前时间 ${Date.now()}: 代码走到了这里 我是 Css method`)
+    }
+  }
 
-  jQuery.fn.init.prototype = jQuery.fn;
+  jQuery.fn.init.prototype = jQuery.fn
 
   /**
    * 1. 定义一些变量 var
@@ -26,69 +26,66 @@
    * 8. 浅拷贝 else if
    */
   jQuery.extend = jQuery.fn.extend = function () {
-    let i = 1;
-    let target = arguments[0];
-    let length = arguments.length;
-    let name;
-    let options;
-    let src;
-    let copy;
-    let clone;
-    let copyIsArray;
-    let deep = false;
+    let i = 1
+    let target = arguments[0]
+    let length = arguments.length
+    let name
+    let options
+    let src
+    let copy
+    let clone
+    let copyIsArray
+    let deep = false
 
-    if (typeof target === "boolean") {
-      i = 2;
-      deep = target;
-      target = arguments[1];
+    if (typeof target === 'boolean') {
+      i = 2
+      deep = target
+      target = arguments[1]
     }
 
-    if (typeof target !== "object" && typeof target !== "function") {
-      target = {};
+    if (typeof target !== 'object' && typeof target !== 'function') {
+      target = {}
     }
 
     if (i === length) {
-      target = this;
-      i--;
+      target = this
+      i--
     }
 
     for (; i < length; i++) {
       if ((options = arguments[i]) != null) {
         for (name in options) {
-          src = target[name];
-          copy = options[name];
+          src = target[name]
+          copy = options[name]
 
           if (target === copy) {
-            continue;
+            continue
           }
 
-          if (
-            deep &&
-            (jQuery.isPlainObject(copy) || (copyIsArray = Array.isArray(copy)))
-          ) {
+          if (deep && (jQuery.isPlainObject(copy) || (copyIsArray = Array.isArray(copy)))) {
             if (copyIsArray) {
-              copyIsArray = false;
-              clone = src && Array.isArray(src) ? src : [];
+              copyIsArray = false
+              clone = src && Array.isArray(src) ? src : []
             } else {
-              clone = src && typeof jQuery.isPlainObject(src) ? src : {};
+              clone = src && typeof jQuery.isPlainObject(src) ? src : {}
             }
 
-            target[name] = jQuery.extend(deep, clone, copy);
+            target[name] = jQuery.extend(deep, clone, copy)
           } else if (copy !== undefined) {
-            target[name] = copy;
+            target[name] = copy
           }
         }
       }
     }
 
-    return target;
-  };
+    return target
+  }
 
   jQuery.extend({
     isPlainObject(obj) {
-      return obj && Object.prototype.toString.call(obj) === "[object Object]";
-    },
-  });
+      return obj && Object.prototype.toString.call(obj) === '[object Object]'
+    }
+  })
 
-  root.$ = root.jQuery = jQuery;
-})(window);
+  root.$ = root.jQuery = jQuery
+})(window)

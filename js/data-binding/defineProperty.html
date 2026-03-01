@@ -17,34 +17,31 @@
 
     <script>
       var obj = {
-        count: "",
-      };
-
-      function updateCount(e) {
-        obj.count = e.target.value;
+        count: ''
       }
 
-      Object.defineProperty(obj, "count", {
+      function updateCount(e) {
+        obj.count = e.target.value
+      }
+
+      Object.defineProperty(obj, 'count', {
         get() {
-          console.log(`当前时间 ${Date.now()}: 代码走到了这里 获取 count`);
-          return count;
+          console.log(`当前时间 ${Date.now()}: 代码走到了这里 获取 count`)
+          return count
         },
         set(value) {
-          console.log(
-            `当前时间 ${Date.now()}: 代码走到了这里 设置 count`,
-            value,
-          );
+          console.log(`当前时间 ${Date.now()}: 代码走到了这里 设置 count`, value)
 
-          document.querySelector("#count").innerHTML = value;
-          document.querySelector("input").value = value;
-        },
-      });
+          document.querySelector('#count').innerHTML = value
+          document.querySelector('input').value = value
+        }
+      })
 
-      document.querySelector("button").onclick = function () {
-        var random = Math.random();
+      document.querySelector('button').onclick = function () {
+        var random = Math.random()
 
-        obj.count = random;
-      };
+        obj.count = random
+      }
     </script>
   </body>
 </html>

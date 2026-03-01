@@ -79,28 +79,28 @@
 // 解法 2: 双指针
 var merge = function (nums1, m, nums2, n) {
   // 定义指针
-  let p = m - 1;
-  let q = n - 1;
-  let r = m + n - 1;
+  let p = m - 1
+  let q = n - 1
+  let r = m + n - 1
 
   // 逐步从 nums1 和 nums2 中选取大数填充到 nums1 的后边
   while (p >= 0 && q >= 0) {
     if (nums1[p] > nums2[q]) {
-      nums1[r--] = nums1[p--];
+      nums1[r--] = nums1[p--]
     } else {
-      nums1[r--] = nums2[q--];
+      nums1[r--] = nums2[q--]
     }
   }
 
   // 如果 nums1 已经跑完了, 但是 nums2 的数据还没有跑完
   // 就需要加一个循环把剩下的 nums2 跑完
   while (q >= 0) {
-    nums1[r--] = nums2[q--];
+    nums1[r--] = nums2[q--]
   }
 
   // 那么问题来了, 如果 nums2 的数据跑完了, 但是 nums1 的数还没有跑完咋弄呢?
   // 哈哈哈哈, 把跑剩余 nums1 的代码补上就知道咋回事儿了
-};
+}
 // @lc code=end
 
 // // 解法 1: 牛逼解法

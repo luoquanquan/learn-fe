@@ -56,29 +56,29 @@
  */
 var threeSumClosest = function (nums, target) {
   // 先给数组排个序, 方便后续使用两个指针法
-  nums.sort((a, b) => a - b);
+  nums.sort((a, b) => a - b)
 
   // 取出 length 备用
-  const { length } = nums;
+  const { length } = nums
 
   /*
         计算出一个基准 sum 备用
         这里是有点说道的, 按照以往的惯例都是初始化一个 sum = 0;
         但是看一下后续的判断就知道, 如果你初始化的这个 0 正好就是题目中的 target 那么算法就作废了
     */
-  let sum = nums[0] + nums[1] + nums[2];
+  let sum = nums[0] + nums[1] + nums[2]
 
   // 遍历数组中所有的元素, 并对其余的元素使用双指针法计算三者加和
   for (let i = 0; i < length - 2; i++) {
-    let idxL = i + 1;
-    let idxR = length - 1;
+    let idxL = i + 1
+    let idxR = length - 1
 
     while (idxL < idxR) {
-      const curSum = nums[i] + nums[idxL] + nums[idxR];
+      const curSum = nums[i] + nums[idxL] + nums[idxR]
 
       // 如果当前方位计算的加和值和目标值更近, 那么直接替换结果值
       if (Math.abs(curSum - target) < Math.abs(sum - target)) {
-        sum = curSum;
+        sum = curSum
       }
 
       /*
@@ -86,13 +86,13 @@ var threeSumClosest = function (nums, target) {
                 如果小于目标值, 则可以通过右移左指针调大加和向其靠近
             */
       if (curSum - target > 0) {
-        idxR--;
+        idxR--
       } else {
-        idxL++;
+        idxL++
       }
     }
   }
 
-  return sum;
-};
+  return sum
+}
 // @lc code=end

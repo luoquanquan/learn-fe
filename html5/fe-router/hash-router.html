@@ -20,44 +20,44 @@
     <main></main>
 
     <script>
-      const ele = document.querySelector("main");
+      const ele = document.querySelector('main')
 
       class Router {
         constructor(ele) {
-          this.ele = ele;
-          this.routerMap = {};
-          this.bindHashEvent();
+          this.ele = ele
+          this.routerMap = {}
+          this.bindHashEvent()
         }
 
-        register(path = "/", renderFun) {
-          this.routerMap[path] = renderFun;
-          return this;
+        register(path = '/', renderFun) {
+          this.routerMap[path] = renderFun
+          return this
         }
 
         bindHashEvent() {
           const render = () => {
-            const curPath = location.hash.slice(1);
-            const renderFun = this.routerMap[curPath];
-            let ret = "404";
-            if (typeof renderFun === "function") {
-              ret = renderFun();
+            const curPath = location.hash.slice(1)
+            const renderFun = this.routerMap[curPath]
+            let ret = '404'
+            if (typeof renderFun === 'function') {
+              ret = renderFun()
             }
-            this.ele.innerHTML = ret;
-          };
+            this.ele.innerHTML = ret
+          }
 
-          window.addEventListener("load", render);
-          window.addEventListener("hashchange", render);
+          window.addEventListener('load', render)
+          window.addEventListener('hashchange', render)
         }
       }
 
       // 使用
-      const router = new Router(ele);
+      const router = new Router(ele)
 
       router
-        .register("/", () => "主页")
-        .register("/Detail", () => "详情")
-        .register("/Contact", () => "联系我们")
-        .register("/About", () => "关于");
+        .register('/', () => '主页')
+        .register('/Detail', () => '详情')
+        .register('/Contact', () => '联系我们')
+        .register('/About', () => '关于')
     </script>
   </body>
 </html>

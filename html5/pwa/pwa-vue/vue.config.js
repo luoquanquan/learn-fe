@@ -1,14 +1,14 @@
-const MyPlugin = require("./my-skeleton-plugin");
-const { resolve } = require("path");
+const MyPlugin = require('./my-skeleton-plugin')
+const { resolve } = require('path')
 
 module.exports = {
   pwa: {
     // 一些基础配置
-    name: "Browsing-Exp",
-    themeColor: "#6476DB",
-    msTileColor: "#000000",
-    appleMobileWebAppCapable: "yes",
-    appleMobileWebAppStatusBarStyle: "black",
+    name: 'Browsing-Exp',
+    themeColor: '#6476DB',
+    msTileColor: '#000000',
+    appleMobileWebAppCapable: 'yes',
+    appleMobileWebAppStatusBarStyle: 'black',
 
     /*
      * 两个模式，GenerateSW（默认）和 InjectManifest
@@ -16,35 +16,35 @@ module.exports = {
      * InjectManifest 可以让我们编辑一个自定义的service worker文件，实现更多的功能，并且可以
      * 拿到预缓存列表
      */
-    workboxPluginMode: "InjectManifest",
+    workboxPluginMode: 'InjectManifest',
     workboxOptions: {
       // 自定义的service worker文件的位置
-      swSrc: "dev/service-worker.js",
+      swSrc: 'dev/service-worker.js'
       // ...other Workbox options...
-    },
+    }
   },
   configureWebpack: {
     plugins: [
       new MyPlugin({
         webpackConfig: {
           entry: {
-            app: resolve("./src/skeleton.js"),
-          },
+            app: resolve('./src/skeleton.js')
+          }
         },
         router: {
-          mode: "hash",
+          mode: 'hash',
           routes: [
             {
-              path: "/",
-              skeletonId: "Skeleton",
+              path: '/',
+              skeletonId: 'Skeleton'
             },
             {
-              path: "/about",
-              skeletonId: "SkeletonAbout",
-            },
-          ],
-        },
-      }),
-    ],
-  },
-};
+              path: '/about',
+              skeletonId: 'SkeletonAbout'
+            }
+          ]
+        }
+      })
+    ]
+  }
+}

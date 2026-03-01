@@ -1,16 +1,16 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose')
 
-const conn = mongoose.createConnection("mongodb://localhost/users", {
-  useNewUrlParser: true,
-});
+const conn = mongoose.createConnection('mongodb://localhost/users', {
+  useNewUrlParser: true
+})
 
-conn.on("open", () => {
-  console.log(`当前时间 ${Date.now()}: 代码走到了这里 连接成功`);
-});
+conn.on('open', () => {
+  console.log(`当前时间 ${Date.now()}: 代码走到了这里 连接成功`)
+})
 
-conn.on("error", () => {
-  console.log(`当前时间 ${Date.now()}: 代码走到了这里 连接失败`);
-});
+conn.on('error', () => {
+  console.log(`当前时间 ${Date.now()}: 代码走到了这里 连接失败`)
+})
 
 const userSchema = new mongoose.Schema({
   name: String,
@@ -19,14 +19,14 @@ const userSchema = new mongoose.Schema({
   create_at: Date,
   hobby: {
     type: Array,
-    default: [],
-  },
-});
+    default: []
+  }
+})
 
-const User = conn.model("User", userSchema);
+const User = conn.model('User', userSchema)
 
-console.log(User === conn.model("User"));
-(async () => {
+console.log(User === conn.model('User'))
+;(async () => {
   // 新增
   // const ret = await User.create({
   //     name: 'quanquan',
@@ -74,13 +74,13 @@ console.log(User === conn.model("User"));
   // console.log(`当前时间 ${Date.now()}: debug 的数据是 data: `, data)
 
   // 分页
-  const pageSize = 3;
-  const currentPage = 2;
+  const pageSize = 3
+  const currentPage = 2
   // 执行顺序: 查找 -> 排序 -> 跳过 -> limit
   const data = await User.find()
     .skip(pageSize * (currentPage - 1))
-    .limit(pageSize);
-  console.log(`当前时间 ${Date.now()}: debug 的数据是 data: `, data);
+    .limit(pageSize)
+  console.log(`当前时间 ${Date.now()}: debug 的数据是 data: `, data)
 
-  process.exit(0);
-})();
+  process.exit(0)
+})()

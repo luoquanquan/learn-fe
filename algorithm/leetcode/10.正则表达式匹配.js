@@ -83,7 +83,7 @@
  */
 var isMatch = function (s, p) {
   // 根据正则字符串创建正则对象, 真正的面试官估计不会出这种问题
-  const reg = new RegExp(`^${p}$`);
-  return reg.test(s);
-};
+  const reg = new RegExp(`^${p}$`)
+  return reg.test(s)
+}
 // @lc code=end

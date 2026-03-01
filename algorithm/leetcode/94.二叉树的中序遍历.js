@@ -82,25 +82,25 @@
  */
 // 迭代版本
 var inorderTraversal = function (root) {
-  const ret = [];
+  const ret = []
 
-  const stack = [];
-  let head = root;
+  const stack = []
+  let head = root
 
   while (stack.length || head) {
     // 先深度优先遍历所有的左子树
     while (head) {
-      stack.push(head);
-      head = head.left;
+      stack.push(head)
+      head = head.left
     }
 
-    head = stack.pop();
-    ret.push(head.val);
-    head = head.right;
+    head = stack.pop()
+    ret.push(head.val)
+    head = head.right
   }
 
-  return ret;
-};
+  return ret
+}
 // @lc code=end
 
 // // 递归版本, 这个我居然都没想出来 😭

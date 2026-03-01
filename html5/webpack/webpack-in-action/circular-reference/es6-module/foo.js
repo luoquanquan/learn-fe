@@ -1,6 +1,6 @@
-import bar from "./bar";
+import bar from './bar'
 function foo(invoker) {
-  console.log(invoker, " invokes foo.js");
-  bar("foo.js");
+  console.log(invoker, ' invokes foo.js')
+  bar('foo.js')
 }
-export default foo;
+export default foo

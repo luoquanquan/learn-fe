@@ -20,57 +20,57 @@
     <main></main>
 
     <script>
-      const ele = document.querySelector("main");
-      const nav = document.querySelector("nav");
+      const ele = document.querySelector('main')
+      const nav = document.querySelector('nav')
 
       class Router {
         constructor(ele, nav) {
-          this.ele = ele;
-          this.nav = nav;
-          this.routerMap = {};
+          this.ele = ele
+          this.nav = nav
+          this.routerMap = {}
 
-          this.bindLinkEvent();
-          this.bindPopstateEvent();
+          this.bindLinkEvent()
+          this.bindPopstateEvent()
         }
 
-        register(path = "/", renderFun) {
-          this.routerMap[path] = renderFun;
-          return this;
+        register(path = '/', renderFun) {
+          this.routerMap[path] = renderFun
+          return this
         }
 
         bindLinkEvent() {
-          this.nav.addEventListener("click", (e) => {
-            e.preventDefault();
-            const { target } = e;
-            const path = target.getAttribute("href");
-            history.pushState(null, "", path);
-            this.render();
-          });
+          this.nav.addEventListener('click', (e) => {
+            e.preventDefault()
+            const { target } = e
+            const path = target.getAttribute('href')
+            history.pushState(null, '', path)
+            this.render()
+          })
         }
 
         bindPopstateEvent() {
-          window.addEventListener("load", this.render.bind(this));
-          window.addEventListener("popstate", this.render.bind(this));
+          window.addEventListener('load', this.render.bind(this))
+          window.addEventListener('popstate', this.render.bind(this))
         }
 
         render() {
-          const curPath = location.pathname;
-          const renderFun = this.routerMap[curPath];
-          let ret = "404";
-          if (typeof renderFun === "function") {
-            ret = renderFun();
+          const curPath = location.pathname
+          const renderFun = this.routerMap[curPath]
+          let ret = '404'
+          if (typeof renderFun === 'function') {
+            ret = renderFun()
           }
-          this.ele.innerHTML = ret;
+          this.ele.innerHTML = ret
         }
       }
 
-      const router = new Router(ele, nav);
+      const router = new Router(ele, nav)
 
       router
-        .register("/", () => "主页")
-        .register("/Detail", () => "详情")
-        .register("/Contact", () => "联系我们")
-        .register("/About", () => "关于");
+        .register('/', () => '主页')
+        .register('/Detail', () => '详情')
+        .register('/Contact', () => '联系我们')
+        .register('/About', () => '关于')
     </script>
   </body>
 </html>

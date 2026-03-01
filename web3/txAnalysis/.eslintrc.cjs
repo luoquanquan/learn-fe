@@ -1,15 +1,15 @@
 module.exports = {
   root: false,
-  extends: ["../../.eslintrc.js"],
+  extends: ['../../.eslintrc.js'],
   overrides: [
     {
-      files: ["**/*.ts"],
-      parser: "@typescript-eslint/parser",
+      files: ['**/*.ts'],
+      parser: '@typescript-eslint/parser',
       parserOptions: {
         ecmaVersion: 2020,
-        sourceType: "module",
+        sourceType: 'module'
       },
-      rules: {},
-    },
-  ],
-};
+      rules: {}
+    }
+  ]
+}

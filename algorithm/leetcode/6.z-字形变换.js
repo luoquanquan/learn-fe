@@ -75,38 +75,38 @@
  * @return {string}
  */
 var convert = function (s, numRows) {
-  const { length } = s;
+  const { length } = s
 
   if (length <= 1 || numRows <= 1) {
-    return s;
+    return s
   }
 
   // 结果数组
-  const ret = [];
+  const ret = []
   // 行号
-  let lineNumber = 0;
+  let lineNumber = 0
   // 步进
-  let nextStep = 1;
+  let nextStep = 1
   for (let i = 0; i < length; i++) {
     // 如果当前行还没有填充过, 添加一个空字符串
     if (!ret[lineNumber]) {
-      ret[lineNumber] = "";
+      ret[lineNumber] = ''
     }
 
     // 添加元素到行内
-    ret[lineNumber] += s[i];
+    ret[lineNumber] += s[i]
 
     // 获取下一个行号
-    lineNumber += nextStep;
+    lineNumber += nextStep
 
     // 如果下一行是 0
     // 或者下一行是最高行数
     // 就转向
     if (lineNumber === 0 || lineNumber === numRows - 1) {
-      nextStep = -nextStep;
+      nextStep = -nextStep
     }
   }
 
-  return ret.join("");
-};
+  return ret.join('')
+}
 // @lc code=end

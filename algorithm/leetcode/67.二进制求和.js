@@ -49,46 +49,46 @@
  */
 var addBinary = function (a, b) {
   // 缓存结果
-  let ret = [];
+  let ret = []
 
   // 保证 a 是相对长的
   if (a.length < b.length) {
-    [a, b] = [b, a];
+    ;[a, b] = [b, a]
   }
 
   // 取出较长的长度备用
-  const { length } = a;
+  const { length } = a
 
   // 较短的参数补零补齐
-  b = b.padStart(length, "0");
+  b = b.padStart(length, '0')
 
   // 进位
-  let addNum = 0;
+  let addNum = 0
 
   for (let i = length - 1; i >= 0; i--) {
     // 取出 a / b 的当前位数字
-    const curNumA = +a[i];
-    const curNumB = +b[i];
+    const curNumA = +a[i]
+    const curNumB = +b[i]
 
     // 当前位求和
-    const sum = curNumA + curNumB + addNum;
+    const sum = curNumA + curNumB + addNum
 
     // 不满二直接加
     if (sum < 2) {
-      ret.unshift(sum);
-      addNum = 0;
+      ret.unshift(sum)
+      addNum = 0
     } else {
       // 满二进一
-      ret.unshift(sum % 2);
-      addNum = 1;
+      ret.unshift(sum % 2)
+      addNum = 1
     }
   }
 
   // 所有位置都计算完成还有进位, 直接加一位
   if (addNum) {
-    ret.unshift(1);
+    ret.unshift(1)
   }
 
-  return ret.join("");
-};
+  return ret.join('')
+}
 // @lc code=end

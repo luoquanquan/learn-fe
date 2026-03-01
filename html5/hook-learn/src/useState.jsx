@@ -1,15 +1,15 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback } from 'react'
 
-let lastAdd;
-let lastModifyName;
+let lastAdd
+let lastModifyName
 
 const Count = () => {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(0)
 
-  const [name, setName] = useState("quanquan");
+  const [name, setName] = useState('quanquan')
 
   // 当 state 的值是一个对象的时候
-  const [obj, setObj] = useState({ name: "quanquan", age: 27 });
+  const [obj, setObj] = useState({ name: 'quanquan', age: 27 })
 
   /**
    * 如果直接打印 count 的值, 能够获取实时的数据
@@ -18,17 +18,17 @@ const Count = () => {
    */
   const logCount = () => {
     setTimeout(() => {
-      console.log(count);
-    }, 5e3);
-  };
+      console.log(count)
+    }, 5e3)
+  }
 
-  const add = useCallback(() => setCount(count + 1), [count]);
-  console.log("add 有没有保留", lastAdd === add);
-  lastAdd = add;
+  const add = useCallback(() => setCount(count + 1), [count])
+  console.log('add 有没有保留', lastAdd === add)
+  lastAdd = add
 
-  const modifyName = useCallback(() => setName(name + 1), [name]);
-  console.log("modifyName 有没有保留", lastModifyName === modifyName);
-  lastModifyName = modifyName;
+  const modifyName = useCallback(() => setName(name + 1), [name])
+  console.log('modifyName 有没有保留', lastModifyName === modifyName)
+  lastModifyName = modifyName
 
   /**
    * 函数式更新
@@ -37,17 +37,17 @@ const Count = () => {
    */
   const lazyAdd = () => {
     setTimeout(() => {
-      setCount(count + 1);
-    }, 1e3);
-  };
+      setCount(count + 1)
+    }, 1e3)
+  }
 
   const lazyFuncAdd = () => {
     setTimeout(() => {
-      setCount((count) => count + 1);
-    }, 1e3);
-  };
+      setCount((count) => count + 1)
+    }, 1e3)
+  }
 
-  console.log("render ~");
+  console.log('render ~')
 
   return (
     <>
@@ -64,16 +64,14 @@ const Count = () => {
         {obj.name}: {obj.age}
       </div>
       {/* <button onClick={() => setObj({age: 28})}>add one year</button> */}
-      <button onClick={() => setObj((state) => ({ ...state, age: 28 }))}>
-        add one year
-      </button>
+      <button onClick={() => setObj((state) => ({ ...state, age: 28 }))}>add one year</button>
       <br />
       <br />
 
       <div>{name}</div>
       <button onClick={modifyName}>change name</button>
     </>
-  );
-};
+  )
+}
 
-export default Count;
+export default Count

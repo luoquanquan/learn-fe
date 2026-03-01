@@ -84,9 +84,9 @@ var removeElement = function (nums, val) {
     // 找到和 val 相等的值
     if (nums[i] === val) {
       // 就地删除
-      nums.splice(i, 1);
-      i--;
+      nums.splice(i, 1)
+      i--
     }
   }
-};
+}
 // @lc code=end

@@ -1,25 +1,25 @@
-const url = require("url");
-const http = require("http");
-const { join } = require("path");
-const fs = require("mz/fs");
-const mime = require("mime");
+const url = require('url')
+const http = require('http')
+const { join } = require('path')
+const fs = require('mz/fs')
+const mime = require('mime')
 
-const basePath = join(__dirname);
+const basePath = join(__dirname)
 
 class Server {
   constructor(port) {
-    this.port = port || 3333;
+    this.port = port || 3333
   }
 
   async handleRequest(request, response) {
-    const { pathname } = url.parse(request.url, true);
-    let absPath = join(basePath, pathname);
+    const { pathname } = url.parse(request.url, true)
+    let absPath = join(basePath, pathname)
 
     let {
       method,
-      headers: { origin, cookie },
-    } = request;
-    method = method.toLowerCase();
+      headers: { origin, cookie }
+    } = request
+    method = method.toLowerCase()
 
     /**
      * 跨域携带 cookie 的原理是这样的
@@ -49,68 +49,65 @@ class Server {
 
     // 发送页面 *.html 请求的时候不会携带 origin 请求头, 不用设置跨域
     if (origin) {
-      response.setHeader("Access-Control-Allow-Origin", origin);
-      response.setHeader(
-        "Access-Control-Allow-Methods",
-        "GET, POST, PUT, DELETE",
-      );
-      response.setHeader("Access-Control-Allow-Headers", "token");
+      response.setHeader('Access-Control-Allow-Origin', origin)
+      response.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')
+      response.setHeader('Access-Control-Allow-Headers', 'token')
       // 预检请求的有效时间, 单位是秒. 默认值为 5
-      response.setHeader("Access-Control-Max-Age", 10);
-      response.setHeader("Access-Control-Allow-Credentials", true);
+      response.setHeader('Access-Control-Max-Age', 10)
+      response.setHeader('Access-Control-Allow-Credentials', true)
     }
 
-    if (method === "options") {
-      return void response.end();
+    if (method === 'options') {
+      return void response.end()
     }
 
     switch (pathname) {
-      case "/user":
-        console.log(`当前时间 ${Date.now()}: debug 的数据是 cookie: `, cookie);
-        if (method === "get") {
-          response.setHeader("Content-Type", "application/json");
-          response.end(JSON.stringify({ name: "quanquan", method: "get" }));
+      case '/user':
+        console.log(`当前时间 ${Date.now()}: debug 的数据是 cookie: `, cookie)
+        if (method === 'get') {
+          response.setHeader('Content-Type', 'application/json')
+          response.end(JSON.stringify({ name: 'quanquan', method: 'get' }))
         }
 
-        if (method === "put") {
-          response.setHeader("Content-Type", "application/json");
-          response.end(JSON.stringify({ name: "quanquan", method: "put" }));
+        if (method === 'put') {
+          response.setHeader('Content-Type', 'application/json')
+          response.end(JSON.stringify({ name: 'quanquan', method: 'put' }))
         }
-        break;
+        break
       default:
-        break;
+        break
     }
     try {
-      const statusObj = await fs.stat(absPath);
+      const statusObj = await fs.stat(absPath)
 
       if (statusObj.isDirectory()) {
-        absPath = join(absPath, "index.html");
+        absPath = join(absPath, 'index.html')
       }
 
-      await fs.access(absPath);
+      await fs.access(absPath)
 
-      this.renderFile(absPath, response);
+      this.renderFile(absPath, response)
     } catch (error) {
-      this.renderError(response);
+      this.renderError(response)
     }
   }
 
   renderFile(absPath, response) {
-    response.setHeader("Content-Type", mime.getType(absPath));
-    fs.createReadStream(absPath).pipe(response);
+    response.setHeader('Content-Type', mime.getType(absPath))
+    fs.createReadStream(absPath).pipe(response)
   }
 
   renderError(response) {
-    response.statusCode = 404;
-    response.end("Not found~");
+    response.statusCode = 404
+    response.end('Not found~')
   }
 
   start() {
-    const server = http.createServer(this.handleRequest.bind(this));
+    const server = http.createServer(this.handleRequest.bind(this))
     server.listen(this.port, () => {
-      console.log(`the server is running on ${this.port}`);
-    });
+      console.log(`the server is running on ${this.port}`)
+    })
   }
 }
 
-new Server().start();
+new Server().start()

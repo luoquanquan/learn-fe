@@ -1,10 +1,10 @@
 class MySkeletonPlugin {
   apply(compiler) {
     compiler.hooks.compilation.tap(
-      "html-webpack-plugin-before-html-generation",
+      'html-webpack-plugin-before-html-generation',
       function (compilation) {
         compilation.hooks.htmlWebpackPluginBeforeHtmlProcessing.tapAsync(
-          "MySkeletonPlugin",
+          'MySkeletonPlugin',
           function (htmlPluginData, callback) {
             htmlPluginData.html = htmlPluginData.html.replace(
               /<div id="app"><\/div>/,
@@ -21,14 +21,14 @@ class MySkeletonPlugin {
                             id = 'Skeleton'
                         }
                         document.getElementById(id).style.display = 'block'</script>
-                </div>`,
-            );
-            callback();
-          },
-        );
-      },
-    );
+                </div>`
+            )
+            callback()
+          }
+        )
+      }
+    )
   }
 }
 
-module.exports = MySkeletonPlugin;
+module.exports = MySkeletonPlugin

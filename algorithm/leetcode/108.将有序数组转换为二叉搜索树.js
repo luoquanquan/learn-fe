@@ -21,20 +21,20 @@
 // https://leetcode.cn/problems/convert-sorted-array-to-binary-search-tree/solutions/313382/shou-hua-tu-jie-di-gui-fen-zhi-by-hyj8/?source=vscode
 const helper = (nums, i, j) => {
   if (i > j) {
-    return null;
+    return null
   }
 
-  const mid = (i + j) >>> 1;
+  const mid = (i + j) >>> 1
   // eslint-disable-next-line no-undef
-  const root = new TreeNode(nums[mid]);
+  const root = new TreeNode(nums[mid])
 
-  root.left = helper(nums, i, mid - 1);
-  root.right = helper(nums, mid + 1, j);
+  root.left = helper(nums, i, mid - 1)
+  root.right = helper(nums, mid + 1, j)
 
-  return root;
-};
+  return root
+}
 
 const sortedArrayToBST = function (nums) {
-  return helper(nums, 0, nums.length - 1);
-};
+  return helper(nums, 0, nums.length - 1)
+}
 // @lc code=end

@@ -1,25 +1,25 @@
-const { swap, createRandomArr } = require("./utils");
-const randomArr = createRandomArr(10, 0, 20);
+const { swap, createRandomArr } = require('./utils')
+const randomArr = createRandomArr(10, 0, 20)
 
 const selectionSort = (array) => {
-  const len = array.length;
-  let outerIndex, innerIndex, indexMin;
+  const len = array.length
+  let outerIndex, innerIndex, indexMin
 
   for (outerIndex = 0; outerIndex < len - 1; outerIndex++) {
-    indexMin = outerIndex;
+    indexMin = outerIndex
     for (innerIndex = outerIndex + 1; innerIndex < len; innerIndex++) {
       if (array[indexMin] > array[innerIndex]) {
-        indexMin = innerIndex;
+        indexMin = innerIndex
       }
     }
 
     if (outerIndex !== indexMin) {
-      swap(array, indexMin, outerIndex);
+      swap(array, indexMin, outerIndex)
     }
   }
-};
+}
 
-const selectionSortArray = randomArr.slice();
-console.time("selectionSort");
-selectionSort(selectionSortArray);
-console.timeEnd("selectionSort");
+const selectionSortArray = randomArr.slice()
+console.time('selectionSort')
+selectionSort(selectionSortArray)
+console.timeEnd('selectionSort')

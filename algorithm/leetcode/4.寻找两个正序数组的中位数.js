@@ -79,16 +79,16 @@
  */
 var findMedianSortedArrays = function (nums1, nums2) {
   // 拼接两个数组后排序问题简化为寻找一个数组的中位数
-  nums1 = nums1.concat(nums2);
-  nums1.sort((a, b) => b - a);
+  nums1 = nums1.concat(nums2)
+  nums1.sort((a, b) => b - a)
 
   // 下边这块, 看不懂的话我也没办法了
-  const newLen = nums1.length;
+  const newLen = nums1.length
   if (newLen % 2 === 0) {
-    const idx = newLen / 2;
-    return (nums1[idx] + nums1[idx - 1]) / 2;
+    const idx = newLen / 2
+    return (nums1[idx] + nums1[idx - 1]) / 2
   } else {
-    return nums1[Math.floor(newLen / 2)];
+    return nums1[Math.floor(newLen / 2)]
   }
-};
+}
 // @lc code=end

@@ -60,52 +60,52 @@
  */
 var fourSum = function (nums, target) {
   // 首先, 给数组排个序. 方便查找
-  nums = nums.sort((a, b) => a - b);
+  nums = nums.sort((a, b) => a - b)
 
   // 取出数组长度备用
-  const { length } = nums;
+  const { length } = nums
 
   // 存储结果
-  let ret = [];
+  let ret = []
 
   // 查找第一个数
   for (let i = 0; i < length - 3; i++) {
-    const eleI = nums[i];
+    const eleI = nums[i]
     // 这里的判断主要是为了满足 "不重复的四元组" 的要求
     if (i > 0 && nums[i - 1] === eleI) {
-      continue;
+      continue
     }
 
     // 查找第二个数
     for (let j = i + 1; j < length - 2; j++) {
-      const eleJ = nums[j];
+      const eleJ = nums[j]
       if (j > i + 1 && nums[j - 1] === eleJ) {
-        continue;
+        continue
       }
 
       // 查找第二个数
       for (let k = j + 1; k < length - 1; k++) {
-        const eleK = nums[k];
+        const eleK = nums[k]
         if (k > j + 1 && nums[k - 1] === eleK) {
-          continue;
+          continue
         }
 
         // 查找第二个数
         for (let l = k + 1; l < length; l++) {
-          const eleL = nums[l];
+          const eleL = nums[l]
           if (l > k + 1 && nums[l - 1] === eleL) {
-            continue;
+            continue
           }
 
           // 如果四个数之和正好是想要的目标那就记录这一组值
           if (eleI + eleJ + eleK + eleL === target) {
-            ret.push([eleI, eleJ, eleK, eleL]);
+            ret.push([eleI, eleJ, eleK, eleL])
           }
         }
       }
     }
   }
 
-  return ret;
-};
+  return ret
+}
 // @lc code=end

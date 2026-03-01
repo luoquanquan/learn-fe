@@ -1,4 +1,4 @@
-const bt = require("./bt");
+const bt = require('./bt')
 
 // const postOrder = (root) => {
 //     if (!root) {
@@ -14,23 +14,23 @@ const bt = require("./bt");
 
 const postOrder = (root) => {
   if (!root) {
-    return;
+    return
   }
 
-  const stack = [root];
-  const outputStack = [];
+  const stack = [root]
+  const outputStack = []
 
   while (stack.length) {
-    const node = stack.pop();
-    outputStack.push(node);
-    node.left && stack.push(node.left);
-    node.right && stack.push(node.right);
+    const node = stack.pop()
+    outputStack.push(node)
+    node.left && stack.push(node.left)
+    node.right && stack.push(node.right)
   }
 
   while (outputStack.length) {
-    const node = outputStack.pop();
-    console.log(node.val);
+    const node = outputStack.pop()
+    console.log(node.val)
   }
-};
+}
 
-postOrder(bt);
+postOrder(bt)

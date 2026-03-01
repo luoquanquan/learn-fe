@@ -12,32 +12,29 @@
 
     <script>
       const info = {
-        name: "quanquan",
-        sex: "male",
+        name: 'quanquan',
+        sex: 'male',
         age: 27,
         like: {
-          run: "5km",
-          eat: ["rice", "mantou"],
-        },
-      };
+          run: '5km',
+          eat: ['rice', 'mantou']
+        }
+      }
 
       const extInfo = {
-        sport: "running",
+        sport: 'running',
         age: 28,
         like: {
-          run: "10km",
-          eat: ["youtiao"],
-        },
-      };
+          run: '10km',
+          eat: ['youtiao']
+        }
+      }
 
-      extInfo.extInfo = info;
-      info.extInfo = info;
-      const totalInfo = $.extend(true, info, extInfo);
+      extInfo.extInfo = info
+      info.extInfo = info
+      const totalInfo = $.extend(true, info, extInfo)
 
-      console.log(
-        `当前时间 ${Date.now()}: debug 的数据是 totalInfo: `,
-        totalInfo,
-      );
+      console.log(`当前时间 ${Date.now()}: debug 的数据是 totalInfo: `, totalInfo)
     </script>
   </body>
 </html>

@@ -8,32 +8,32 @@
 
 ```js
 // 初始化 store, 并关联到每个组件中
-const install = () => {};
+const install = () => {}
 
 // 初始化 state / mutations / actions
 class Store {}
 export default {
   install,
-  Store,
-};
+  Store
+}
 ```
 
 通过 `Vue.mixin` 给每一个实例添加一个 `$store` 属性, 并以此实现 `state / mutations / actions` 的各种操作
 
 ```js
 const install = (_Vue) => {
-  const Vue = _Vue;
+  const Vue = _Vue
 
   Vue.mixin({
     beforeCreate() {
       if (this.$options && this.$options.store) {
-        this.$store = this.$options.store;
+        this.$store = this.$options.store
       } else {
-        this.$store = this.$parent && this.$parent.$store;
+        this.$store = this.$parent && this.$parent.$store
       }
-    },
-  });
-};
+    }
+  })
+}
 ```
 
 ## state 初始化
@@ -44,7 +44,7 @@ const install = (_Vue) => {
 // 初始化一个 Vue 实例, 保证数据响应式
 this._vm = new Vue({
   data: {
-    state,
-  },
-});
+    state
+  }
+})
 ```

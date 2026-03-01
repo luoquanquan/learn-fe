@@ -11,45 +11,42 @@
     <script>
       // 宏任务
       setTimeout(() => {
-        console.log(`当前时间 ${Date.now()}: 代码走到了这里 timeout`);
-      }, 0);
+        console.log(`当前时间 ${Date.now()}: 代码走到了这里 timeout`)
+      }, 0)
 
       // 微任务
       Promise.resolve().then(() => {
-        console.log(`当前时间 ${Date.now()}: 代码走到了这里 promise.then`);
-      });
+        console.log(`当前时间 ${Date.now()}: 代码走到了这里 promise.then`)
+      })
 
       // 当前时间 1578570299987: 代码走到了这里 promise.then
       // 当前时间 1578570300030: 代码走到了这里 timeout
 
       // 微任务
       const observer = new MutationObserver(() => {
-        console.log(`当前时间 ${Date.now()}: 代码走到了这里 MutationObserver`);
-      });
+        console.log(`当前时间 ${Date.now()}: 代码走到了这里 MutationObserver`)
+      })
 
-      const app = document.getElementById("app");
+      const app = document.getElementById('app')
 
       observer.observe(app, {
-        childList: true,
-      });
+        childList: true
+      })
 
       for (let i = 0; i < 20; i++) {
-        app.append("1");
+        app.append('1')
       }
 
       for (let i = 0; i < 20; i++) {
-        app.append("1");
+        app.append('1')
       }
 
       // 宏任务
-      const channel = new MessageChannel();
-      channel.port1.postMessage("你好");
+      const channel = new MessageChannel()
+      channel.port1.postMessage('你好')
       channel.port2.onmessage = ({ data }) => {
-        console.log(
-          `当前时间 ${Date.now()}: debug 的数据是 MessageChannel data: `,
-          data,
-        );
-      };
+        console.log(`当前时间 ${Date.now()}: debug 的数据是 MessageChannel data: `, data)
+      }
     </script>
   </body>
 </html>

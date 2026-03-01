@@ -66,25 +66,25 @@
 var mergeTwoLists = function (list1, list2) {
   // 兼容其中一个链表为空的情况
   if (!list1) {
-    return list2;
+    return list2
   }
   if (!list2) {
-    return list1;
+    return list1
   }
 
   // 记录小节点
-  let littleNode = null;
+  let littleNode = null
 
   // 递归查找两个链表中较小的头节点并返回
   if (list1.val < list2.val) {
-    list1.next = mergeTwoLists(list1.next, list2);
-    littleNode = list1;
+    list1.next = mergeTwoLists(list1.next, list2)
+    littleNode = list1
   } else {
-    list2.next = mergeTwoLists(list2.next, list1);
-    littleNode = list2;
+    list2.next = mergeTwoLists(list2.next, list1)
+    littleNode = list2
   }
 
   // 返回两者中最小的头结点
-  return littleNode;
-};
+  return littleNode
+}
 // @lc code=end

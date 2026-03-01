@@ -67,30 +67,30 @@
  */
 var lengthOfLongestSubstring = function (s) {
   // 内部字符串, 用于存储子串
-  let innerStr = "";
+  let innerStr = ''
   // 记录最大的子串大小
-  let size = 0;
+  let size = 0
 
   for (let i = 0, len = s.length; i < len; i++) {
     // 逐个读取传入字符串的字符
-    const char = s[i];
+    const char = s[i]
 
     /*
             拼接子串逻辑
             1. 当前字符在子串中没有出现过, 直接叠加到子串中
             2. 当前字符在子串中已经出现过, 抛弃该字符(包含)出现以前的所有字符以后再叠加最新字符
         */
-    const innerIdx = innerStr.indexOf(char);
+    const innerIdx = innerStr.indexOf(char)
     if (innerIdx === -1) {
-      innerStr += char;
+      innerStr += char
     } else {
-      innerStr = innerStr.substring(innerIdx + 1) + char;
+      innerStr = innerStr.substring(innerIdx + 1) + char
     }
 
     // 每次 innerStr 的更新都要刷新下 size 变量
-    size = Math.max(size, innerStr.length);
+    size = Math.max(size, innerStr.length)
   }
 
-  return size;
-};
+  return size
+}
 // @lc code=end

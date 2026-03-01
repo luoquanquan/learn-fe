@@ -19,22 +19,22 @@
  * @return {boolean}
  */
 var hasPathSum = function (root, targetSum) {
-  let ret = false;
+  let ret = false
 
   const dfs = (head, curSum) => {
     if (!head) {
-      return;
+      return
     }
 
     if (!head.left && !head.right && curSum === targetSum) {
-      ret = true;
+      ret = true
     }
 
-    head.left && dfs(head.left, head.left.val + curSum);
-    head.right && dfs(head.right, head.right.val + curSum);
-  };
+    head.left && dfs(head.left, head.left.val + curSum)
+    head.right && dfs(head.right, head.right.val + curSum)
+  }
 
-  dfs(root, root?.val);
-  return ret;
-};
+  dfs(root, root?.val)
+  return ret
+}
 // @lc code=end

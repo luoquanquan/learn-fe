@@ -1,22 +1,22 @@
-import React from "react";
-import withMouse from "./withMouse";
+import React from 'react'
+import withMouse from './withMouse'
 
 class HocChild extends React.Component {
   constructor() {
-    super();
+    super()
 
-    this.state = {};
+    this.state = {}
   }
 
   render() {
-    const { x, y } = this.props;
+    const { x, y } = this.props
 
     return (
       <div>
         x: {x} / y: {y}
       </div>
-    );
+    )
   }
 }
 
-export default withMouse(HocChild);
+export default withMouse(HocChild)

@@ -1,31 +1,31 @@
-import React from "react";
-import HocChild from "./hocDemo/hocChild";
-import RenderPropsDemo from "./renderPropsDemo";
+import React from 'react'
+import HocChild from './hocDemo/hocChild'
+import RenderPropsDemo from './renderPropsDemo'
 
 class App extends React.Component {
   constructor() {
-    super();
-    this.state = { count: 0 };
-    this.handleClick = this.handleClick.bind(this);
+    super()
+    this.state = { count: 0 }
+    this.handleClick = this.handleClick.bind(this)
   }
 
   handleClick() {
-    this.setState({ count: this.state.count + 1 });
-    console.log(this.state.count);
-    this.setState({ count: this.state.count + 1 });
-    console.log(this.state.count);
-    this.setState({ count: this.state.count + 1 });
-    console.log(this.state.count);
-    this.setState({ count: this.state.count + 1 });
-    console.log(this.state.count);
-    this.setState(({ count }) => ({ count: count + 1 }));
-    console.log(this.state.count);
-    this.setState(({ count }) => ({ count: count + 1 }));
-    console.log(this.state.count);
+    this.setState({ count: this.state.count + 1 })
+    console.log(this.state.count)
+    this.setState({ count: this.state.count + 1 })
+    console.log(this.state.count)
+    this.setState({ count: this.state.count + 1 })
+    console.log(this.state.count)
+    this.setState({ count: this.state.count + 1 })
+    console.log(this.state.count)
+    this.setState(({ count }) => ({ count: count + 1 }))
+    console.log(this.state.count)
+    this.setState(({ count }) => ({ count: count + 1 }))
+    console.log(this.state.count)
   }
 
   render() {
-    const { count } = this.state;
+    const { count } = this.state
     return (
       <div className="app">
         <button onClick={this.handleClick}>click Me</button>
@@ -33,8 +33,8 @@ class App extends React.Component {
         <RenderPropsDemo />
         {count}
       </div>
-    );
+    )
   }
 }
 
-export default App;
+export default App

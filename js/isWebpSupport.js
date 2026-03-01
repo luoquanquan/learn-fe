@@ -1,21 +1,17 @@
 const isWebpSupport = (() => {
-  let support = false;
+  let support = false
   try {
-    if (
-      /data:image\/webp/gi.test(
-        document.createElement("canvas").toDataURL("image/webp"),
-      )
-    ) {
-      support = true;
+    if (/data:image\/webp/gi.test(document.createElement('canvas').toDataURL('image/webp'))) {
+      support = true
     } else {
-      support = false;
+      support = false
     }
   } catch (err) {
-    support = false;
+    support = false
   }
 
-  return support;
-})();
+  return support
+})()
 
 /*
 检测当前环境是否支持 webp

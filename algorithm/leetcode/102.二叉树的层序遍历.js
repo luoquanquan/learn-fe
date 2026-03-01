@@ -19,29 +19,29 @@
  */
 var levelOrder = function (root) {
   if (!root) {
-    return [];
+    return []
   }
 
-  const queue = [root];
-  const ret = [];
+  const queue = [root]
+  const ret = []
 
   while (queue.length) {
-    let length = queue.length;
-    ret.push([]);
+    let length = queue.length
+    ret.push([])
 
     while (length > 0) {
-      const node = queue.shift();
+      const node = queue.shift()
 
-      ret[ret.length - 1].push(node.val);
-      node.left && queue.push(node.left);
-      node.right && queue.push(node.right);
+      ret[ret.length - 1].push(node.val)
+      node.left && queue.push(node.left)
+      node.right && queue.push(node.right)
 
-      length--;
+      length--
     }
   }
 
-  return ret;
-};
+  return ret
+}
 
-levelOrder();
+levelOrder()
 // @lc code=end

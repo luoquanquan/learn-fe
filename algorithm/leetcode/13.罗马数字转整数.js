@@ -97,46 +97,46 @@
 var romanToInt = function (s) {
   // ==========  罗马数字  ====================================================
   // 个位
-  const I = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"];
+  const I = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX']
   // 十位
-  const X = ["", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC"];
+  const X = ['', 'X', 'XX', 'XXX', 'XL', 'L', 'LX', 'LXX', 'LXXX', 'XC']
   // 百位
-  const C = ["", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM"];
+  const C = ['', 'C', 'CC', 'CCC', 'CD', 'D', 'DC', 'DCC', 'DCCC', 'CM']
   // 千位
-  const M = ["", "M", "MM", "MMM"];
+  const M = ['', 'M', 'MM', 'MMM']
 
-  let ret = 0;
+  let ret = 0
   // 定义可能出现的单位
-  const units = [M, C, X, I];
+  const units = [M, C, X, I]
 
   // 遍历所有单位
   units.forEach((roman, i) => {
     // 当前单位权重
-    const power = units.length - i - 1;
+    const power = units.length - i - 1
 
     // 当前位上的数字
-    let curNum = 0;
+    let curNum = 0
 
     // 寻找当前位数字
     for (let j = roman.length - 1; j > 0; j--) {
-      const ele = roman[j];
+      const ele = roman[j]
 
       // 数字对应的罗马字符串穿件正则
-      const reg = new RegExp(`^(${ele})(.*)$`);
+      const reg = new RegExp(`^(${ele})(.*)$`)
 
       // 如果正则可以匹配到即可找到当前位的数字
       s = s.replace(reg, (...args) => {
-        curNum = j;
+        curNum = j
 
         // 返回除当前位匹配值之后剩下的罗马数字
-        return args[2];
-      });
+        return args[2]
+      })
     }
 
     // 追加当前位数字
-    ret += curNum * 10 ** power;
-  });
+    ret += curNum * 10 ** power
+  })
 
-  return ret;
-};
+  return ret
+}
 // @lc code=end

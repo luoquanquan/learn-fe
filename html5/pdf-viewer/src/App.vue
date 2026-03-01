@@ -1,55 +1,55 @@
 <script setup>
-import { ref, onMounted } from "vue";
-import structuredClone from "@ungap/structured-clone";
-import * as pdfjs from "pdfjs-dist";
-import "pdfjs-dist/build/pdf.worker.entry";
+import { ref, onMounted } from 'vue'
+import structuredClone from '@ungap/structured-clone'
+import * as pdfjs from 'pdfjs-dist'
+import 'pdfjs-dist/build/pdf.worker.entry'
 
-const pdfHolderRef = ref([]);
-const pages = ref([]);
+const pdfHolderRef = ref([])
+const pages = ref([])
 
-window.structuredClone = structuredClone;
+window.structuredClone = structuredClone
 
 onMounted(async () => {
-  console.log(`current-time ${Date.now()}: onMounted`);
+  console.log(`current-time ${Date.now()}: onMounted`)
   const pdf = await pdfjs.getDocument({
-    url: "https://jinmao-jmf.oss-cn-beijing.aliyuncs.com/p_act/07280763795a83d3f0839e65b2b3017c",
-  }).promise;
-  console.log(`current-time ${Date.now()} pdf.numPages: `, pdf.numPages);
-  pages.value = Array.from({ length: pdf.numPages });
-  let winW = document.documentElement.clientWidth * 0.9;
-  let winH = document.documentElement.clientHeight * 0.9;
+    url: 'https://jinmao-jmf.oss-cn-beijing.aliyuncs.com/p_act/07280763795a83d3f0839e65b2b3017c'
+  }).promise
+  console.log(`current-time ${Date.now()} pdf.numPages: `, pdf.numPages)
+  pages.value = Array.from({ length: pdf.numPages })
+  let winW = document.documentElement.clientWidth * 0.9
+  let winH = document.documentElement.clientHeight * 0.9
 
   pages.value.forEach((i, j) => {
-    const k = j + 1;
+    const k = j + 1
     pdf.getPage(k).then(function (page) {
       // 获取原始大小的数据
       var viewport = page.getViewport({
-        scale: 1,
-      });
+        scale: 1
+      })
 
-      let scale = (winW / viewport.width).toFixed(2);
+      let scale = (winW / viewport.width).toFixed(2)
 
       if (viewport.width / viewport.height < winW / winH) {
-        scale = (winH / viewport.height).toFixed(2);
+        scale = (winH / viewport.height).toFixed(2)
       }
       viewport = page.getViewport({
-        scale: scale,
-      });
-      var canvas = document.createElement("canvas");
-      pdfHolderRef.value[j].appendChild(canvas);
-      var context = canvas.getContext("2d");
-      canvas.height = viewport.height;
-      canvas.width = viewport.width;
+        scale: scale
+      })
+      var canvas = document.createElement('canvas')
+      pdfHolderRef.value[j].appendChild(canvas)
+      var context = canvas.getContext('2d')
+      canvas.height = viewport.height
+      canvas.width = viewport.width
 
       // 创建了一个canvas画板用来存放
       var renderContext = {
         canvasContext: context,
-        viewport: viewport,
-      };
-      page.render(renderContext);
-    });
-  });
-});
+        viewport: viewport
+      }
+      page.render(renderContext)
+    })
+  })
+})
 </script>
 
 <template>

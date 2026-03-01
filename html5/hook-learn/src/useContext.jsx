@@ -1,5 +1,5 @@
-import React, { useState, useContext, createContext } from "react";
-const MyContext = createContext();
+import React, { useState, useContext, createContext } from 'react'
+const MyContext = createContext()
 
 const ChildCount = (props) => {
   return (
@@ -11,28 +11,28 @@ const ChildCount = (props) => {
         </>
       )}
     </MyContext.Consumer>
-  );
-};
+  )
+}
 
 const ChildCount2 = () => {
-  const { state, setState } = useContext(MyContext);
+  const { state, setState } = useContext(MyContext)
   return (
     <>
       <div>state: {state}</div>
       <button onClick={() => setState(state + 1)}>+</button>
     </>
-  );
-};
+  )
+}
 
 const Count = () => {
-  const [state, setState] = useState(0);
-  console.log("render Count ~");
+  const [state, setState] = useState(0)
+  console.log('render Count ~')
   return (
     <MyContext.Provider value={{ state, setState }}>
       <ChildCount></ChildCount>
       <ChildCount2></ChildCount2>
     </MyContext.Provider>
-  );
-};
+  )
+}
 
-export default Count;
+export default Count

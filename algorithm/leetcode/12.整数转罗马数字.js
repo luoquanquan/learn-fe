@@ -92,21 +92,21 @@
 var intToRoman = function (num) {
   // ==========  罗马数字  ====================================================
   // 个位
-  const I = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"];
+  const I = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX']
   // 十位
-  const X = ["", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC"];
+  const X = ['', 'X', 'XX', 'XXX', 'XL', 'L', 'LX', 'LXX', 'LXXX', 'XC']
   // 百位
-  const C = ["", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM"];
+  const C = ['', 'C', 'CC', 'CCC', 'CD', 'D', 'DC', 'DCC', 'DCCC', 'CM']
   // 千位
-  const M = ["", "M", "MM", "MMM"];
+  const M = ['', 'M', 'MM', 'MMM']
 
   // ==========  各位取值  ====================================================
-  const m = Math.floor(num / 1e3);
-  const c = Math.floor((num % 1e3) / 1e2);
-  const x = Math.floor((num % 1e2) / 10);
-  const i = num % 10;
+  const m = Math.floor(num / 1e3)
+  const c = Math.floor((num % 1e3) / 1e2)
+  const x = Math.floor((num % 1e2) / 10)
+  const i = num % 10
 
   // 返回
-  return `${M[m]}${C[c]}${X[x]}${I[i]}`;
-};
+  return `${M[m]}${C[c]}${X[x]}${I[i]}`
+}
 // @lc code=end

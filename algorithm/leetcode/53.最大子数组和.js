@@ -62,24 +62,24 @@
  * @return {number}
  */
 var maxSubArray = function (nums) {
-  let sum = 0;
+  let sum = 0
   // 缓存第一个值作为默认结果
-  let ret = nums[0];
+  let ret = nums[0]
 
   for (let i = 0; i < nums.length; i++) {
-    const curVal = nums[i];
+    const curVal = nums[i]
     // 如果之前的 sum 是正的. 那么他对后续的计算是有益处的就加上
     if (sum >= 0) {
-      sum += curVal;
+      sum += curVal
     } else {
       // 如果 sum 是负数, 那么他对后续的计算是负向的. 直接抛弃
-      sum = curVal;
+      sum = curVal
     }
 
     // 对比 sum 和 缓存的结果取大值
-    ret = Math.max(sum, ret);
+    ret = Math.max(sum, ret)
   }
 
-  return ret;
-};
+  return ret
+}
 // @lc code=end

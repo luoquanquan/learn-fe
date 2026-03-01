@@ -1,22 +1,22 @@
 // 获取当前时间的时间戳的方案有三种方法, 但是他们啥区别呢?
-const testCount = 1e5;
-console.time("+new Date");
+const testCount = 1e5
+console.time('+new Date')
 for (let i = 0; i < testCount; i++) {
-  +new Date();
+  ;+new Date()
 }
-console.timeEnd("+new Date");
+console.timeEnd('+new Date')
 
-console.time("new Date().getTime");
+console.time('new Date().getTime')
 for (let j = 0; j < testCount; j++) {
-  new Date().getTime();
+  new Date().getTime()
 }
-console.timeEnd("new Date().getTime");
+console.timeEnd('new Date().getTime')
 
-console.time("Date.now");
+console.time('Date.now')
 for (let k = 0; k < testCount; k++) {
-  Date.now();
+  Date.now()
 }
-console.timeEnd("Date.now");
+console.timeEnd('Date.now')
 
 /*
 以上代码在 node v12.14.1 版本中执行的结果如下

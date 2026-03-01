@@ -86,18 +86,18 @@
 //     }
 // };
 var twoSum = function (nums, target) {
-  const map = new Map();
+  const map = new Map()
 
   for (let idx = 0; idx < nums.length; idx++) {
-    const num = nums[idx];
+    const num = nums[idx]
 
     if (map.has(num)) {
-      return [idx, map.get(num)];
+      return [idx, map.get(num)]
     } else {
-      map.set(target - num, idx);
+      map.set(target - num, idx)
     }
   }
 
-  return [];
-};
+  return []
+}
 // @lc code=end

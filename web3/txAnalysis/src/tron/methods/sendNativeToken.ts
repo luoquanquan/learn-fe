@@ -1,5 +1,5 @@
-import { getTronWeb, toSun } from "../utils";
-import analyse from "../analyse";
+import { getTronWeb, toSun } from '../utils'
+import analyse from '../analyse'
 
 const main = async () => {
   // const tronWeb = getTronWeb()
@@ -14,33 +14,33 @@ const main = async () => {
 
   const result = await analyse({
     visible: false,
-    txID: "96450f14f203ed78d364875006161142fc43baa6eeef07fc52be3425a6da0523",
+    txID: '96450f14f203ed78d364875006161142fc43baa6eeef07fc52be3425a6da0523',
     raw_data_hex:
-      "0a022ca422083e66ad209b1a6ce840f88ed2fdc8335a67080112630a2d747970652e676f6f676c65617069732e636f6d2f70726f746f636f6c2e5472616e73666572436f6e747261637412320a1541a030dd0437ae2eb5eb8cd1e1ee365a63e5f629dc1215419b2247304b015613dac1d467325e50f049a60afc18c0843d7098bacefdc833",
+      '0a022ca422083e66ad209b1a6ce840f88ed2fdc8335a67080112630a2d747970652e676f6f676c65617069732e636f6d2f70726f746f636f6c2e5472616e73666572436f6e747261637412320a1541a030dd0437ae2eb5eb8cd1e1ee365a63e5f629dc1215419b2247304b015613dac1d467325e50f049a60afc18c0843d7098bacefdc833',
     raw_data: {
       contract: [
         {
           parameter: {
             value: {
-              to_address: "419b2247304b015613dac1d467325e50f049a60afc",
-              owner_address: "41a030dd0437ae2eb5eb8cd1e1ee365a63e5f629dc",
-              amount: 1000000,
+              to_address: '419b2247304b015613dac1d467325e50f049a60afc',
+              owner_address: '41a030dd0437ae2eb5eb8cd1e1ee365a63e5f629dc',
+              amount: 1000000
             },
-            type_url: "type.googleapis.com/protocol.TransferContract",
+            type_url: 'type.googleapis.com/protocol.TransferContract'
           },
-          type: "TransferContract",
-        },
+          type: 'TransferContract'
+        }
       ],
-      ref_block_bytes: "2ca4",
-      ref_block_hash: "3e66ad209b1a6ce8",
+      ref_block_bytes: '2ca4',
+      ref_block_hash: '3e66ad209b1a6ce8',
       expiration: 1771937499000,
-      timestamp: 1771937439000,
-    },
-  });
-  console.log(`Current log: result: `, result);
-};
+      timestamp: 1771937439000
+    }
+  })
+  console.log(`Current log: result: `, result)
+}
 
-main();
+main()
 
 // {
 //   visible: false,

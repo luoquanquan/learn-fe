@@ -9,36 +9,33 @@
   <body>
     <script>
       const handleData = (data) => {
-        console.log(`当前时间 ${Date.now()}: debug 的数据是 data: `, data);
-      };
+        console.log(`当前时间 ${Date.now()}: debug 的数据是 data: `, data)
+      }
 
-      const xhr = new XMLHttpRequest();
-      xhr.withCredentials = true;
-      xhr.open("get", "http://b.quanquan.com:3333/user");
+      const xhr = new XMLHttpRequest()
+      xhr.withCredentials = true
+      xhr.open('get', 'http://b.quanquan.com:3333/user')
       xhr.onreadystatechange = () => {
         if (xhr.readyState === 4) {
           if ((xhr.status >= 200 && xhr.status < 300) || xhr.status === 304) {
-            handleData(xhr.responseText);
+            handleData(xhr.responseText)
           }
         }
-      };
-      xhr.send();
+      }
+      xhr.send()
 
-      const xhr2 = new XMLHttpRequest();
-      xhr2.open("put", "http://b.quanquan.com:3333/user");
-      xhr2.setRequestHeader("token", "quanquan");
-      xhr2.withCredentials = true;
+      const xhr2 = new XMLHttpRequest()
+      xhr2.open('put', 'http://b.quanquan.com:3333/user')
+      xhr2.setRequestHeader('token', 'quanquan')
+      xhr2.withCredentials = true
       xhr2.onreadystatechange = () => {
         if (xhr2.readyState === 4) {
-          if (
-            (xhr2.status >= 200 && xhr2.status < 300) ||
-            xhr2.status === 304
-          ) {
-            handleData(xhr2.responseText);
+          if ((xhr2.status >= 200 && xhr2.status < 300) || xhr2.status === 304) {
+            handleData(xhr2.responseText)
           }
         }
-      };
-      xhr2.send();
+      }
+      xhr2.send()
     </script>
   </body>
 </html>

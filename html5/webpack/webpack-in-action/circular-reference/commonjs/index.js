@@ -1,1 +1,1 @@
-require("./foo.js");
+require('./foo.js')

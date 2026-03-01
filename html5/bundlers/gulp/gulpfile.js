@@ -1,23 +1,23 @@
-const gulp = require("gulp");
-const babel = require("gulp-babel");
-const sourcemaps = require("gulp-sourcemaps");
+const gulp = require('gulp')
+const babel = require('gulp-babel')
+const sourcemaps = require('gulp-sourcemaps')
 
 const defaultTask = (cb) => {
   gulp
-    .src("./index.js")
+    .src('./index.js')
     .pipe(sourcemaps.init())
     .pipe(
       babel({
-        presets: ["@babel/preset-env"],
-        sourceMap: true,
-      }),
+        presets: ['@babel/preset-env'],
+        sourceMap: true
+      })
     )
-    .pipe(sourcemaps.write("."))
-    .pipe(gulp.dest("dist"));
+    .pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest('dist'))
 
-  cb();
-};
+  cb()
+}
 
 module.exports = {
-  default: defaultTask,
-};
+  default: defaultTask
+}

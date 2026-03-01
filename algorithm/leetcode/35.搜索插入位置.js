@@ -76,19 +76,19 @@
 // 背题达人解法
 var searchInsert = function (nums, target) {
   // 由于两个地方可能用到 length 单独定义一个变量
-  const { length } = nums;
+  const { length } = nums
 
   // 遍历数组
   for (let i = 0; i < length; i++) {
     // 添加到数组中的情况
     if (nums[i] >= target) {
-      return i;
+      return i
     }
   }
 
   // 添加到数组末尾的情况
-  return length;
-};
+  return length
+}
 // @lc code=end
 
 // 我自己想到的比较 lowb 的解法

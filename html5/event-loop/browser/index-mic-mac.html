@@ -9,18 +9,18 @@
   <body>
     <script>
       setTimeout(() => {
-        console.log(`当前时间 ${Date.now()}: 代码走到了这里 timeout1`);
+        console.log(`当前时间 ${Date.now()}: 代码走到了这里 timeout1`)
         Promise.resolve().then(() => {
-          console.log(`当前时间 ${Date.now()}: 代码走到了这里 then1`);
-        });
-      }, 0);
+          console.log(`当前时间 ${Date.now()}: 代码走到了这里 then1`)
+        })
+      }, 0)
 
       Promise.resolve().then(() => {
-        console.log(`当前时间 ${Date.now()}: 代码走到了这里 then2`);
+        console.log(`当前时间 ${Date.now()}: 代码走到了这里 then2`)
         setTimeout(() => {
-          console.log(`当前时间 ${Date.now()}: 代码走到了这里 timeout2`);
-        }, 0);
-      });
+          console.log(`当前时间 ${Date.now()}: 代码走到了这里 timeout2`)
+        }, 0)
+      })
 
       /** 我目前的理解应该是这样的
        * 第一步, 执行主程序把 timeout1 投递给 webApi, 把 then2 放到微任务执行队列 -> 同步代码完成

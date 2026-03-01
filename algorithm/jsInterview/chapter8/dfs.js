@@ -1,39 +1,39 @@
 const tree = {
-  val: "a",
+  val: 'a',
   children: [
     {
-      val: "b",
+      val: 'b',
       children: [
         {
-          val: "d",
-          children: [],
+          val: 'd',
+          children: []
         },
         {
-          val: "e",
-          children: [],
-        },
-      ],
+          val: 'e',
+          children: []
+        }
+      ]
     },
     {
-      val: "c",
+      val: 'c',
       children: [
         {
-          val: "f",
-          children: [],
+          val: 'f',
+          children: []
         },
         {
-          val: "g",
-          children: [],
-        },
-      ],
-    },
-  ],
-};
+          val: 'g',
+          children: []
+        }
+      ]
+    }
+  ]
+}
 
 // 深度优先遍历
 const dfs = (root) => {
-  console.log(root.val);
-  root.children.forEach(dfs);
-};
+  console.log(root.val)
+  root.children.forEach(dfs)
+}
 
-dfs(tree);
+dfs(tree)

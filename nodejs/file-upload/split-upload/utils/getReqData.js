@@ -8,8 +8,8 @@ module.exports = (ctx) => {
   const {
     params,
     query,
-    request: { body, files },
-  } = ctx;
+    request: { body, files }
+  } = ctx
 
-  return [params, query, body, files];
-};
+  return [params, query, body, files]
+}

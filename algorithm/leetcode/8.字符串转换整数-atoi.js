@@ -133,7 +133,7 @@
  */
 var myAtoi = function (s) {
   // 直接用 parseInt 转整数
-  let number = parseInt(s);
+  let number = parseInt(s)
 
   // 兼容 `words and 987` 这种 case 返回的是 NaN 直接取 0
   /*
@@ -145,20 +145,20 @@ var myAtoi = function (s) {
         ??=: 如果左边的值是 null 或者 undefined 则赋值为右边的值, 否则赋值为左边的值. 此处用的是 !== 也就是说必须得完全等于
             a ??= b => let _a; (_a = a) !== null && _a !== void 0 ? _a : (a = b)
     */
-  number ||= 0;
+  number ||= 0
 
   // 如果获取的数字小于最小值, 返回最小值
-  const minimum = (-2) ** 31;
+  const minimum = (-2) ** 31
   if (number < minimum) {
-    return minimum;
+    return minimum
   }
 
   // 如果获取的数字大于最大值, 返回最大值
-  const maximum = 2 ** 31 - 1;
+  const maximum = 2 ** 31 - 1
   if (number > maximum) {
-    return maximum;
+    return maximum
   }
 
-  return number;
-};
+  return number
+}
 // @lc code=end

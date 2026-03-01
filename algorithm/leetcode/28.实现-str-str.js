@@ -69,6 +69,6 @@
  */
 var strStr = function (haystack, needle) {
   // 这题, 不太适合用来考 js
-  return haystack.indexOf(needle);
-};
+  return haystack.indexOf(needle)
+}
 // @lc code=end

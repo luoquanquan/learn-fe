@@ -1,9 +1,9 @@
 function Animal() {
   if (!(this instanceof Animal)) {
-    throw new Error("the constructor must called with new~");
+    throw new Error('the constructor must called with new~')
   }
 
-  this.name = "Animal";
+  this.name = 'Animal'
 }
 
 function defineProperty(Constructor, protoProperties) {
@@ -13,27 +13,27 @@ function defineProperty(Constructor, protoProperties) {
         configurable: true,
         // 模拟 es6 的 class 中的原型方法不可枚举
         enumerable: false,
-        value,
-      });
-    });
+        value
+      })
+    })
   }
 }
 
 defineProperty(Animal, [
   {
-    key: "eat",
+    key: 'eat',
     value: function () {
-      console.log("i can eat~");
-    },
+      console.log('i can eat~')
+    }
   },
   {
-    key: "say",
+    key: 'say',
     value: function () {
-      console.log("i can say~");
-    },
-  },
-]);
+      console.log('i can say~')
+    }
+  }
+])
 
 // eslint-disable-next-line no-unused-vars
-const animal = new Animal();
-console.log(Animal.prototype);
+const animal = new Animal()
+console.log(Animal.prototype)

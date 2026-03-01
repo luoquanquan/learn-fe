@@ -8,11 +8,11 @@
   <body>
     <ul></ul>
     <script>
-      (async () => {
-        document.querySelector("ul").innerHTML = await fetch("/users")
+      ;(async () => {
+        document.querySelector('ul').innerHTML = await fetch('/users')
           .then((d) => d.json())
-          .then((data) => data.map((user) => `<li>${user}</li>`).join(""));
-      })();
+          .then((data) => data.map((user) => `<li>${user}</li>`).join(''))
+      })()
     </script>
   </body>
 </html>

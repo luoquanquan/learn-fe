@@ -5,9 +5,9 @@
 <script>
 export default {
   metaInfo: {
-    title: "Bar",
-  },
-};
+    title: 'Bar'
+  }
+}
 </script>
 
 <style scoped>

@@ -17,8 +17,8 @@
 
     <script>
       const data = {
-        count: 100,
-      };
+        count: 100
+      }
 
       const obj = new Proxy(data, {
         get(target, key, receiver) {
@@ -26,12 +26,12 @@
             `当前时间 ${Date.now()}: debug 的数据是 target, key, receiver: `,
             target,
             key,
-            receiver,
-          );
+            receiver
+          )
           if (target[key]) {
-            return target[key];
+            return target[key]
           } else {
-            return "我没有这个属性呀~";
+            return '我没有这个属性呀~'
           }
         },
         set(target, key, value, receiver) {
@@ -40,24 +40,24 @@
             target,
             key,
             value,
-            receiver,
-          );
-          if (key === "count") {
-            document.querySelector("#count").innerHTML = value;
-            document.querySelector("input").value = value;
+            receiver
+          )
+          if (key === 'count') {
+            document.querySelector('#count').innerHTML = value
+            document.querySelector('input').value = value
           }
-        },
-      });
+        }
+      })
 
       function updateCount(e) {
-        obj.count = e.target.value;
+        obj.count = e.target.value
       }
 
-      document.querySelector("button").onclick = function () {
-        var random = Math.random();
+      document.querySelector('button').onclick = function () {
+        var random = Math.random()
 
-        obj.count = random;
-      };
+        obj.count = random
+      }
     </script>
   </body>
 </html>

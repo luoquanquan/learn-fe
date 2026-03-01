@@ -71,13 +71,13 @@
 var isPalindrome = function (x) {
   // 如果数字小于 0 负号肯定没法回文
   if (x < 0) {
-    return false;
+    return false
   }
 
   // 转字符串 => 数组 => 实现翻转 => 字符串 => 数字
-  const newNumber = Number(x.toString().split("").reverse().join(""));
+  const newNumber = Number(x.toString().split('').reverse().join(''))
 
   // 如果翻转过来的数字和之前相等说明是回文字数字, 否则不是
-  return newNumber === x;
-};
+  return newNumber === x
+}
 // @lc code=end

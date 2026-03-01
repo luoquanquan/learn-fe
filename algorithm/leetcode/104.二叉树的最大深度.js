@@ -19,21 +19,21 @@
  */
 // eslint-disable-next-line no-var, no-unused-vars
 var maxDepth = function (root) {
-  let ret = 0;
+  let ret = 0
   const dfs = (node, level = 1) => {
     if (!node) {
-      return;
+      return
     }
 
     if (!node.left && !node.right) {
-      ret = Math.max(ret, level);
+      ret = Math.max(ret, level)
     }
 
-    dfs(node.left, level + 1);
-    dfs(node.right, level + 1);
-  };
-  dfs(root);
+    dfs(node.left, level + 1)
+    dfs(node.right, level + 1)
+  }
+  dfs(root)
 
-  return ret;
-};
+  return ret
+}
 // @lc code=end

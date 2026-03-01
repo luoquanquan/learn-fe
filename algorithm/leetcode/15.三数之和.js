@@ -59,30 +59,30 @@
  */
 var threeSum = function (nums) {
   // 存储结果
-  const ret = [];
+  const ret = []
 
   // 如果凑不够三个数直接返回
-  const len = nums.length;
+  const len = nums.length
   if (len < 3) {
-    return ret;
+    return ret
   }
 
   // 所有数字升序处理
-  nums.sort((a, b) => a - b);
+  nums.sort((a, b) => a - b)
 
   for (let i = 0; i < len - 2; ) {
-    const element = nums[i];
+    const element = nums[i]
     // 如果当前数字大于 0, 则三数之和一定大于 0
     if (element > 0) {
-      break;
+      break
     }
 
-    let L = i + 1;
-    let R = len - 1;
+    let L = i + 1
+    let R = len - 1
     while (L < R) {
-      const sum = element + nums[L] + nums[R];
+      const sum = element + nums[L] + nums[R]
       if (sum == 0) {
-        ret.push([element, nums[L], nums[R]]);
+        ret.push([element, nums[L], nums[R]])
         // 左右指针去重 & L+1 & R-1
         while (L < R && nums[L] == nums[++L]);
         while (L < R && nums[R] == nums[--R]);
@@ -97,6 +97,6 @@ var threeSum = function (nums) {
     while (nums[i] == nums[++i]);
   }
 
-  return ret;
-};
+  return ret
+}
 // @lc code=end
