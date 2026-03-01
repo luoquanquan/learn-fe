@@ -1,7 +1,5 @@
 ## 目录
 
-按时间倒序整理的学习笔记与示例索引。
-
 ### 2025-12
 
 - [Tron DApp 交易解析](./web3/txAnalysis/src/tron)
