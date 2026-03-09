@@ -1,7 +1,9 @@
 import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router'
+import { Alert, ConfigProvider } from 'antd'
 
 import type { Route } from './+types/root'
 import './app.css'
+import 'antd/dist/reset.css'
 
 export const links: Route.LinksFunction = () => [
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -26,7 +28,19 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        {children}
+        <ConfigProvider
+          theme={{
+            token: {
+              colorPrimary: '#1677ff',
+              borderRadius: 8,
+              fontFamily:
+                "Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+              colorBgLayout: '#f4f4f5'
+            }
+          }}
+        >
+          {children}
+        </ConfigProvider>
         <ScrollRestoration />
         <Scripts />
       </body>
@@ -53,14 +67,15 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   }
 
   return (
-    <main className="pt-16 p-4 container mx-auto">
-      <h1>{message}</h1>
-      <p>{details}</p>
-      {stack && (
-        <pre className="w-full p-4 overflow-x-auto">
-          <code>{stack}</code>
-        </pre>
-      )}
+    <main className="flex min-h-screen items-center justify-center p-6">
+      <div className="w-full max-w-lg space-y-4">
+        <Alert title={message} description={details} type="error" showIcon />
+        {stack && (
+          <pre className="max-h-48 w-full overflow-auto rounded-lg bg-slate-100 p-4 text-sm">
+            <code>{stack}</code>
+          </pre>
+        )}
+      </div>
     </main>
   )
 }

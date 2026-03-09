@@ -65,3 +65,8 @@
 ### 诱导签名
 
 由于 7702 的签名也是 RLP 编码签名, 黑客可能会通过引导用户 eth_sign 在用户不知情的情况下得到用户的 7702 授权. 进而控制用户的帐户. 但是目前主流钱包都禁用了 eth_sign. 这种方式影响有限
+
+## 相关资料
+
+- [eip7702.io](https://eip7702.io/)
+- [eip-7702](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-7702.md)

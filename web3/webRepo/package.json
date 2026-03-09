@@ -9,17 +9,25 @@
     "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.5.0",
     "@react-router/node": "7.12.0",
     "@react-router/serve": "7.12.0",
+    "@uniswap/permit2-sdk": "^1.4.0",
+    "antd": "^6.3.1",
     "base64-js": "^1.5.1",
+    "framer-motion": "^12.34.5",
     "isbot": "^5.1.31",
+    "lodash": "^4.17.23",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
-    "react-router": "7.12.0"
+    "react-router": "7.12.0",
+    "viem": "^2.46.3"
   },
   "devDependencies": {
+    "@metamask/providers": "^22.1.1",
     "@react-router/dev": "7.12.0",
     "@tailwindcss/vite": "^4.1.13",
+    "@types/lodash": "^4.17.24",
     "@types/node": "^22",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",

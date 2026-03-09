@@ -6,3 +6,4 @@ node_modules
 .vscode
 .cache
 artifacts
+web3/evm/contract/broadcast/*
