@@ -1,13 +1,3 @@
----
-title: AudioContext 使用和优化
-date: 2021-12-16 16:25:42
-categories:
-    - 开发笔记
-    - html5
-tags:
-    - 开发笔记
----
-
 # AudioContext 使用和优化
 
 ## 前言

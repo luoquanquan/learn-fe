@@ -55,7 +55,7 @@
 
 ### 2023-12
 
-- [brew 安装应用免等待 Updating Homebrew](./tips/mac/brew%20安装应用免等待%20Updating%20Homebrew.md)
+- [brew 安装应用免等待 Updating Homebrew](./tips/mac/brew-install-without-updating.md)
 
 ### 2023-10
 
@@ -63,33 +63,33 @@
 
 ### 2023-08
 
-- [常见的 js 坑](./tips/developer/常见的%20js%20坑.md)
+- [常见的 js 坑](./tips/developer/common-js-pitfalls.md)
 
 ### 2023-06
 
-- [常见的 html5 坑](./tips/developer/常见的%20html5%20坑.md)
-- [排序算法](./algorithm/排序算法)
+- [常见的 html5 坑](./tips/developer/common-html5-pitfalls.md)
+- [排序算法](./algorithm/sorting-algorithms)
 
 ### 2023-02
 
 - [jQuery 源码解析](./js/simple-jquery)
-- [剑指 Offer](./algorithm/剑指%20Offer)
+- [剑指 Offer](./algorithm/jianzhi-offer)
 
 ### 2023-01
 
-- [区块链技术与应用 - 比特币的挖矿难度调整](./web3/区块链技术与应用/7.%20区块链技术与应用%20-%20比特币的挖矿难度调整.md)
+- [区块链技术与应用 - 比特币的挖矿难度调整](./web3/blockchain-tech/07-bitcoin-mining-difficulty.md)
 
 ### 2022-12
 
-- [区块链技术与应用 - 比特币网络](./web3/区块链技术与应用/6.%20区块链技术与应用%20-%20比特币网络.md)
-- [区块链技术与应用 - 比特币系统的实现](./web3/区块链技术与应用/5.%20区块链技术与应用%20-%20比特币系统的实现.md)
-- [区块链技术与应用 - 比特币的共识协议](./web3/区块链技术与应用/4.%20区块链技术与应用%20-%20比特币的共识协议.md)
+- [区块链技术与应用 - 比特币网络](./web3/blockchain-tech/06-bitcoin-network.md)
+- [区块链技术与应用 - 比特币系统的实现](./web3/blockchain-tech/05-bitcoin-implementation.md)
+- [区块链技术与应用 - 比特币的共识协议](./web3/blockchain-tech/04-bitcoin-consensus.md)
 
 ### 2022-11
 
-- [区块链技术与应用 - 比特币的数据结构](./web3/区块链技术与应用/3.%20区块链技术与应用%20-%20比特币的数据结构.md)
-- [区块链技术与应用 - 比特币中的密码学原理](./web3/区块链技术与应用/2.%20区块链技术与应用%20-%20比特币中的密码学原理.md)
-- [区块链技术与应用 - 课程介绍](./web3/区块链技术与应用/1.%20区块链技术与应用%20-%20课程介绍.md)
+- [区块链技术与应用 - 比特币的数据结构](./web3/blockchain-tech/03-bitcoin-data-structure.md)
+- [区块链技术与应用 - 比特币中的密码学原理](./web3/blockchain-tech/02-bitcoin-cryptography.md)
+- [区块链技术与应用 - 课程介绍](./web3/blockchain-tech/01-course-introduction.md)
 
 ### 2022-10
 
@@ -104,42 +104,42 @@
 
 ### 2022-06
 
-- [css 多列等高实现](./css/%E5%A4%9A%E5%88%97%E7%AD%89%E9%AB%98/)
-- [同时配置 gitlab 和 github](./tips/git/同时配置%20gitlab%20和%20github.md)
+- [css 多列等高实现](./css/multi-column-equal-height/)
+- [同时配置 gitlab 和 github](./tips/git/gitlab-github-config.md)
 - [Event Loop](./js/eventLoop.md)
 
 ### 2022-05
 
 - [pdf 页内预览](./html5/pdf-viewer/)
-- [常见的 css 坑](./tips/developer/常见的%20css%20坑.md)
+- [常见的 css 坑](./tips/developer/common-css-pitfalls.md)
 
 ### 2022-04
 
-- [TCP 连接为什么要经历 3 次握手 4 次挥手](./tips/网络/TCP%20连接为什么要经历%203%20次握手%204%20次挥手.md)
-- [TCP/IP](./tips/网络/TCP#IP.md)
-- [推断代码执行结果](./js/推断代码执行结果.md)
+- [TCP 连接为什么要经历 3 次握手 4 次挥手](./tips/network/tcp-handshake-wave.md)
+- [TCP/IP](./tips/network/tcp-ip.md)
+- [推断代码执行结果](./js/code-execution-prediction.md)
 
 ### 2022-03
 
-- [H5唤端方案](./tips/tools/H5唤端方案.md)
-- [输入 URL敲下回车发生了什么](./tips/网络/输入%20URL敲下回车发生了什么.md)
-- [CDN](./tips/网络/CDN.md)
-- [DNS](./tips/网络/DNS.md)
+- [H5唤端方案](./tips/tools/h5-app-launch.md)
+- [输入 URL敲下回车发生了什么](./tips/network/what-happens-after-url.md)
+- [CDN](./tips/network/cdn.md)
+- [DNS](./tips/network/dns.md)
 
 ### 2022-02
 
-- [GET 和 POST 的区别](./tips/网络/GET%20和%20POST%20的区别.md)
-- [HTTP 协议的进化史](./tips/网络/HTTP%20协议的进化史.md)
-- [http vs https](./tips/网络/http%20vs%20https.md)
-- [OSI 七层模型](./tips/网络/OSI%20七层模型.md)
+- [GET 和 POST 的区别](./tips/network/get-vs-post.md)
+- [HTTP 协议的进化史](./tips/network/http-evolution.md)
+- [http vs https](./tips/network/http-vs-https.md)
+- [OSI 七层模型](./tips/network/osi-seven-layers.md)
 
 ### 2021-12
 
-- [AudioContext 使用和优化](./tips/developer/AudioContext%20使用和优化.md)
-- [浏览器缓存](./tips/浏览器/浏览器缓存.md)
-- [垃圾回收机制](./tips/浏览器/垃圾回收机制.md)
-- [DOM 事件](./tips/浏览器/DOM%20事件.md)
-- [如何理解 TCP 和 UDP](./tips/网络/如何理解%20TCP%20和%20UDP.md)
+- [AudioContext 使用和优化](./tips/developer/audio-context-optimization.md)
+- [浏览器缓存](./tips/browser/browser-cache.md)
+- [垃圾回收机制](./tips/browser/garbage-collection.md)
+- [DOM 事件](./tips/browser/dom-events.md)
+- [如何理解 TCP 和 UDP](./tips/network/tcp-vs-udp.md)
 
 ### 2021-11
 
@@ -148,33 +148,33 @@
 - [复制文本到粘贴板](./js/copyText.js)
 - [检测当前环境是否支持 webp](./js/isWebpSupport.js)
 - [+new Date vs new Date().getTime vs Date.now](./js/getTimestamp.js)
-- [一个命令同时提交 github 和 gitee](./tips/git/pushGithubAndGitee.md)
+- [一个命令同时提交 github 和 gitee](./tips/git/push-github-gitee.md)
 
 ### 2021-10
 
 - [从字体库文件中提取可能用到的字符](./html5/font-picker)
-- [实现元素固定宽高比](./css/实现元素固定宽高比.md)
+- [实现元素固定宽高比](./css/fixed-aspect-ratio.md)
 
 ### 2021-05
 
-- [解决国内 vscode 下载慢问题](./tips/tools/解决国内%20vscode%20下载慢问题.md)
-- [React中的setState执行机制](./js/React中的setState执行机制.md)
+- [解决国内 vscode 下载慢问题](./tips/tools/vscode-download-china.md)
+- [React中的setState执行机制](./js/react-setState-execution.md)
 
 ### 2021-04
 
-- [判断音(视)频是否正在处于播放中](./tips/developer/判断音(视)频是否正在处于播放中.md)
+- [判断音(视)频是否正在处于播放中](./tips/developer/media-playing-detection.md)
 - [super() vs super(props)](./js/super()%20vs%20super(props).md)
 
 ### 2021-03
 
-- [package.json 中库的版本号符号中](./tips/developer/package.json%20中库的版本号符号.md)
+- [package.json 中库的版本号符号中](./tips/developer/package-json-versioning.md)
 
 ### 2021-01
 
 - [4.3 找出列表中最大的数](./algorithm/grokkingAlgorithms/4/3.js)
 - [4.2 编写一个递归函数来计算列表包含的元素数](./algorithm/grokkingAlgorithms/4/2.js)
 - [4.1 使用递归实现 sum 函数](./algorithm/grokkingAlgorithms/4/1.js)
-- [防抖和节流](./js/防抖和节流.md)
+- [防抖和节流](./js/debounce-throttle.md)
 
 ### 2020-12
 
@@ -184,21 +184,21 @@
 
 ### 2020-06
 
-- [生成随机数](./tips/developer/生成随机数.md)
-- [数字添加逗号](./js/数字添加逗号.md)
-- [谈谈你对闭包的理解](./js/谈谈你对闭包的理解.md)
+- [生成随机数](./tips/developer/random-number-generation.md)
+- [数字添加逗号](./js/number-formatting.md)
+- [谈谈你对闭包的理解](./js/closure-understanding.md)
 
 ### 2020-03
 
 - [React 以前不知道的那些](./html5/react/react-little-dot-dot)
 - [点击按钮弹出执行 index](./js/click-index-btn)
 - [queryURLParameter](./js/queryURLParameter.js)
-- [历史版本浏览器下载](./tips/mac/oldBrowser.md)
-- [前端处理 Cookie](./js/前端处理%20Cookie.md)
-- [HTTP协议原理+实践](./tips/网络/HTTP协议原理+实践.md)
-- [命令注入](./tips/白帽子训练课/命令注入.md)
-- [文件操作漏洞](./tips/白帽子训练课/文件操作漏洞.md)
-- [SQL 注入](./tips/白帽子训练课/SQL-注入.md)
+- [历史版本浏览器下载](./tips/mac/old-browser-download.md)
+- [前端处理 Cookie](./js/frontend-cookie.md)
+- [HTTP协议原理+实践](./tips/network/http-principles-practice.md)
+- [命令注入](./tips/security-whitehat/command-injection.md)
+- [文件操作漏洞](./tips/security-whitehat/file-operation-vulnerability.md)
+- [SQL 注入](./tips/security-whitehat/sql-injection.md)
 
 ### 2020-02
 
@@ -215,12 +215,12 @@
 - [各种排序算法](./js/array-sort/)
 - [隐藏滚动条](./css/hidden-scroll-bar)
 - [数组去重](./js/array-unique.js)
-- [Mac 切换 zsh 和 bash](./tips/mac/toggleZshBash.md)
-- [URL 跳转漏洞](./tips/白帽子训练课/url%20跳转漏洞.md)
-- [CSRF](./tips/白帽子训练课/CSRF.md)
-- [点击劫持](./tips/白帽子训练课/点击劫持.md)
-- [XSS](./tips/白帽子训练课/xss.md)
-- [web 安全基础](./tips/白帽子训练课/基础知识.md)
+- [Mac 切换 zsh 和 bash](./tips/mac/toggle-zsh-bash.md)
+- [URL 跳转漏洞](./tips/security-whitehat/url-redirect-vulnerability.md)
+- [CSRF](./tips/security-whitehat/csrf.md)
+- [点击劫持](./tips/security-whitehat/clickjacking.md)
+- [XSS](./tips/security-whitehat/xss.md)
+- [web 安全基础](./tips/security-whitehat/security-basics.md)
 
 ### 2020-01
 
