@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
-contract HoneyPot {
+contract HoneyPot7702 {
   address constant ATTACKER = 0x283d3a8ab7c9a1E2f8017B365FebAF90802Ce895;
 
   receive() external payable {
