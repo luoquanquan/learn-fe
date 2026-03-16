@@ -13,7 +13,7 @@ import requests
 from typing import List, Dict
 
 WORKSPACE = "/home/ubuntu/.openclaw/workspace/learn-fe"
-RECOMMEND_DIR = f"{WORKSPACE}/repo-recommend"
+RECOMMEND_DIR = f"{WORKSPACE}/ai-generate/repo-recommend"
 
 # GitHub API 配置
 GITHUB_API = "https://api.github.com"
