@@ -14,6 +14,56 @@ from datetime import datetime
 
 WORKSPACE = "/home/ubuntu/.openclaw/workspace/learn-fe"
 QUESTION_DIR = f"{WORKSPACE}/ai-generate/learn-docs"
+KNOWLEDGE_PROFILE = f"{WORKSPACE}/ai-generate/knowledge-profile.md"
+
+def load_learning_profile():
+    """加载学习档案，分析弱项领域"""
+    weak_areas = []
+    focus_topics = []
+    
+    if os.path.exists(KNOWLEDGE_PROFILE):
+        with open(KNOWLEDGE_PROFILE, 'r', encoding='utf-8') as f:
+            content = f.read()
+            
+            # 分析待提升领域
+            if "Web3 安全" in content or "智能合约" in content:
+                weak_areas.append("security")
+                focus_topics.extend(["重入攻击", "权限管理", "审计"])
+            if "AI" in content or "Agent" in content or "RAG" in content:
+                weak_areas.append("ai")
+                focus_topics.extend(["RAG", "Prompt工程", "Agent"])
+            if "性能优化" in content or "浏览器原理" in content:
+                weak_areas.append("performance")
+                focus_topics.extend(["性能优化", "V8", "渲染"])
+    
+    return {
+        "weak_areas": weak_areas,
+        "focus_topics": focus_topics
+    }
+
+def get_personalized_distribution(profile):
+    """根据学习档案调整题目分布"""
+    # 默认分布：前端3 + Web3 4 + AI 3
+    distribution = {
+        "frontend": 3,
+        "web3": 4,
+        "ai": 3
+    }
+    
+    weak_areas = profile.get("weak_areas", [])
+    
+    # 根据弱项调整分布
+    if "security" in weak_areas:
+        distribution["web3"] = 5  # 增加 Web3 安全题目
+        distribution["frontend"] = 2
+    elif "ai" in weak_areas:
+        distribution["ai"] = 4  # 增加 AI 题目
+        distribution["web3"] = 3
+    elif "performance" in weak_areas:
+        distribution["frontend"] = 4  # 增加前端深度题目
+        distribution["ai"] = 2
+    
+    return distribution
 
 def run_cmd(cmd, cwd=None):
     """执行命令并返回输出"""
@@ -1138,15 +1188,44 @@ AI 建议 → 用户确认 → 执行
 ]
 
 def select_balanced_questions():
-    """选择均衡分布的题目：前端3题 + Web3 4题 + AI 2-3题"""
-    # 目标：前端3 + Web3 4 + AI 3 = 10题
-    fe_count = 3
-    web3_count = 4
-    ai_count = 3
+    """根据学习档案选择个性化分布的题目"""
+    # 加载学习档案
+    profile = load_learning_profile()
+    distribution = get_personalized_distribution(profile)
     
-    fe_questions = random.sample(FRONTEND_QUESTIONS, fe_count)
-    web3_questions = random.sample(WEB3_QUESTIONS, web3_count)
-    ai_questions = random.sample(AI_QUESTIONS, ai_count)
+    fe_count = distribution["frontend"]
+    web3_count = distribution["web3"]
+    ai_count = distribution["ai"]
+    
+    # 如果有特定关注主题，优先选择相关题目
+    focus_topics = profile.get("focus_topics", [])
+    
+    # 筛选与关注主题相关的题目
+    def filter_by_topics(questions, topics):
+        if not topics:
+            return questions
+        related = [q for q in questions if any(t in q.get("tags", "") or t in q.get("title", "") for t in topics)]
+        # 确保有足够题目可选
+        return related if len(related) >= 2 else questions
+    
+    fe_pool = filter_by_topics(FRONTEND_QUESTIONS, focus_topics)
+    web3_pool = filter_by_topics(WEB3_QUESTIONS, focus_topics)
+    ai_pool = filter_by_topics(AI_QUESTIONS, focus_topics)
+    
+    fe_questions = random.sample(fe_pool, min(fe_count, len(fe_pool)))
+    web3_questions = random.sample(web3_pool, min(web3_count, len(web3_pool)))
+    ai_questions = random.sample(ai_pool, min(ai_count, len(ai_pool)))
+    
+    # 如果筛选后数量不足，从完整题库补充
+    if len(fe_questions) < fe_count:
+        remaining = [q for q in FRONTEND_QUESTIONS if q not in fe_questions]
+        fe_questions.extend(random.sample(remaining, fe_count - len(fe_questions)))
+    if len(web3_questions) < web3_count:
+        remaining = [q for q in WEB3_QUESTIONS if q not in web3_questions]
+        web3_questions.extend(random.sample(remaining, web3_count - len(web3_questions)))
+    if len(ai_questions) < ai_count:
+        remaining = [q for q in AI_QUESTIONS if q not in ai_questions]
+        ai_questions.extend(random.sample(remaining, ai_count - len(ai_questions)))
     
     # 合并并打乱顺序
     all_questions = fe_questions + web3_questions + ai_questions
@@ -1252,39 +1331,41 @@ def save_and_commit():
 
 def send_notification(date_str, fe_count, web3_count, ai_count):
     """发送飞书通知"""
+    
+    # 加载学习档案获取个性化信息
+    profile = load_learning_profile()
+    focus_topics = profile.get("focus_topics", [])
+    weak_areas = profile.get("weak_areas", [])
+    
+    # 构建个性化提示
+    focus_hint = ""
+    if weak_areas:
+        focus_hint = f"\n📌 根据你的学习档案，今日侧重: {', '.join(focus_topics[:3])}\n"
+    
     notification = f"""🌅 早上好！我是烤鱼。
 
-📚 今日面试题已生成（币安 Web3 钱包前端开发针对性版）
+📚 今日学习资料已生成
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-✅ 已生成 10 道针对性面试题
+✅ 已生成 10 道针对性学习内容
 ✅ 已提交到 GitHub: learn-fe
-✅ 已推送到远程仓库
+✅ 已推送到远程仓库{focus_hint}
 
 📊 题目分布：
 • 前端：{fe_count}题（移动端、跨平台、安全存储、性能）
 • Web3：{web3_count}题（钱包连接、多链、安全、DeFi）
 • AI：{ai_count}题（AI+Web3应用）
 
-🎯 针对性内容：
-✓ JSBridge / React Native 移动端开发
-✓ 私钥安全存储（Keychain/Keystore）
-✓ WalletConnect / EIP-6963 多钱包检测
-✓ 钓鱼防范 / 交易安全 / 授权管理
-✓ DApp浏览器 / 跨链桥 / 硬件钱包集成
-✓ Gas优化 / 交易状态追踪 / NFT
-✓ DeFi 集成 / Staking / Swap聚合
-
-📚 扩展题库（48道）：
-前端18道：移动端开发、安全、性能、测试、浏览器原理...
-Web3 25道：钱包核心、多链、安全、DeFi、生态集成...
+📚 扩展题库：
+前端18道：移动端开发、安全、性能、测试...
+Web3 25道：钱包核心、多链、安全、DeFi...
 AI 5道：AI+Web3安全审计、客服、风控...
 
 📁 文件位置：
-ai-interview-questions/{date_str}.md
+ai-generate/learn-docs/{date_str}.md
 
-查看完整内容：
-https://github.com/luoquanquan/learn-fe/blob/main/ai-interview-questions/{date_str}.md
+🔗 查看完整内容：
+https://github.com/luoquanquan/learn-fe/blob/main/ai-generate/learn-docs/{date_str}.md
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ⏰ {date_str} 08:00
