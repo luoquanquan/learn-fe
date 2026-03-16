@@ -72,10 +72,16 @@ def generate_daily_news():
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"""
     
     for i, news in enumerate(ai_news, 1):
+        # 链接处理：如果超过40字符，显示前40字符+省略号
+        url = news['url']
+        if len(url) > 40:
+            url_display = url[:40] + "..."
+        else:
+            url_display = url
         message += f"""
 {i}. {news['title']}
    🔥 {news['score']} points
-   🔗 {news['url'][:50]}..."""
+   🔗 {url_display}"""
     
     message += """
 
