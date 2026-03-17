@@ -185,6 +185,25 @@
 - **必须从项目经验提炼通用设计原则**
 - 附录：学习资源链接
 
+## 参考资源
+
+### 前端面试题参考
+- [前端内参 - 前端进阶之道](https://coffe1891.gitbook.io/frontend-hard-mode-interview)
+- [前端面试每日 3+1](https://github.com/haizlin/fe-interview)
+- [前端面试题汇总](https://github.com/lgwebdream/FE-Interview)
+- [2024年面试题合集](https://github.com/pro-collection/interview-question/tree/master/books/2024年)
+- [2023年面试题合集](https://github.com/pro-collection/interview-question/tree/master/books/2023年)
+- [面试题精选](https://github.com/pro-collection/interview-question/tree/master)
+
+### Web3 面试题参考
+- [Web3 + AI 面试题](https://github.com/sevenflux/interview-web3-ai)
+- [Web3 钱包面试题](https://github.com/0xweb-3/web3_wallet_interview_questions)
+- [Chaineye 区块链面试题](https://github.com/the-web3/chaineye-blockchain-interview)
+- [Web3 面试题精选 #2](https://github.com/MagicalBridge/thinking-in-interview/issues/2)
+- [Web3 面试题精选 #1](https://github.com/MagicalBridge/thinking-in-interview/issues/1)
+- [EVM 面试题](https://github.com/locey/Blockchain_interview/tree/main/EVM)
+- [区块链面试博客](https://github.com/smallyunet/blog-b)
+
 ---
 
 *基于简历定制更新：2026-03-17*
