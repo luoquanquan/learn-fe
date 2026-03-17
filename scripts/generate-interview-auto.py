@@ -1447,6 +1447,761 @@ Popup UI (钱包界面)
 - WebSocket 连接需要特殊处理
 - 更频繁的唤醒/休眠"""
     },
+    {
+        "title": "如何在 Chrome Extension 中实现钱包账户管理的多层级架构？",
+        "tags": "Chrome扩展 / 账户管理 / 架构设计 / Web3钱包",
+        "content": """**一、账户管理核心架构**
+
+基于 OKX Web3 Wallet 2.0 重构经验，账户管理需要支持：
+- 多钱包（HD钱包、硬件钱包、私钥导入）
+- 多链（每个钱包在不同链上的地址）
+- 多账户（每个链可以有多个账户）
+
+**二、数据模型设计**
+```typescript
+// 三层级架构
+interface Wallet {
+  id: string;                    // 钱包唯一ID
+  type: 'hd' | 'hardware' | 'privateKey' | 'hardware_ledger' | 'hardware_onekey';
+  name: string;
+  accounts: Account[];           // 该钱包下的所有账户
+}
+
+interface Account {
+  id: string;
+  index: number;                 // HD派生索引
+  addresses: Record<ChainId, Address>;  // 各链地址映射
+}
+
+// 统一地址簿管理
+interface AddressBook {
+  [walletId: string]: {
+    [chainId: number]: {
+      address: string;
+      name?: string;
+      isFavorite: boolean;
+    }[];
+  };
+}
+```
+
+**三、关键实现要点**
+
+1. **按系导入地址簿**
+```typescript
+// 支持按钱包类型批量导入
+const importAddressBook = async (walletType: WalletType, addresses: ImportAddress[]) => {
+  const wallet = await walletManager.getWalletByType(walletType);
+  
+  // 按链分组
+  const groupedByChain = groupBy(addresses, 'chainId');
+  
+  for (const [chainId, chainAddresses] of Object.entries(groupedByChain)) {
+    await addressBook.addAddresses(wallet.id, Number(chainId), chainAddresses);
+  }
+};
+```
+
+2. **地址派生管理**
+```typescript
+// HD钱包派生路径管理
+const DERIVATION_PATHS: Record<ChainType, string> = {
+  evm: "m/44'/60'/0'/0/{index}",
+  bitcoin: "m/44'/0'/0'/0/{index}",
+  solana: "m/44'/501'/0'/{index}",
+};
+
+class HDWalletManager {
+  async deriveAddress(walletId: string, chainId: number, index: number): Promise<string> {
+    const wallet = await this.getWallet(walletId);
+    const chainType = getChainType(chainId);
+    const path = DERIVATION_PATHS[chainType].replace('{index}', String(index));
+    
+    return await this.derivePath(wallet.mnemonic, path);
+  }
+}
+```
+
+3. **账户切换状态管理**
+```typescript
+// Redux Store 设计
+interface WalletState {
+  currentWalletId: string | null;
+  currentAccountIndex: number;
+  currentChainId: number;
+  wallets: Wallet[];
+  // 派生状态
+  activeAddress: string;  // 当前选中的地址
+}
+
+// 切换账户时自动更新地址
+const switchAccount = createAsyncThunk(
+  'wallet/switchAccount',
+  async ({ walletId, accountIndex, chainId }: SwitchPayload) => {
+    const address = await walletService.getAddress(walletId, chainId, accountIndex);
+    return { walletId, accountIndex, chainId, address };
+  }
+);
+```
+
+**四、性能优化**
+- 地址派生结果缓存（避免重复计算）
+- 按需加载（只加载当前选中钱包的详细信息）
+- 批量操作合并（减少状态更新次数）
+
+**五、安全考虑**
+- 助记词/私钥加密存储
+- 敏感操作需要用户确认
+- 地址校验防止误操作"""
+    },
+    {
+        "title": "硬件钱包 Ledger/Trezor/OneKey/Keystone 的统一接入协议如何设计？",
+        "tags": "硬件钱包 / Ledger / Trezor / 统一接入 / 协议设计",
+        "content": """**一、硬件钱包接入架构**
+
+基于 OKX 硬件钱包接入经验，需要统一四种主流硬件钱包的接入：
+
+| 硬件钱包 | 连接方式 | 通信协议 | 特点 |
+|----------|----------|----------|------|
+| Ledger | USB HID / Bluetooth | APDU | 最主流，固件更新频繁 |
+| Trezor | USB / Bridge | Protocol Buffers | 开源，协议清晰 |
+| OneKey | USB HID / Bluetooth | 类APDU | 国产，性价比高 |
+| Keystone | QR Code / USB | 自定义协议 |  air-gapped，最安全 |
+
+**二、统一抽象层设计**
+
+```typescript
+// 统一硬件钱包接口
+interface HardwareWallet {
+  readonly type: HardwareWalletType;
+  readonly name: string;
+  
+  // 连接管理
+  connect(): Promise<void>;
+  disconnect(): Promise<void>;
+  isConnected(): boolean;
+  
+  // 账户管理
+  getPublicKey(path: string): Promise<Uint8Array>;
+  getAddress(path: string, chainId: number): Promise<string>;
+  
+  // 签名
+  signTransaction(path: string, tx: Transaction): Promise<Signature>;
+  signMessage(path: string, message: string): Promise<Signature>;
+  
+  // 固件信息
+  getVersion(): Promise<string>;
+  checkUpdate(): Promise<boolean>;
+}
+
+// 抽象基类实现公共逻辑
+abstract class BaseHardwareWallet implements HardwareWallet {
+  protected transport: Transport | null = null;
+  protected app: EthApp | SolApp | null = null;
+  
+  abstract get type(): HardwareWalletType;
+  
+  async connect(): Promise<void> {
+    this.transport = await this.createTransport();
+    this.app = await this.createApp(this.transport);
+    await this.verifyApp();
+  }
+  
+  protected abstract createTransport(): Promise<Transport>;
+  protected abstract createApp(transport: Transport): Promise<App>;
+  protected abstract verifyApp(): Promise<void>;
+}
+```
+
+**三、Ledger 接入实现**
+
+```typescript
+class LedgerWallet extends BaseHardwareWallet {
+  get type() { return 'ledger'; }
+  
+  protected async createTransport(): Promise<Transport> {
+    // 优先尝试 WebHID，降级到 WebUSB
+    if (await TransportWebHID.isSupported()) {
+      return await TransportWebHID.create();
+    }
+    return await TransportWebUSB.create();
+  }
+  
+  protected async createApp(transport: Transport): Promise<EthApp> {
+    return new EthApp(transport);
+  }
+  
+  async signTransaction(path: string, tx: Transaction): Promise<Signature> {
+    const { r, s, v } = await this.app!.signTransaction(
+      path,
+      tx.toSerializedHex(),
+      null  // 不解析 ERC-20（我们在上层处理）
+    );
+    return { r, s, v };
+  }
+}
+```
+
+**四、Keystone QR Code 特殊处理**
+
+```typescript
+class KeystoneWallet implements HardwareWallet {
+  get type() { return 'keystone'; }
+  
+  // 二维码通信
+  async signTransaction(path: string, tx: Transaction): Promise<Signature> {
+    // 1. 编码待签数据为二维码
+    const qrData = this.encodeTransaction(tx, path);
+    this.displayQRCode(qrData);
+    
+    // 2. 等待用户扫描 Keystone 显示的签名二维码
+    const signatureQR = await this.scanSignatureQR();
+    
+    // 3. 解析签名
+    return this.decodeSignature(signatureQR);
+  }
+  
+  private encodeTransaction(tx: Transaction, path: string): QRData {
+    // UR 标准编码
+    return {
+      type: 'eth-sign-request',
+      data: encodeUR({
+        signData: tx.toSerializedHex(),
+        derivationPath: path,
+        chainId: tx.chainId,
+      }),
+    };
+  }
+}
+```
+
+**五、固件升级适配策略**
+
+```typescript
+class FirmwareManager {
+  // 检查固件版本兼容性
+  async checkCompatibility(wallet: HardwareWallet, minVersion: string): Promise<boolean> {
+    const currentVersion = await wallet.getVersion();
+    return compareVersion(currentVersion, minVersion) >= 0;
+  }
+  
+  // 破坏性变更适配
+  async handleBreakingChanges(wallet: HardwareWallet): Promise<void> {
+    const version = await wallet.getVersion();
+    
+    // Ledger 2.0.0+ 修改了签名返回格式
+    if (wallet.type === 'ledger' && compareVersion(version, '2.0.0') >= 0) {
+      wallet.setLegacyMode(false);
+    }
+  }
+}
+```
+
+**六、错误处理与用户体验**
+
+```typescript
+enum HardwareError {
+  DEVICE_LOCKED = '设备已锁定，请解锁',
+  APP_NOT_OPEN = '请在设备上打开对应 App',
+  USER_REJECTED = '用户取消操作',
+  CONNECTION_LOST = '连接已断开，请重新连接',
+  FIRMWARE_OUTDATED = '固件版本过旧，请升级',
+}
+
+// 统一的错误提示
+const handleHardwareError = (error: Error): string => {
+  if (error.message.includes('0x6a82')) {
+    return HardwareError.APP_NOT_OPEN;
+  }
+  if (error.message.includes('0x6985')) {
+    return HardwareError.USER_REJECTED;
+  }
+  return error.message;
+};
+```"""
+    },
+    {
+        "title": "EIP-7702 和 EIP-4337 账户抽象如何改变钱包交互模式？",
+        "tags": "EIP-7702 / EIP-4337 / 账户抽象 / AA钱包",
+        "content": """**一、传统 EOA 钱包的局限**
+
+```
+传统模式:
+用户 → EOA私钥签名 → 直接提交交易 → 链上执行
+
+问题:
+- 私钥丢失 = 资产丢失
+- 每笔交易都需要原生代币支付 Gas
+- 无法批量操作
+- 无法自定义验证逻辑
+```
+
+**二、EIP-4337 账户抽象（Account Abstraction）**
+
+```
+AA 模式:
+用户 → 签名 UserOperation → Bundler → EntryPoint → 链上执行
+         ↓
+    验证逻辑由合约定义（可以不验证私钥）
+```
+
+核心组件：
+1. **Smart Contract Wallet**：智能合约作为账户
+2. **EntryPoint**：统一的入口合约
+3. **Bundler**：收集并提交 UserOperation
+4. **Paymaster**：代付 Gas
+
+```solidity
+// 简化版智能合约钱包
+contract SmartWallet {
+    address public owner;
+    
+    function validateUserOp(
+        UserOperation calldata userOp,
+        bytes32 userOpHash,
+        uint256 missingAccountFunds
+    ) external returns (uint256 validationData) {
+        // 自定义验证：可以是私钥、多签、社交恢复等
+        require(owner == recover(userOpHash, userOp.signature));
+        return 0; // 验证通过
+    }
+    
+    function execute(address target, uint256 value, bytes calldata data) external {
+        // 执行交易
+        (bool success, ) = target.call{value: value}(data);
+        require(success);
+    }
+}
+```
+
+**三、EIP-7702 委托授权（Set Code for EOA）**
+
+EIP-7702 是 Prague 升级的一部分，允许 EOA 临时委托代码给合约：
+
+```
+EIP-7702 流程:
+1. EOA 签名授权："我允许合约 X 代表我执行"
+2. 交易中附带 authorizationList
+3. 链上临时将 EOA 的 code 设置为合约代码
+4. 交易执行时，EOA 像合约一样运行
+5. 交易结束后，EOA 恢复为普通 EOA
+```
+
+```typescript
+// EIP-7702 授权签名
+const authorization = {
+  chainId: 1,
+  nonce: await wallet.getNonce(),
+  address: '0x...', // 被授权的合约地址
+};
+
+const signature = await wallet.signAuthorization(authorization);
+
+// 提交交易时附带授权
+const tx = {
+  to: '0x...',
+  data: '0x...',
+  authorizationList: [{
+    ...authorization,
+    yParity: signature.v,
+    r: signature.r,
+    s: signature.s,
+  }],
+};
+```
+
+**四、钱包端实现要点**
+
+1. **UserOperation 构造**
+```typescript
+interface UserOperation {
+  sender: string;           // 智能合约钱包地址
+  nonce: bigint;
+  initCode: string;         // 首次部署时使用
+  callData: string;         // 实际执行的数据
+  callGasLimit: bigint;
+  verificationGasLimit: bigint;
+  preVerificationGas: bigint;
+  maxFeePerGas: bigint;
+  maxPriorityFeePerGas: bigint;
+  paymasterAndData: string; // Paymaster 数据
+  signature: string;
+}
+
+// 构造批量交易
+const buildBatchUserOp = (calls: Call[]): string => {
+  return encodeFunctionData({
+    abi: SMART_WALLET_ABI,
+    functionName: 'executeBatch',
+    args: [calls],
+  });
+};
+```
+
+2. **Bundler 交互**
+```typescript
+class BundlerClient {
+  async sendUserOperation(userOp: UserOperation): Promise<string> {
+    // 估算 Gas
+    const gasEstimate = await this.estimateUserOperationGas(userOp);
+    userOp.callGasLimit = gasEstimate.callGasLimit;
+    
+    // 提交到 Bundler
+    return await this.rpc.call('eth_sendUserOperation', [userOp, ENTRY_POINT_ADDRESS]);
+  }
+  
+  async getUserOperationReceipt(userOpHash: string): Promise<Receipt> {
+    return await this.rpc.call('eth_getUserOperationReceipt', [userOpHash]);
+  }
+}
+```
+
+3. **Paymaster 集成**
+```typescript
+// 使用 Paymaster 代付 Gas
+const usePaymaster = async (userOp: UserOperation, paymasterUrl: string) => {
+  const paymasterClient = new PaymasterClient(paymasterUrl);
+  
+  // 获取 Paymaster 数据和签名
+  const paymasterData = await paymasterClient.sponsorUserOperation(userOp);
+  
+  userOp.paymasterAndData = paymasterData;
+  
+  // 重新签名（包含 Paymaster 数据）
+  userOp.signature = await signUserOp(userOp);
+  
+  return userOp;
+};
+```
+
+**五、EIP-7702 vs EIP-4337 对比**
+
+| 特性 | EIP-4337 | EIP-7702 |
+|------|----------|----------|
+| 账户类型 | 智能合约钱包 | EOA 临时委托 |
+| Gas 成本 | 较高（合约部署） | 较低（无部署） |
+| 兼容性 | 需要新基础设施 | 兼容现有 EOA |
+| 灵活性 | 高（完全自定义） | 中（临时委托） |
+| 恢复机制 | 合约内实现 | 需要配合 4337 |
+
+**六、安全考虑**
+
+1. **授权风险**
+- EIP-7702 授权是链上永久的，需要明确提示用户
+- 授权给恶意合约可能导致资产被盗
+
+```typescript
+// 危险检测
+const checkAuthorizationRisk = (contractAddress: string): RiskLevel => {
+  if (isKnownMaliciousContract(contractAddress)) {
+    return 'CRITICAL';
+  }
+  if (!isVerifiedContract(contractAddress)) {
+    return 'HIGH';
+  }
+  return 'LOW';
+};
+```
+
+2. **签名确认**
+- 必须清晰展示授权内容
+- 区分普通交易和授权操作
+
+```typescript
+// 授权确认页面
+const AuthorizationConfirm = ({ auth }: { auth: Authorization }) => (
+  <Alert type="warning">
+    <h3>⚠️ 授权风险提示</h3>
+    <p>您正在授权以下合约代表您的账户执行操作：</p>
+    <AddressDisplay address={auth.address} />
+    <p>此授权在链上永久有效，请确保您信任该合约。</p>
+  </Alert>
+);
+```"""
+    },
+    {
+        "title": "多链 DApp 交易解析如何实现？如何识别授权行为和资产变动？",
+        "tags": "交易解析 / 多链支持 / 授权检测 / 资产变动 / 安全防护",
+        "content": """**一、多链交易解析架构**
+
+OKX 钱包实现的多链解析支持 EVM / Solana / Aptos / Tron：
+
+```
+交易数据 → 链识别 → 解析器选择 → 结构化数据 → UI展示
+              ↓
+         合约 ABI / 指令解码
+```
+
+```typescript
+// 统一解析接口
+interface TransactionParser {
+  parse(transaction: RawTransaction): Promise<ParsedTransaction>;
+}
+
+interface ParsedTransaction {
+  type: 'transfer' | 'approve' | 'swap' | 'contract_call' | 'unknown';
+  from: string;
+  to: string;
+  value?: bigint;
+  tokenTransfers: TokenTransfer[];
+  assetChanges: AssetChange[];    // 资产变动预览
+  riskIndicators: RiskIndicator[];
+  humanReadable: string;          // 人类可读描述
+}
+```
+
+**二、EVM 链交易解析**
+
+1. **ERC-20 Transfer 识别**
+```typescript
+const parseERC20Transfer = (input: string): TokenTransfer | null => {
+  const selector = input.slice(0, 10);
+  if (selector !== '0xa9059cbb') return null; // transfer(address,uint256)
+  
+  const params = decodeAbiParameters(
+    [{ type: 'address' }, { type: 'uint256' }],
+    `0x${input.slice(10)}`
+  );
+  
+  return {
+    token: 'ERC-20',
+    from: '...', // 从交易 from 获取
+    to: params[0],
+    amount: params[1],
+    symbol: '',  // 需要查询合约
+  };
+};
+```
+
+2. **授权行为检测**
+```typescript
+const parseApproval = (input: string): ApprovalInfo | null => {
+  const selector = input.slice(0, 10);
+  
+  // approve(address,uint256) - 0x095ea7b3
+  // increaseAllowance(address,uint256) - 0x39509351
+  // permit(address,address,uint256,uint256,uint8,bytes32,bytes32) - 0xd505accf
+  
+  const APPROVAL_SELECTORS = ['0x095ea7b3', '0x39509351', '0xd505accf'];
+  
+  if (!APPROVAL_SELECTORS.includes(selector)) return null;
+  
+  const params = decodeApprovalParams(input);
+  
+  return {
+    type: 'approve',
+    spender: params.spender,
+    amount: params.amount,
+    isUnlimited: params.amount === MAX_UINT256,
+    riskLevel: calculateApprovalRisk(params.spender, params.amount),
+  };
+};
+
+// 授权风险评估
+const calculateApprovalRisk = (spender: string, amount: bigint): RiskLevel => {
+  if (isKnownMaliciousContract(spender)) return 'CRITICAL';
+  if (amount === MAX_UINT256) return 'HIGH'; // 无限授权
+  if (!isVerifiedContract(spender)) return 'MEDIUM';
+  return 'LOW';
+};
+```
+
+3. **资产变动预览**
+```typescript
+const calculateAssetChanges = async (
+  tx: Transaction,
+  userAddress: string
+): Promise<AssetChange[]> => {
+  const changes: AssetChange[] = [];
+  
+  // 1. 原生代币变动
+  if (tx.value > 0n) {
+    if (tx.from === userAddress) {
+      changes.push({
+        type: 'send',
+        token: 'ETH',
+        amount: -tx.value,
+      });
+    }
+    if (tx.to === userAddress) {
+      changes.push({
+        type: 'receive',
+        token: 'ETH',
+        amount: tx.value,
+      });
+    }
+  }
+  
+  // 2. 代币变动（通过事件模拟）
+  const tokenTransfers = await simulateTokenTransfers(tx);
+  for (const transfer of tokenTransfers) {
+    if (transfer.from === userAddress) {
+      changes.push({ type: 'send', token: transfer.token, amount: -transfer.amount });
+    }
+    if (transfer.to === userAddress) {
+      changes.push({ type: 'receive', token: transfer.token, amount: transfer.amount });
+    }
+  }
+  
+  // 3. NFT 变动
+  const nftTransfers = await simulateNFTTransfers(tx);
+  
+  return changes;
+};
+```
+
+**三、Solana 交易解析**
+
+Solana 是账户模型而非合约模型：
+
+```typescript
+const parseSolanaTransaction = (tx: SolanaTransaction): ParsedTransaction => {
+  const instructions = tx.message.instructions;
+  
+  for (const ix of instructions) {
+    const programId = tx.message.accountKeys[ix.programIdIndex];
+    
+    // SPL Token 转账
+    if (programId === TOKEN_PROGRAM_ID) {
+      return parseSPLTransfer(ix);
+    }
+    
+    // Associated Token Account 创建
+    if (programId === ASSOCIATED_TOKEN_PROGRAM_ID) {
+      return parseCreateATA(ix);
+    }
+    
+    // 系统转账
+    if (programId === SYSTEM_PROGRAM_ID) {
+      return parseSystemTransfer(ix);
+    }
+  }
+};
+
+// Solana 特殊场景：nonce account
+const checkNonceAccountRisk = (accounts: string[]): RiskIndicator[] => {
+  const risks: RiskIndicator[] = [];
+  
+  for (const account of accounts) {
+    const accountInfo = await connection.getAccountInfo(new PublicKey(account));
+    if (isNonceAccount(accountInfo)) {
+      risks.push({
+        type: 'warning',
+        message: '此交易涉及 nonce account，请确认 nonce 值正确',
+        severity: 'medium',
+      });
+    }
+  }
+  
+  return risks;
+};
+```
+
+**四、Tron 多签账户特殊处理**
+
+```typescript
+const parseTronTransaction = async (tx: TronTransaction): Promise<ParsedTransaction> => {
+  // Tron 使用 protobuf，需要先解码
+  const rawData = decodeBase58(tx.raw_data_hex);
+  
+  // 检测多签账户
+  const ownerAddress = rawData.contract[0].parameter.value.owner_address;
+  const account = await tronWeb.trx.getAccount(ownerAddress);
+  
+  if (account.owner_permission?.keys?.length > 1) {
+    // 多签账户
+    const requiredSignatures = account.owner_permission.keys.length;
+    
+    return {
+      type: 'multisig',
+      multisigInfo: {
+        required: account.owner_permission.threshold,
+        total: requiredSignatures,
+        signed: tx.signature?.length || 0,
+      },
+      riskIndicators: [{
+        type: 'info',
+        message: `多签账户：需要 ${requiredSignatures} 个签名中的 ${account.owner_permission.threshold} 个`,
+      }],
+    };
+  }
+  
+  // 检测钓鱼地址
+  const toAddress = rawData.contract[0].parameter.value.to_address;
+  if (await isPhishingAddress(toAddress)) {
+    return {
+      riskIndicators: [{
+        type: 'danger',
+        message: '⚠️ 目标地址在钓鱼地址黑名单中！请勿转账！',
+        severity: 'critical',
+      }],
+    };
+  }
+};
+```
+
+**五、人类可读描述生成**
+
+```typescript
+const generateHumanReadable = (parsed: ParsedTransaction): string => {
+  switch (parsed.type) {
+    case 'transfer':
+      return `向 ${truncateAddress(parsed.to)} 转账 ${formatAmount(parsed.value)} ETH`;
+      
+    case 'approve':
+      const approval = parsed.approvals[0];
+      if (approval.isUnlimited) {
+        return `⚠️ 授权 ${truncateAddress(approval.spender)} 无限额使用您的 ${approval.token}`;
+      }
+      return `授权 ${truncateAddress(approval.spender)} 使用 ${formatAmount(approval.amount)} ${approval.token}`;
+      
+    case 'swap':
+      return `将 ${formatAmount(parsed.swap.fromAmount)} ${parsed.swap.fromToken} 
+              兑换为 ${formatAmount(parsed.swap.toAmount)} ${parsed.swap.toToken}`;
+      
+    default:
+      return `与合约 ${truncateAddress(parsed.to)} 交互`;
+  }
+};
+```
+
+**六、性能与缓存策略**
+
+```typescript
+// ABI 缓存
+const abiCache = new LRUCache<string, Abi>({ max: 1000 });
+
+const getContractAbi = async (address: string): Promise<Abi> => {
+  if (abiCache.has(address)) {
+    return abiCache.get(address)!;
+  }
+  
+  const abi = await fetchAbiFromEtherscan(address);
+  abiCache.set(address, abi);
+  return abi;
+};
+
+// 代币元数据缓存
+const tokenMetadataCache = new Map<string, TokenMetadata>();
+
+const getTokenMetadata = async (address: string): Promise<TokenMetadata> => {
+  if (tokenMetadataCache.has(address)) {
+    return tokenMetadataCache.get(address)!;
+  }
+  
+  const contract = new Contract(address, ERC20_ABI, provider);
+  const [name, symbol, decimals] = await Promise.all([
+    contract.name(),
+    contract.symbol(),
+    contract.decimals(),
+  ]);
+  
+  const metadata = { name, symbol, decimals };
+  tokenMetadataCache.set(address, metadata);
+  return metadata;
+};
+```"""
+    },
 ]
 
 # ============ AI 题目库 (15道 - 通用) ============
@@ -1645,9 +2400,10 @@ def generate_content(questions, date_str):
 
     return "\n".join(lines)
 
-def save_and_commit(config=None):
+def save_and_commit(config=None, date_str=None):
     """保存文件并提交到 Git"""
-    date_str = datetime.now().strftime('%Y-%m-%d')
+    if date_str is None:
+        date_str = datetime.now().strftime('%Y-%m-%d')
     file_path = f"{QUESTION_DIR}/{date_str}.md"
 
     # 检查文件是否已存在
@@ -1758,23 +2514,57 @@ https://github.com/luoquanquan/learn-fe/blob/main/ai-generate/learn-docs/{date_s
 
 def main():
     """主函数"""
+    import argparse
+    
+    parser = argparse.ArgumentParser(description='生成面试题')
+    parser.add_argument('--date', type=str, help='指定日期 (格式: YYYY-MM-DD)')
+    parser.add_argument('--dates', type=str, nargs='+', help='指定多个日期 (格式: YYYY-MM-DD YYYY-MM-DD ...)')
+    args = parser.parse_args()
+    
+    # 确定要生成的日期列表
+    if args.dates:
+        dates = args.dates
+    elif args.date:
+        dates = [args.date]
+    else:
+        dates = [datetime.now().strftime('%Y-%m-%d')]
+    
     print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 开始生成面试题...")
-
+    print(f"[Config] 将生成 {len(dates)} 天的面试题: {', '.join(dates)}")
+    
     # 1. 读取配置文件
     config = load_interview_config()
-
-    # 2. 生成并提交（传入配置）
-    success, date_str, fe_count, web3_count, ai_count = save_and_commit(config)
-    if success:
-        # 2. 发送通知
-        send_notification(date_str, fe_count, web3_count, ai_count)
+    
+    all_success = True
+    for date_str in dates:
+        print(f"\n{'='*50}")
+        print(f"[生成] 日期: {date_str}")
+        print(f"{'='*50}")
+        
+        # 删除已存在的文件（强制重新生成）
+        file_path = f"{QUESTION_DIR}/{date_str}.md"
+        if os.path.exists(file_path):
+            os.remove(file_path)
+            print(f"[生成] 已删除旧文件: {file_path}")
+        
+        # 生成并提交（传入配置和日期）
+        success, generated_date, fe_count, web3_count, ai_count = save_and_commit(config, date_str)
+        if success:
+            # 发送通知
+            send_notification(generated_date, fe_count, web3_count, ai_count)
+            print(f"✅ {date_str} 生成完成！")
+        elif fe_count == 0:  # 文件已存在的情况
+            print(f"⚠️ {date_str} 面试题已存在，跳过生成")
+        else:
+            print(f"❌ {date_str} 生成失败")
+            all_success = False
+    
+    print(f"\n{'='*50}")
+    if all_success:
         print("✅ 全部完成！")
         return 0
-    elif fe_count == 0:  # 文件已存在的情况
-        print("⚠️ 今日面试题已存在，跳过生成")
-        return 0
     else:
-        print("❌ 生成失败")
+        print("❌ 部分生成失败")
         return 1
 
 if __name__ == "__main__":
