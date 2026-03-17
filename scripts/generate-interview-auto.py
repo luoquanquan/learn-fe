@@ -16,6 +16,65 @@ from datetime import datetime
 WORKSPACE = "/home/ubuntu/.openclaw/workspace/learn-fe"
 QUESTION_DIR = f"{WORKSPACE}/ai-generate/learn-docs"
 KNOWLEDGE_PROFILE = f"{WORKSPACE}/ai-generate/knowledge-profile.md"
+CONFIG_FILE = f"{WORKSPACE}/ai-generate/interview-config.md"
+
+def load_interview_config():
+    """加载面试题生成配置"""
+    config = {
+        "frontend_count": 3,
+        "web3_count": 4,
+        "ai_count": 3,
+        "require_detailed_answer": True,
+        "avoid_company_names": ["币安", "Binance", "MetaMask"],
+        "focus_areas": {
+            "frontend": ["移动端开发", "WebView通信", "性能优化", "TypeScript", "安全存储"],
+            "web3": ["钱包连接标准", "私钥管理", "多链支持", "交易签名", "安全防护", "DeFi集成"],
+            "ai": ["AI审计", "RAG应用", "AI Agent", "智能客服"]
+        }
+    }
+    
+    if os.path.exists(CONFIG_FILE):
+        print(f"[Config] 读取配置文件: {CONFIG_FILE}")
+        with open(CONFIG_FILE, 'r', encoding='utf-8') as f:
+            content = f.read()
+            
+        # 解析题目数量
+        if "前端：" in content:
+            try:
+                fe_line = [l for l in content.split('\n') if '前端：' in l and '题' in l][0]
+                config["frontend_count"] = int(fe_line.split('前端：')[1].split('题')[0])
+            except:
+                pass
+                
+        if "Web3：" in content:
+            try:
+                web3_line = [l for l in content.split('\n') if 'Web3：' in l and '题' in l][0]
+                config["web3_count"] = int(web3_line.split('Web3：')[1].split('题')[0])
+            except:
+                pass
+                
+        if "AI：" in content:
+            try:
+                ai_line = [l for l in content.split('\n') if 'AI：' in l and '题' in l][0]
+                config["ai_count"] = int(ai_line.split('AI：')[1].split('题')[0])
+            except:
+                pass
+        
+        # 解析详细程度要求
+        if "详细的技术实现代码" in content and "✅" in content.split("详细的技术实现代码")[0].split('\n')[-1]:
+            config["require_detailed_answer"] = True
+            
+        # 解析避免公司名称
+        if "避免特定公司名称" in content:
+            config["avoid_company_names"] = ["币安", "Binance", "MetaMask", "Coinbase", "OKX"]
+            
+        print(f"[Config] 题目数量: 前端{config['frontend_count']} + Web3 {config['web3_count']} + AI{config['ai_count']}")
+        print(f"[Config] 详细答案: {'是' if config['require_detailed_answer'] else '否'}")
+    else:
+        print(f"[Config] 配置文件不存在，使用默认配置")
+        
+    return config
+
 
 def load_learning_profile():
     """加载学习档案，分析弱项领域"""
@@ -41,6 +100,7 @@ def load_learning_profile():
         "weak_areas": weak_areas,
         "focus_topics": focus_topics
     }
+
 
 def get_personalized_distribution(profile):
     """根据学习档案调整题目分布"""
@@ -1494,15 +1554,24 @@ AI 建议 → 用户确认 → 执行
     },
 ]
 
-def select_balanced_questions():
+def select_balanced_questions(config=None):
     """根据学习档案选择个性化分布的题目"""
-    # 加载学习档案
+    # 加载学习档案（无论如何都加载，用于筛选题目）
     profile = load_learning_profile()
-    distribution = get_personalized_distribution(profile)
+    focus_topics = profile.get("focus_topics", [])
     
-    fe_count = distribution["frontend"]
-    web3_count = distribution["web3"]
-    ai_count = distribution["ai"]
+    # 加载配置文件（如果提供）
+    if config:
+        fe_count = config.get("frontend_count", 3)
+        web3_count = config.get("web3_count", 4)
+        ai_count = config.get("ai_count", 3)
+        print(f"[Config] 使用配置题目数量: 前端{fe_count} + Web3 {web3_count} + AI{ai_count}")
+    else:
+        # 使用学习档案动态调整
+        distribution = get_personalized_distribution(profile)
+        fe_count = distribution["frontend"]
+        web3_count = distribution["web3"]
+        ai_count = distribution["ai"]
     
     # 如果有特定关注主题，优先选择相关题目
     focus_topics = profile.get("focus_topics", [])
@@ -1583,7 +1652,7 @@ def generate_content(questions, date_str):
     
     return "\n".join(lines)
 
-def save_and_commit():
+def save_and_commit(config=None):
     """保存文件并提交到 Git"""
     date_str = datetime.now().strftime('%Y-%m-%d')
     file_path = f"{QUESTION_DIR}/{date_str}.md"
@@ -1595,8 +1664,8 @@ def save_and_commit():
     
     print(f"[{date_str}] 生成面试题...")
     
-    # 选择均衡分布的题目
-    questions, fe_count, web3_count, ai_count = select_balanced_questions()
+    # 选择均衡分布的题目（传入配置）
+    questions, fe_count, web3_count, ai_count = select_balanced_questions(config)
     content = generate_content(questions, date_str)
     
     # 写入文件
@@ -1698,8 +1767,11 @@ def main():
     """主函数"""
     print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 开始生成面试题...")
     
-    # 1. 生成并提交
-    success, date_str, fe_count, web3_count, ai_count = save_and_commit()
+    # 1. 读取配置文件
+    config = load_interview_config()
+    
+    # 2. 生成并提交（传入配置）
+    success, date_str, fe_count, web3_count, ai_count = save_and_commit(config)
     if success:
         # 2. 发送通知
         send_notification(date_str, fe_count, web3_count, ai_count)
