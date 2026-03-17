@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """
-自动生成面试题脚本 - 币安 Web3 钱包前端开发针对性版
+自动生成面试题脚本 - Web3 钱包前端开发专项版
 方向：前端(3题) + Web3(4题) + AI(3题)
 特色：针对钱包前端开发，涵盖移动端、安全、性能、多链等
 流程：生成 → Git 提交 → GitHub推送 → 飞书通知
+更新：答案更详细，内容更通用
 """
 
 import os
@@ -74,30 +75,71 @@ def run_cmd(cmd, cwd=None):
 FRONTEND_QUESTIONS = [
     {
         "title": "Web3 钱包移动端 H5 如何与 Native App 通信？JSBridge 的实现原理是什么？",
-        "tags": "JSBridge / 移动端 / 混合开发 / 币安钱包",
-        "content": """**JSBridge 核心原理**:
-- WebView 注入全局对象供 JS 调用
-- URL Scheme / Prompt / iframe 方式 Native 调用 JS
+        "tags": "JSBridge / 移动端 / 混合开发 / Web3钱包",
+        "content": """**一、JSBridge 核心原理**
 
-**币安钱包场景**:
+JSBridge 是 WebView 与 Native 之间双向通信的桥梁，核心机制包括：
+
+**1. Native 调用 JS**
+- iOS: `webView.evaluateJavaScript("jsCode")`
+- Android: `webView.loadUrl("javascript:jsCode")`
+
+**2. JS 调用 Native**
+- URL Scheme: `window.location = "native://method?param=value"`
+- Prompt 拦截: 安卓通过 `onJsPrompt` 拦截
+- 注入全局对象: Native 直接向 window 注入方法
+
+**二、完整通信流程示例**
+
 ```javascript
-// H5 调用 Native 签名
-window.BinanceWallet.postMessage(JSON.stringify({
+// 1. Native 注入桥接对象（App 启动时）
+// iOS: WKUserScript 注入
+// Android: addJavascriptInterface
+
+// 2. H5 调用 Native 签名
+const requestId = Date.now();
+window.WalletBridge.postMessage(JSON.stringify({
+  id: requestId,
   method: 'eth_signTransaction',
-  params: [{ from, to, value, data }],
-  id: Date.now()
+  params: [{ from, to, value, data, chainId }]
 }));
 
-// Native 回调
-window.BinanceWallet.callbacks[id] = (result) => {
-  // 处理签名结果
+// 3. Native 处理完成后回调
+window.WalletBridge.callbacks[requestId] = (result) => {
+  if (result.success) {
+    console.log('签名成功:', result.signature);
+  } else {
+    console.error('签名失败:', result.error);
+  }
+  delete window.WalletBridge.callbacks[requestId];
 };
 ```
 
-**安全考虑**:
-- 验证域名白名单
-- 敏感操作需要用户确认
-- 防止中间人攻击"""
+**三、安全最佳实践**
+
+1. **域名白名单验证**
+```javascript
+const ALLOWED_DOMAINS = ['app.example.com', 'dapp.example.com'];
+if (!ALLOWED_DOMAINS.includes(currentDomain)) {
+  throw new Error('Unauthorized domain');
+}
+```
+
+2. **请求签名防篡改**
+- 每个请求带时间戳和 nonce
+- 敏感操作需用户二次确认
+
+3. **HTTPS 强制**
+- 禁止 HTTP 页面调用敏感接口
+- Certificate Pinning 防中间人攻击
+
+**四、常见坑点**
+
+| 问题 | 原因 | 解决方案 |
+|------|------|----------|
+| 回调丢失 | 页面刷新/跳转 | 使用 sessionStorage 暂存待处理请求 |
+| 时序问题 | Native 注入晚于 JS 执行 | 轮询检测 bridge 对象 |
+| 内存泄漏 | 回调未清理 | 设置超时自动清理机制 |"""
     },
     {
         "title": "React Native 与 Flutter 在 Web3 钱包开发中如何选型？各自有什么优劣？",
@@ -111,7 +153,7 @@ window.BinanceWallet.callbacks[id] = (result) => {
 | 热更新 | CodePush友好 | 受限 |
 | 团队成本 | React背景易上手 | Dart学习成本 |
 
-**币安选择考量**:
+**选型建议**:
 - 已有React生态 → RN
 - 高性能渲染需求 → Flutter
 - 建议：核心链功能原生，UI层跨平台"""
@@ -119,34 +161,141 @@ window.BinanceWallet.callbacks[id] = (result) => {
     {
         "title": "Web3 钱包的私钥如何安全存储？移动端 Keychain/Keystore 的使用最佳实践？",
         "tags": "安全存储 / Keychain / 私钥管理 / 钱包安全",
-        "content": """**存储方案**:
-- iOS: Keychain（kSecAttrAccessibleAfterFirstUnlock）
-- Android: Keystore + EncryptedSharedPreferences
-- 禁止：LocalStorage、AsyncStorage 明文存储
+        "content": """**一、移动端密钥存储方案对比**
 
-**最佳实践**:
+| 存储方式 | iOS | Android | 安全等级 | 适用场景 |
+|----------|-----|---------|----------|----------|
+| Keychain/Keystore | ✅ | ✅ | ⭐⭐⭐⭐⭐ | 私钥、助记词 |
+| Secure Enclave | ✅ | ✅ (TEE) | ⭐⭐⭐⭐⭐ | 硬件级签名 |
+| EncryptedSharedPreferences | ❌ | ✅ | ⭐⭐⭐⭐ | 配置信息 |
+| AsyncStorage | ✅ | ✅ | ⭐⭐ | 禁止存储密钥 |
+
+**二、iOS Keychain 最佳实践**
+
 ```typescript
-// 使用 react-native-keychain
 import * as Keychain from 'react-native-keychain';
 
-// 存储私钥
-await Keychain.setGenericPassword(
-  'wallet_private_key',
-  encryptedPrivateKey,
-  { service: 'com.binance.wallet' }
-);
+// 1. 存储私钥（带生物识别保护）
+const storePrivateKey = async (privateKey: string) => {
+  const encryptedKey = await encryptWithPassword(privateKey);
+  
+  await Keychain.setGenericPassword(
+    'wallet_private_key',
+    encryptedKey,
+    {
+      service: 'com.example.wallet',
+      // 安全级别：首次解锁后可访问
+      accessible: Keychain.ACCESSIBLE.AFTER_FIRST_UNLOCK_THIS_DEVICE_ONLY,
+      // 生物识别保护
+      accessControl: Keychain.ACCESS_CONTROL.BIOMETRY_CURRENT_SET,
+    }
+  );
+};
 
-// 生物识别保护
-await Keychain.setGenericPassword(
-  username, password,
-  { accessControl: Keychain.ACCESS_CONTROL.BIOMETRY_CURRENT_SET }
-);
+// 2. 读取私钥
+const getPrivateKey = async (): Promise<string | null> => {
+  const credentials = await Keychain.getGenericPassword({
+    service: 'com.example.wallet',
+    authenticationPrompt: {
+      title: '验证身份',
+      subtitle: '访问您的钱包',
+    },
+  });
+  
+  if (credentials) {
+    return await decryptWithPassword(credentials.password);
+  }
+  return null;
+};
+
+// 3. 删除私钥
+const deletePrivateKey = async () => {
+  await Keychain.resetGenericPassword({
+    service: 'com.example.wallet',
+  });
+};
 ```
 
-**安全增强**:
-- 内存中短暂存储，使用后立即清除
-- 截屏/录屏保护（FLAG_SECURE）
-- 根/越狱检测"""
+**三、Android Keystore 最佳实践**
+
+```kotlin
+class SecureStorage(context: Context) {
+    private val keyStore = KeyStore.getInstance("AndroidKeyStore").apply { load(null) }
+    private val masterKey = MasterKey.Builder(context)
+        .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+        .setUserAuthenticationRequired(true) // 生物识别
+        .build()
+    
+    private val encryptedPrefs = EncryptedSharedPreferences.create(
+        context,
+        "wallet_secure",
+        masterKey,
+        EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+        EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+    )
+    
+    fun storePrivateKey(encryptedKey: String) {
+        encryptedPrefs.edit().putString("private_key", encryptedKey).apply()
+    }
+    
+    fun getPrivateKey(): String? {
+        return encryptedPrefs.getString("private_key", null)
+    }
+}
+```
+
+**四、安全增强措施**
+
+1. **内存安全**
+```typescript
+class SecureMemory {
+  private key: string | null = null;
+  
+  loadKey() {
+    // 使用时加载，用完立即清除
+    this.key = await getPrivateKey();
+    setTimeout(() => this.clear(), 30000); // 30秒超时
+  }
+  
+  clear() {
+    if (this.key) {
+      // 覆盖内存（防止被读取）
+      this.key = '0'.repeat(this.key.length);
+      this.key = null;
+    }
+  }
+}
+```
+
+2. **截屏/录屏保护**
+```kotlin
+// Android
+window.setFlags(
+    WindowManager.LayoutParams.FLAG_SECURE,
+    WindowManager.LayoutParams.FLAG_SECURE
+)
+
+// iOS
+override var prefersScreenCaptureDisabled: Bool { return true }
+```
+
+3. **根/越狱检测**
+```typescript
+import JailMonkey from 'jail-monkey';
+
+if (JailMonkey.isJailBroken()) {
+  Alert.alert('安全警告', '检测到设备已越狱/Root，请使用未越狱设备');
+}
+```
+
+**五、常见攻击与防护**
+
+| 攻击方式 | 风险 | 防护措施 |
+|----------|------|----------|
+| 键盘记录 | 密码泄露 | 使用系统安全键盘 |
+| 屏幕录制 | 密钥暴露 | FLAG_SECURE |
+| 备份窃取 | iCloud/Google 备份 | kSecAttrAccessibleThisDeviceOnly |
+| 内存转储 | 运行时提取 | 及时清理、加密存储 |"""
     },
     {
         "title": "钱包 DApp 浏览器如何实现？如何处理多链切换和钱包注入？",
@@ -155,7 +304,7 @@ await Keychain.setGenericPassword(
 ```
 DApp WebView
   ↓
-注入 Provider (window.ethereum / window.binanceChain)
+注入 Provider (window.ethereum / window.walletProvider)
   ↓
 拦截请求 → 路由到对应链 RPC
 ```
@@ -182,26 +331,183 @@ window.ethereum.request = async (args) => {
     {
         "title": "Web3 钱包的性能优化有哪些关键点？如何优化代币列表渲染和交易历史加载？",
         "tags": "性能优化 / 虚拟列表 / 懒加载 / 钱包体验",
-        "content": """**代币列表优化**:
-- 虚拟列表：react-window / FlashList
-- 优先级：主币/热门币优先加载
-- 图片：WebP 格式 + 占位符
+        "content": """**一、钱包性能瓶颈分析**
 
-**交易历史**:
-- 分页加载（cursor-based）
-- 本地缓存 + 增量更新
-- 后台轮询 + 推送结合
+| 场景 | 瓶颈 | 影响 |
+|------|------|------|
+| 代币列表 | 大量 Token 渲染 | 卡顿、掉帧 |
+| 交易历史 | 频繁 RPC 请求 | 慢、耗电 |
+| 图片加载 | 大量图标下载 | 流量、内存 |
+| 实时更新 | WebSocket 消息过多 | CPU 占用高 |
 
-**内存管理**:
-```javascript
+**二、代币列表优化方案**
+
+**1. 虚拟列表（Virtual List）**
+```typescript
+import { FlashList } from '@shopify/flash-list';
+
+<FlashList
+  data={tokens}
+  renderItem={({ item }) => <TokenItem token={item} />}
+  estimatedItemSize={64}
+  getItemType={(item) => item.isNative ? 'native' : 'token'}
+  // 优化：复用组件类型
+  keyExtractor={(item) => item.address}
+  // 只渲染屏幕内 + 缓冲区
+  removeClippedSubviews={true}
+/>
+```
+
+**2. 分层加载策略**
+```typescript
+const TokenList = () => {
+  const [displayTokens, setDisplayTokens] = useState([]);
+  
+  useEffect(() => {
+    // 第一优先级：主币 + 有余额代币
+    const priorityTokens = tokens.filter(t => 
+      t.isNative || parseFloat(t.balance) > 0
+    );
+    setDisplayTokens(priorityTokens);
+    
+    // 第二优先级：热门代币（延迟加载）
+    setTimeout(() => {
+      const popularTokens = tokens.filter(t => 
+        t.isPopular && !priorityTokens.includes(t)
+      );
+      setDisplayTokens(prev => [...prev, ...popularTokens]);
+    }, 100);
+    
+    // 第三优先级：其他代币（用户滚动时加载）
+  }, [tokens]);
+};
+```
+
+**3. 图片优化**
+```typescript
+// 使用 WebP 格式 + 渐进加载
+<Image
+  source={{
+    uri: token.icon,
+    // 优先使用 WebP
+    headers: { Accept: 'image/webp,image/*' }
+  }}
+  // 占位图防止布局抖动
+  defaultSource={require('./token-placeholder.png')}
+  // 缓存策略
+  cachePolicy="memory-disk"
+  // 缩略图尺寸
+  style={{ width: 40, height: 40 }}
+/>
+```
+
+**三、交易历史优化**
+
+**1. Cursor 分页加载**
+```typescript
+interface TransactionQuery {
+  cursor?: string;  // 上次最后一条的 ID
+  limit: number;    // 每页数量
+}
+
+const fetchTransactions = async (cursor?: string) => {
+  const response = await api.get('/transactions', {
+    params: { cursor, limit: 20 }
+  });
+  return {
+    data: response.data,
+    nextCursor: response.pagination.next_cursor,
+    hasMore: response.pagination.has_more,
+  };
+};
+```
+
+**2. 本地缓存策略**
+```typescript
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+class TransactionCache {
+  private readonly KEY = 'tx_cache_';
+  private readonly MAX_AGE = 5 * 60 * 1000; // 5分钟
+  
+  async get(address: string): Promise<Transaction[] | null> {
+    const cached = await AsyncStorage.getItem(this.KEY + address);
+    if (!cached) return null;
+    
+    const { data, timestamp } = JSON.parse(cached);
+    if (Date.now() - timestamp > this.MAX_AGE) {
+      return null; // 缓存过期
+    }
+    return data;
+  }
+  
+  async set(address: string, data: Transaction[]) {
+    await AsyncStorage.setItem(this.KEY + address, JSON.stringify({
+      data,
+      timestamp: Date.now(),
+    }));
+  }
+  
+  // 增量更新
+  async merge(address: string, newTxs: Transaction[]) {
+    const existing = await this.get(address) || [];
+    const merged = [...newTxs, ...existing].filter(
+      (tx, index, self) => 
+        index === self.findIndex(t => t.hash === tx.hash)
+    );
+    await this.set(address, merged);
+  }
+}
+```
+
+**3. 智能轮询策略**
+```typescript
+const useTransactionPolling = (pendingTxs: string[]) => {
+  const [interval, setInterval] = useState(3000);
+  
+  useEffect(() => {
+    if (pendingTxs.length === 0) return;
+    
+    const timer = setInterval(async () => {
+      const statuses = await checkTxStatus(pendingTxs);
+      
+      // 动态调整轮询间隔
+      const allConfirmed = statuses.every(s => s.confirmed);
+      if (allConfirmed) {
+        setInterval(30000); // 都确认了，降低频率
+      } else {
+        setInterval(prev => Math.min(prev * 1.5, 30000)); // 指数退避
+      }
+    }, interval);
+    
+    return () => clearInterval(timer);
+  }, [pendingTxs, interval]);
+};
+```
+
+**四、内存管理**
+```typescript
 // 大列表释放
 useEffect(() => {
   return () => {
     // 清理图片缓存
-    Image.clearMemoryCache();
+    Image.clearMemoryCache?.();
+    // 取消未完成的请求
+    abortController.abort();
+    // 清理临时数据
+    setTransactions([]);
   };
 }, []);
-```"""
+```
+
+**五、性能监控指标**
+
+| 指标 | 目标值 | 测量方式 |
+|------|--------|----------|
+| 首屏渲染 | < 1s | React DevTools Profiler |
+| 滚动帧率 | > 55 FPS | Flipper Performance |
+| 内存占用 | < 200 MB | Xcode/Android Profiler |
+| 包体积 | < 50 MB | 构建产物分析 |"""
     },
     {
         "title": "钱包中的交易状态追踪如何实现？如何处理pending交易的实时更新？",
@@ -230,10 +536,11 @@ class TransactionTracker {
 }
 ```
 
-**币安方案**:
-- 自有节点 WebSocket
-- 多链统一抽象层
-- 交易失败自动重试"""
+**实现方案对比**:
+- 自建节点 WebSocket: 低延迟、高成本
+- 第三方服务: Alchemy/Infura 提供 WebSocket 支持
+- 多链统一抽象层: 封装不同链的差异
+- 交易失败自动重试机制"""
     },
     {
         "title": "TypeScript 在大型钱包项目中的工程实践？如何设计类型安全的链上数据层？",
@@ -316,7 +623,7 @@ interface Transaction {
 - 键盘导航支持
 - 屏幕阅读器测试
 
-**币安规范**:
+**设计规范**:
 - 对比度 WCAG 2.1 AA 标准
 - 动态字体大小适配
 - 减少动画（prefers-reduced-motion）"""
@@ -444,7 +751,7 @@ async function verifyAddress(ens, address) {
 - 多链地址解析"""
     },
     {
-        "title": "前端如何实现安全的 iframe 集成？币安钱包如何嵌入第三方 DApp？",
+        "title": "前端如何实现安全的 iframe 集成？Web3钱包如何嵌入第三方 DApp？",
         "tags": "iframe / 沙箱 / 安全隔离 / DApp集成",
         "content": """**iframe 安全属性**:
 ```html
@@ -499,7 +806,7 @@ FCM (Android) / APNS (iOS)
         "tags": "价格更新 / WebSocket / 数据推送 / 实时性",
         "content": """**数据源**:
 - CoinGecko / CoinMarketCap API
-- 币安行情 WebSocket
+- 主流交易所 WebSocket
 - Chainlink 预言机
 
 **策略选择**:
@@ -557,7 +864,7 @@ t('wallet.balance', { amount: '1.5 ETH' });
 - 翻译 + 英文注释：质押(Staking)、流动性池(LP)
 - 地区差异：Gas Fee → 矿工费(中) / Gas费(港)
 
-**币安规范**:
+**设计规范**:
 - 20+ 语言支持
 - 专业术语表统一
 - RTL（阿拉伯语）适配"""
@@ -577,7 +884,7 @@ WEB3_QUESTIONS = [
 ```javascript
 // 钱包广播
 window.dispatchEvent(new CustomEvent('eip6963:announceProvider', {
-  detail: { info: { name: 'Binance Wallet', icon, rdns }, provider }
+  detail: { info: { name: 'Example Wallet', icon, rdns }, provider }
 }));
 
 // DApp 监听
@@ -586,7 +893,7 @@ window.addEventListener('eip6963:announceProvider', (e) => {
 });
 ```
 
-**币安实现**: 同时支持两种标准，兼容新旧 DApp"""
+**实现参考**: 同时支持两种标准，兼容新旧 DApp"""
     },
     {
         "title": "WalletConnect v2 的工作原理是什么？与 v1 相比有什么安全改进？",
@@ -605,11 +912,11 @@ window.addEventListener('eip6963:announceProvider', (e) => {
 | 单链 | 多链 |
 | 无权限管理 | 作用域授权 |
 
-**币安集成**: 支持 WalletConnect，方便连接桌面 DApp"""
+**集成方案**: 支持 WalletConnect，方便连接桌面 DApp"""
     },
     {
         "title": "如何防范钱包常见的钓鱼攻击？假冒 DApp、假代币、签名钓鱼的识别方法？",
-        "tags": "安全 / 钓鱼攻击 / 防骗 / 币安安全",
+        "tags": "安全 / 钓鱼攻击 / 防骗 / Web3安全",
         "content": """**钓鱼类型及防范**:
 
 1. **假冒 DApp**
@@ -627,14 +934,14 @@ window.addEventListener('eip6963:announceProvider', (e) => {
    - 个人签名 vs 交易签名区分
    - Permit/Approve 额度检查
 
-**币安安全中心**:
+**Web3安全中心**:
 - 实时黑名单更新
 - 社区举报机制
 - AI 风险地址检测"""
     },
     {
         "title": "以太坊和 BSC 的 RPC 调用有什么区别？钱包如何统一多链交互接口？",
-        "tags": "多链支持 / EVM兼容 / RPC差异 / 币安链",
+        "tags": "多链支持 / EVM兼容 / RPC差异 / BSC链",
         "content": """**链差异**:
 | 特性 | 以太坊 | BSC |
 |------|--------|-----|
@@ -662,7 +969,7 @@ class BSCProvider extends EVMProvider {
 }
 ```
 
-**币安优势**: BSC 作为主力链，深度优化"""
+**BSC优势**: BSC 作为主力链，深度优化"""
     },
     {
         "title": "硬件钱包（Ledger/Trezor）与软件钱包的集成方案？如何实现安全通信？",
@@ -708,7 +1015,7 @@ if (spender.isUnverified) {
 }
 ```
 
-**币安方案**:
+**主流方案**:
 - 智能合约风险评分
 - 授权额度建议（基于使用场景）
 - 定期提醒检查授权"""
@@ -733,7 +1040,7 @@ Base Fee:         15 Gwei (销毁)
 预计费用: 0.0005 - 0.001 ETH
 ```
 
-**币安设计**:
+**设计建议**:
 - 默认使用 EIP-1559
 - 显示费用组成（Base + Priority）
 - 费用趋势指示（↑拥堵 ↓空闲）"""
@@ -759,10 +1066,10 @@ L2 → L1: 提款，7天挑战期（Optimism）
 预计完成: 2024-01-15 12:00
 ```
 
-**币安方案**: 提供快速通道（自有流动性）"""
+**主流方案**: 提供快速通道（自有流动性）"""
     },
     {
-        "title": "MPC（多方计算）钱包和智能合约钱包各有什么优劣？币安钱包采用什么方案？",
+        "title": "MPC（多方计算）钱包和智能合约钱包各有什么优劣？Web3钱包采用什么方案？",
         "tags": "MPC / 智能合约钱包 / 密钥管理 / AA",
         "content": """**MPC 钱包**:
 - 私钥分片，多方协同签名
@@ -781,7 +1088,7 @@ L2 → L1: 提款，7天挑战期（Optimism）
 | 成本 | 低（普通交易）| 高（合约调用）|
 | 功能 | 有限 | 丰富 |
 
-**币安**: 多方案支持，根据用户场景推荐"""
+**BSC**: 多方案支持，根据用户场景推荐"""
     },
     {
         "title": "NFT 市场在钱包中的实现要点？如何处理图片加载和元数据解析？",
@@ -806,11 +1113,11 @@ L2 → L1: 提款，7天挑战期（Optimism）
 - 本地缓存元数据
 - 支持视频/音频 NFT
 
-**币安 NFT**: 集成自有 NFT 市场"""
+**NFT市场**: 集成自有 NFT 市场"""
     },
     {
         "title": "DeFi 收益聚合器（如 Venus、PancakeSwap）如何在钱包中安全集成？",
-        "tags": "DeFi / 收益聚合 / PancakeSwap / 币安生态",
+        "tags": "DeFi / 收益聚合 / PancakeSwap / BSC生态",
         "content": """**集成要点**:
 
 1. **合约审计**
@@ -826,7 +1133,7 @@ L2 → L1: 提款，7天挑战期（Optimism）
    - 默认 0.5%，大额交易提示
    - MEV 保护（私有内存池）
 
-4. **币安生态**
+4. **BSC生态**
    - BSC 优先集成
    - PancakeSwap, Venus, Alpaca 等"""
     },
@@ -871,7 +1178,7 @@ L2 → L1: 提款，7天挑战期（Optimism）
 **代表项目**: Argent, Loopring"""
     },
     {
-        "title": "多链钱包的地址派生如何管理？HD 钱包（BIP-32/44）在币安钱包中的应用？",
+        "title": "多链钱包的地址派生如何管理？HD 钱包（BIP-32/44）在Web3钱包中的应用？",
         "tags": "HD钱包 / BIP44 / 地址派生 / 多链管理",
         "content": """**BIP-44 路径**:
 ```
@@ -886,7 +1193,7 @@ m/44'/0'/0'/0/0     # BTC
 - 地址派生预计算（前10个地址）
 - 用户切换链时地址自动切换
 
-**币安实现**:
+**实现参考**:
 - 支持 50+ 链
 - 一键创建多链钱包
 - 地址标签自定义"""
@@ -899,7 +1206,7 @@ m/44'/0'/0'/0/0     # BTC
 |--------|------|------|
 | USDT | ERC20 | 有黑名单功能 |
 | USDC | ERC20 | 有冻结功能 |
-| BUSD | ERC20 | 币安发行 |
+| BUSD | ERC20 | 官方发行 |
 
 **多链处理**:
 - ETH: USDT (ERC20)
@@ -931,7 +1238,7 @@ m/44'/0'/0'/0/0     # BTC
 - Chainalysis
 - Elliptic
 - TRM Labs
-- 币安自有风控系统
+- 平台自有风控系统
 
 **用户提示**:
 - 风险地址警告
@@ -967,7 +1274,7 @@ const domain = {
         "content": """**Token List 来源**:
 - CoinGecko / CoinMarketCap
 - 官方 Token List（Uniswap, PancakeSwap）
-- 币安官方列表
+- 官方列表
 
 **防假币策略**:
 1. **合约地址校验**
@@ -997,7 +1304,7 @@ const domain = {
            用户确认 → 执行交易
 ```
 
-**币安集成**:
+**集成方案**:
 - PancakeSwap（BSC主力）
 - 自有聚合引擎
 - 最低价格保证"""
@@ -1124,7 +1431,7 @@ AI_QUESTIONS = [
 - 工具调用：查询实时链上数据
 - 边界设定：不确定时拒绝回答
 
-**币安实现**:
+**实现参考**:
 - 内置 AI 助手
 - 交易摘要生成"""
     },
@@ -1257,7 +1564,7 @@ def generate_content(questions, date_str):
         "- [WalletConnect 文档](https://docs.walletconnect.com)",
         "- [EIP-1193](https://eips.ethereum.org/EIPS/eip-1193)",
         "- [EIP-6963](https://eips.ethereum.org/EIPS/eip-6963)",
-        "- [币安钱包开发者](https://www.binance.com/en/web3wallet)",
+        "- [MetaMask 开发者文档](https://docs.metamask.io)",
         "",
         "### Web3 安全",
         "- [SlowMist 安全审计](https://www.slowmist.com)",
@@ -1270,7 +1577,7 @@ def generate_content(questions, date_str):
         "---",
         "",
         f"*生成日期: {date_str}*",
-        "*方向: 前端(3题) + Web3(4题) + AI(3题) - 币安钱包前端开发针对性版*",
+        "*方向: 前端(3题) + Web3(4题) + AI(3题) - Web3钱包前端开发针对性版*",
         "*题库规模: 前端18道 + Web3 25道 + AI 5道 = 48道*",
     ])
     
@@ -1310,7 +1617,7 @@ def save_and_commit():
     
     # git commit
     success, stdout, stderr = run_cmd(
-        f'git commit -m "feat: add Binance Wallet interview questions (FE{fe_count}+Web3{web3_count}+AI{ai_count}) for {date_str}"',
+        f'git commit -m "feat: add Web3 Wallet interview questions (FE{fe_count}+Web3{web3_count}+AI{ai_count}) for {date_str}"',
         WORKSPACE
     )
     if not success:
