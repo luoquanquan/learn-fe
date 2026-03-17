@@ -28,6 +28,8 @@
 - ✅ 提供具体的代码示例和最佳实践
 - ✅ 列出常见坑点和解决方案
 
+**对生成的问题和答案进行二次检查, 确保问题的拓展性和答案的完整性**
+
 ### 内容风格
 - ❌ 避免特定公司名称（如币安、MetaMask 等）
 - ✅ 使用通用描述（如"主流钱包"、"常见实现"）
@@ -38,19 +40,22 @@
 ## 重点方向
 
 ### 前端方向侧重
-1. 移动端开发（React Native / Flutter）
-2. WebView 与 Native 通信
-3. 性能优化（虚拟列表、内存管理）
-4. TypeScript 工程实践
-5. 安全存储（Keychain/Keystore）
+1. TypeScript 工程实践, Node.js 相关知识
+2. CSS 常见开发技巧(如何实现垂直水平居中, 高度塌陷, 盒模型等等)
+3. 性能优化（虚拟列表、内存管理, CDN缓存, 浏览器缓存等）
+4. 安全存储（Keychain/Keystore）
+5. 开发优化, 如: webpack, vite, rollup, esbuild, Turbopack, Raspack 等构建工具的基础知识和调优
+6. 常见的 web 安全漏洞攻击和防护, 如(XSS, CSRF, SQL 注入, 点击劫持等等)
 
 ### Web3 方向侧重
 1. 钱包连接标准（EIP-1193、EIP-6963、WalletConnect）
-2. 私钥管理和安全
-3. 多链支持
-4. 交易签名和状态追踪
-5. 常见攻击防护（钓鱼、假币、授权风险）
-6. DeFi 集成（Swap、Staking）
+2. ERCs 的演进过程, 讲述不同的 ERC 解决了什么问题. 如: ERC20, ERC721, ERC1155, EIP721, EIP7702, EIP4337, EIP5792 等等
+3. 私钥管理和安全, 端到端加密
+4. 多链钱包支持, 交易签名和状态追踪
+6. 常见攻击防护（钓鱼、假币、授权风险, 蜜罐等）
+7. DeFi 集成（Swap、Staking）
+8. 常见硬件钱包 Ledger, Trezor, Onekey, Keystone 相关的知识
+9. 常见的公链 EVM, BTC, Solana, SUI, Aptos, Ripple, Tempo 等, 相关知识点
 
 ### AI 方向侧重
 1. AI + Web3 安全审计
@@ -74,6 +79,7 @@
 - Markdown 格式
 - 包含考点标签
 - 分点详细回答
+- 答案要全面, 对于输出的答案要二次验证. 确保正确性和完整性
 - 附录：学习资源链接
 
 ---

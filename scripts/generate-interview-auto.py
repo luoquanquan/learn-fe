@@ -1,11 +1,4 @@
 #!/usr/bin/env python3
-"""
-自动生成面试题脚本 - Web3 钱包前端开发专项版
-方向：前端(3题) + Web3(4题) + AI(3题)
-特色：针对钱包前端开发，涵盖移动端、安全、性能、多链等
-流程：生成 → Git 提交 → GitHub推送 → 飞书通知
-更新：答案更详细，内容更通用
-"""
 
 import os
 import subprocess
@@ -32,12 +25,12 @@ def load_interview_config():
             "ai": ["AI审计", "RAG应用", "AI Agent", "智能客服"]
         }
     }
-    
+
     if os.path.exists(CONFIG_FILE):
         print(f"[Config] 读取配置文件: {CONFIG_FILE}")
         with open(CONFIG_FILE, 'r', encoding='utf-8') as f:
             content = f.read()
-            
+
         # 解析题目数量
         if "前端：" in content:
             try:
@@ -45,34 +38,34 @@ def load_interview_config():
                 config["frontend_count"] = int(fe_line.split('前端：')[1].split('题')[0])
             except:
                 pass
-                
+
         if "Web3：" in content:
             try:
                 web3_line = [l for l in content.split('\n') if 'Web3：' in l and '题' in l][0]
                 config["web3_count"] = int(web3_line.split('Web3：')[1].split('题')[0])
             except:
                 pass
-                
+
         if "AI：" in content:
             try:
                 ai_line = [l for l in content.split('\n') if 'AI：' in l and '题' in l][0]
                 config["ai_count"] = int(ai_line.split('AI：')[1].split('题')[0])
             except:
                 pass
-        
+
         # 解析详细程度要求
         if "详细的技术实现代码" in content and "✅" in content.split("详细的技术实现代码")[0].split('\n')[-1]:
             config["require_detailed_answer"] = True
-            
+
         # 解析避免公司名称
         if "避免特定公司名称" in content:
             config["avoid_company_names"] = ["币安", "Binance", "MetaMask", "Coinbase", "OKX"]
-            
+
         print(f"[Config] 题目数量: 前端{config['frontend_count']} + Web3 {config['web3_count']} + AI{config['ai_count']}")
         print(f"[Config] 详细答案: {'是' if config['require_detailed_answer'] else '否'}")
     else:
         print(f"[Config] 配置文件不存在，使用默认配置")
-        
+
     return config
 
 
@@ -80,11 +73,11 @@ def load_learning_profile():
     """加载学习档案，分析弱项领域"""
     weak_areas = []
     focus_topics = []
-    
+
     if os.path.exists(KNOWLEDGE_PROFILE):
         with open(KNOWLEDGE_PROFILE, 'r', encoding='utf-8') as f:
             content = f.read()
-            
+
             # 分析待提升领域
             if "Web3 安全" in content or "智能合约" in content:
                 weak_areas.append("security")
@@ -95,7 +88,7 @@ def load_learning_profile():
             if "性能优化" in content or "浏览器原理" in content:
                 weak_areas.append("performance")
                 focus_topics.extend(["性能优化", "V8", "渲染"])
-    
+
     return {
         "weak_areas": weak_areas,
         "focus_topics": focus_topics
@@ -110,9 +103,9 @@ def get_personalized_distribution(profile):
         "web3": 4,
         "ai": 3
     }
-    
+
     weak_areas = profile.get("weak_areas", [])
-    
+
     # 根据弱项调整分布
     if "security" in weak_areas:
         distribution["web3"] = 5  # 增加 Web3 安全题目
@@ -123,7 +116,7 @@ def get_personalized_distribution(profile):
     elif "performance" in weak_areas:
         distribution["frontend"] = 4  # 增加前端深度题目
         distribution["ai"] = 2
-    
+
     return distribution
 
 def run_cmd(cmd, cwd=None):
@@ -238,7 +231,7 @@ import * as Keychain from 'react-native-keychain';
 // 1. 存储私钥（带生物识别保护）
 const storePrivateKey = async (privateKey: string) => {
   const encryptedKey = await encryptWithPassword(privateKey);
-  
+
   await Keychain.setGenericPassword(
     'wallet_private_key',
     encryptedKey,
@@ -261,7 +254,7 @@ const getPrivateKey = async (): Promise<string | null> => {
       subtitle: '访问您的钱包',
     },
   });
-  
+
   if (credentials) {
     return await decryptWithPassword(credentials.password);
   }
@@ -285,7 +278,7 @@ class SecureStorage(context: Context) {
         .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
         .setUserAuthenticationRequired(true) // 生物识别
         .build()
-    
+
     private val encryptedPrefs = EncryptedSharedPreferences.create(
         context,
         "wallet_secure",
@@ -293,11 +286,11 @@ class SecureStorage(context: Context) {
         EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
         EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
     )
-    
+
     fun storePrivateKey(encryptedKey: String) {
         encryptedPrefs.edit().putString("private_key", encryptedKey).apply()
     }
-    
+
     fun getPrivateKey(): String? {
         return encryptedPrefs.getString("private_key", null)
     }
@@ -310,13 +303,13 @@ class SecureStorage(context: Context) {
 ```typescript
 class SecureMemory {
   private key: string | null = null;
-  
+
   loadKey() {
     // 使用时加载，用完立即清除
     this.key = await getPrivateKey();
     setTimeout(() => this.clear(), 30000); // 30秒超时
   }
-  
+
   clear() {
     if (this.key) {
       // 覆盖内存（防止被读取）
@@ -422,22 +415,22 @@ import { FlashList } from '@shopify/flash-list';
 ```typescript
 const TokenList = () => {
   const [displayTokens, setDisplayTokens] = useState([]);
-  
+
   useEffect(() => {
     // 第一优先级：主币 + 有余额代币
-    const priorityTokens = tokens.filter(t => 
+    const priorityTokens = tokens.filter(t =>
       t.isNative || parseFloat(t.balance) > 0
     );
     setDisplayTokens(priorityTokens);
-    
+
     // 第二优先级：热门代币（延迟加载）
     setTimeout(() => {
-      const popularTokens = tokens.filter(t => 
+      const popularTokens = tokens.filter(t =>
         t.isPopular && !priorityTokens.includes(t)
       );
       setDisplayTokens(prev => [...prev, ...popularTokens]);
     }, 100);
-    
+
     // 第三优先级：其他代币（用户滚动时加载）
   }, [tokens]);
 };
@@ -489,30 +482,30 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 class TransactionCache {
   private readonly KEY = 'tx_cache_';
   private readonly MAX_AGE = 5 * 60 * 1000; // 5分钟
-  
+
   async get(address: string): Promise<Transaction[] | null> {
     const cached = await AsyncStorage.getItem(this.KEY + address);
     if (!cached) return null;
-    
+
     const { data, timestamp } = JSON.parse(cached);
     if (Date.now() - timestamp > this.MAX_AGE) {
       return null; // 缓存过期
     }
     return data;
   }
-  
+
   async set(address: string, data: Transaction[]) {
     await AsyncStorage.setItem(this.KEY + address, JSON.stringify({
       data,
       timestamp: Date.now(),
     }));
   }
-  
+
   // 增量更新
   async merge(address: string, newTxs: Transaction[]) {
     const existing = await this.get(address) || [];
     const merged = [...newTxs, ...existing].filter(
-      (tx, index, self) => 
+      (tx, index, self) =>
         index === self.findIndex(t => t.hash === tx.hash)
     );
     await this.set(address, merged);
@@ -524,13 +517,13 @@ class TransactionCache {
 ```typescript
 const useTransactionPolling = (pendingTxs: string[]) => {
   const [interval, setInterval] = useState(3000);
-  
+
   useEffect(() => {
     if (pendingTxs.length === 0) return;
-    
+
     const timer = setInterval(async () => {
       const statuses = await checkTxStatus(pendingTxs);
-      
+
       // 动态调整轮询间隔
       const allConfirmed = statuses.every(s => s.confirmed);
       if (allConfirmed) {
@@ -539,7 +532,7 @@ const useTransactionPolling = (pendingTxs: string[]) => {
         setInterval(prev => Math.min(prev * 1.5, 30000)); // 指数退避
       }
     }, interval);
-    
+
     return () => clearInterval(timer);
   }, [pendingTxs, interval]);
 };
@@ -585,12 +578,12 @@ Submitted → Pending → Mined → Confirmed
 class TransactionTracker {
   // WebSocket 实时通知
   subscribeWs(txs) { ... }
-  
+
   // 指数退避轮询（备用）
   pollWithBackoff(txHash) {
     const delay = Math.min(1000 * 2**attempt, 30000);
   }
-  
+
   // 本地 nonce 管理防止 stuck
   checkStuckTransactions() { ... }
 }
@@ -815,7 +808,7 @@ async function verifyAddress(ens, address) {
         "tags": "iframe / 沙箱 / 安全隔离 / DApp集成",
         "content": """**iframe 安全属性**:
 ```html
-<iframe 
+<iframe
   sandbox="allow-scripts allow-same-origin"
   referrerpolicy="no-referrer"
   csp="default-src 'self'"
@@ -827,7 +820,7 @@ async function verifyAddress(ens, address) {
 // postMessage 白名单
 window.addEventListener('message', (e) => {
   if (!ALLOWED_ORIGINS.includes(e.origin)) return;
-  
+
   if (e.data.type === 'WALLET_REQUEST') {
     // 处理钱包请求
   }
@@ -1559,7 +1552,7 @@ def select_balanced_questions(config=None):
     # 加载学习档案（无论如何都加载，用于筛选题目）
     profile = load_learning_profile()
     focus_topics = profile.get("focus_topics", [])
-    
+
     # 加载配置文件（如果提供）
     if config:
         fe_count = config.get("frontend_count", 3)
@@ -1572,10 +1565,10 @@ def select_balanced_questions(config=None):
         fe_count = distribution["frontend"]
         web3_count = distribution["web3"]
         ai_count = distribution["ai"]
-    
+
     # 如果有特定关注主题，优先选择相关题目
     focus_topics = profile.get("focus_topics", [])
-    
+
     # 筛选与关注主题相关的题目
     def filter_by_topics(questions, topics):
         if not topics:
@@ -1583,15 +1576,15 @@ def select_balanced_questions(config=None):
         related = [q for q in questions if any(t in q.get("tags", "") or t in q.get("title", "") for t in topics)]
         # 确保有足够题目可选
         return related if len(related) >= 2 else questions
-    
+
     fe_pool = filter_by_topics(FRONTEND_QUESTIONS, focus_topics)
     web3_pool = filter_by_topics(WEB3_QUESTIONS, focus_topics)
     ai_pool = filter_by_topics(AI_QUESTIONS, focus_topics)
-    
+
     fe_questions = random.sample(fe_pool, min(fe_count, len(fe_pool)))
     web3_questions = random.sample(web3_pool, min(web3_count, len(web3_pool)))
     ai_questions = random.sample(ai_pool, min(ai_count, len(ai_pool)))
-    
+
     # 如果筛选后数量不足，从完整题库补充
     if len(fe_questions) < fe_count:
         remaining = [q for q in FRONTEND_QUESTIONS if q not in fe_questions]
@@ -1602,17 +1595,17 @@ def select_balanced_questions(config=None):
     if len(ai_questions) < ai_count:
         remaining = [q for q in AI_QUESTIONS if q not in ai_questions]
         ai_questions.extend(random.sample(remaining, ai_count - len(ai_questions)))
-    
+
     # 合并并打乱顺序
     all_questions = fe_questions + web3_questions + ai_questions
     random.shuffle(all_questions)
-    
+
     return all_questions, fe_count, web3_count, ai_count
 
 def generate_content(questions, date_str):
     """生成完整的 markdown 内容"""
     lines = [f"# {date_str}", "", "---", ""]
-    
+
     for i, q in enumerate(questions, 1):
         lines.append(f"## {i}. {q['title']}")
         lines.append("")
@@ -1624,7 +1617,7 @@ def generate_content(questions, date_str):
         lines.append("")
         lines.append("---")
         lines.append("")
-    
+
     # 添加附录
     lines.extend([
         "## 附录：学习资源",
@@ -1649,41 +1642,41 @@ def generate_content(questions, date_str):
         "*方向: 前端(3题) + Web3(4题) + AI(3题) - Web3钱包前端开发针对性版*",
         "*题库规模: 前端18道 + Web3 25道 + AI 5道 = 48道*",
     ])
-    
+
     return "\n".join(lines)
 
 def save_and_commit(config=None):
     """保存文件并提交到 Git"""
     date_str = datetime.now().strftime('%Y-%m-%d')
     file_path = f"{QUESTION_DIR}/{date_str}.md"
-    
+
     # 检查文件是否已存在
     if os.path.exists(file_path):
         print(f"[{date_str}] 面试题已存在，跳过生成")
         return False, date_str, 0, 0, 0
-    
+
     print(f"[{date_str}] 生成面试题...")
-    
+
     # 选择均衡分布的题目（传入配置）
     questions, fe_count, web3_count, ai_count = select_balanced_questions(config)
     content = generate_content(questions, date_str)
-    
+
     # 写入文件
     with open(file_path, 'w', encoding='utf-8') as f:
         f.write(content)
-    
+
     print(f"[{date_str}] 已保存到 {file_path}")
     print(f"[{date_str}] 题目分布: 前端{fe_count}题 + Web3 {web3_count}题 + AI{ai_count}题")
-    
+
     # Git 操作
     print(f"[{date_str}] Git 提交...")
-    
+
     # git add
     success, stdout, stderr = run_cmd(f"git add {file_path}", WORKSPACE)
     if not success:
         print(f"Git add 失败: {stderr}")
         return False, date_str, fe_count, web3_count, ai_count
-    
+
     # git commit
     success, stdout, stderr = run_cmd(
         f'git commit -m "feat: add Web3 Wallet interview questions (FE{fe_count}+Web3{web3_count}+AI{ai_count}) for {date_str}"',
@@ -1692,32 +1685,32 @@ def save_and_commit(config=None):
     if not success:
         print(f"Git commit 失败: {stderr}")
         return False, date_str, fe_count, web3_count, ai_count
-    
+
     print(f"[{date_str}] Git 提交成功")
-    
+
     # git push
     print(f"[{date_str}] 推送到 GitHub...")
     success, stdout, stderr = run_cmd("git push origin main", WORKSPACE)
     if not success:
         print(f"Git push 失败: {stderr}")
         return False, date_str, fe_count, web3_count, ai_count
-    
+
     print(f"[{date_str}] GitHub 推送成功")
     return True, date_str, fe_count, web3_count, ai_count
 
 def send_notification(date_str, fe_count, web3_count, ai_count):
     """发送飞书通知"""
-    
+
     # 加载学习档案获取个性化信息
     profile = load_learning_profile()
     focus_topics = profile.get("focus_topics", [])
     weak_areas = profile.get("weak_areas", [])
-    
+
     # 构建个性化提示
     focus_hint = ""
     if weak_areas:
         focus_hint = f"\n📌 根据你的学习档案，今日侧重: {', '.join(focus_topics[:3])}\n"
-    
+
     notification = f"""🌅 早上好！我是烤鱼。
 
 📚 今日学习资料已生成
@@ -1746,30 +1739,30 @@ https://github.com/luoquanquan/learn-fe/blob/main/ai-generate/learn-docs/{date_s
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ⏰ {date_str} 08:00
 """
-    
+
     # 保存通知到消息队列
     message_file = f"/tmp/openclaw-messages/interview-{date_str}.txt"
     os.makedirs(os.path.dirname(message_file), exist_ok=True)
-    
+
     with open(message_file, 'w') as f:
         f.write(notification)
-    
+
     print(f"[{date_str}] 通知已保存到 {message_file}")
-    
+
     # 同时打印到 stdout
     print("\n" + "="*50)
     print(notification)
     print("="*50)
-    
+
     return True
 
 def main():
     """主函数"""
     print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 开始生成面试题...")
-    
+
     # 1. 读取配置文件
     config = load_interview_config()
-    
+
     # 2. 生成并提交（传入配置）
     success, date_str, fe_count, web3_count, ai_count = save_and_commit(config)
     if success:
