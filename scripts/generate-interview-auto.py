@@ -922,6 +922,385 @@ t('wallet.balance', { amount: '1.5 ETH' });
 - 专业术语表统一
 - RTL（阿拉伯语）适配"""
     },
+    {
+        "title": "Webpack、Vite、Rspack 等构建工具如何选型？各有什么优劣及适用场景？",
+        "tags": "构建工具 / Webpack / Vite / Rspack / 工程化",
+        "content": """**一、主流构建工具对比**
+
+| 工具 | 开发启动 | 生产构建 | 生态 | 适用场景 |
+|------|----------|----------|------|----------|
+| **Webpack** | 慢（需编译） | 慢 | 最丰富 | 大型项目、需要复杂配置 |
+| **Vite** | 极快（原生 ESM） | 快（Rollup） | 丰富 | 现代项目、快速原型 |
+| **Rspack** | 快（Rust） | 快 | 兼容 Webpack | 大型项目、需要迁移 |
+| **Turbopack** | 极快（Rust） | 开发中 | Next.js 专用 | Next.js 项目 |
+| **esbuild** | 极快 | 快 | 较小 | 工具链、简单项目 |
+
+**二、Vite 工作原理**
+
+```
+开发模式：
+浏览器 ←── ESM 直接加载源码 ←── Vite 服务器拦截处理
+              ↓
+         按需编译（如 .tsx → 浏览器可执行的 JS）
+
+生产模式：
+源码 → Rollup 打包 → 代码分割 + 压缩 → 生产产物
+```
+
+```typescript
+// vite.config.ts
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+
+export default defineConfig({
+  plugins: [react()],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          wallet: ['ethers', '@walletconnect/ethereum-provider'],
+        },
+      },
+    },
+    // 代码分割策略
+    chunkSizeWarningLimit: 500,
+  },
+  optimizeDeps: {
+    // 预构建依赖
+    include: ['ethers', '@walletconnect/ethereum-provider'],
+  },
+});
+```
+
+**三、Webpack 优化策略（OKX 大型项目经验）**
+
+```javascript
+// webpack.config.js
+module.exports = {
+  // 1. 代码分割
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+      cacheGroups: {
+        vendor: {
+          test: /[\\\\/]node_modules[\\\\/]/,
+          name: 'vendors',
+          chunks: 'all',
+        },
+        // 钱包相关代码单独打包
+        wallet: {
+          test: /[\\\\/]src[\\\\/]wallet[\\\\/]/,
+          name: 'wallet',
+          chunks: 'all',
+        },
+      },
+    },
+  },
+  
+  // 2. 持久化缓存
+  cache: {
+    type: 'filesystem',
+    buildDependencies: {
+      config: [__filename],
+    },
+  },
+  
+  // 3. 并行处理
+  module: {
+    rules: [
+      {
+        test: /\\.tsx?$/,
+        use: [
+          {
+            loader: 'thread-loader', // 多线程
+            options: { workers: 4 },
+          },
+          'ts-loader',
+        ],
+      },
+    ],
+  },
+  
+  // 4. 分析产物
+  plugins: [
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'static',
+      openAnalyzer: false,
+    }),
+  ],
+};
+```
+
+**四、Rspack - Webpack 的 Rust 替代品**
+
+```javascript
+// rspack.config.js
+module.exports = {
+  // 与 Webpack 配置几乎兼容
+  entry: './src/index.tsx',
+  output: {
+    filename: '[name].[contenthash].js',
+  },
+  module: {
+    rules: [
+      {
+        test: /\\.tsx?$/,
+        use: 'builtin:swc-loader', // 内置 SWC，无需 babel
+      },
+    ],
+  },
+  // 性能提升 5-10 倍
+};
+```
+
+**五、钱包项目构建优化实战**
+
+```typescript
+// 针对 Web3 钱包的特殊优化
+export default defineConfig({
+  build: {
+    // 1. 分块策略（减少首屏加载）
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          // 将大依赖单独打包
+          if (id.includes('node_modules/ethers')) return 'ethers';
+          if (id.includes('node_modules/@solana')) return 'solana';
+          if (id.includes('node_modules/@walletconnect')) return 'walletconnect';
+        },
+      },
+    },
+    
+    // 2. 压缩配置
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+    },
+  },
+  
+  // 3. 依赖预构建
+  optimizeDeps: {
+    include: [
+      'ethers',
+      '@walletconnect/ethereum-provider',
+      '@solana/web3.js',
+    ],
+    esbuildOptions: {
+      target: 'es2020',
+    },
+  },
+});
+```
+
+**六、选型建议**
+
+| 场景 | 推荐工具 | 原因 |
+|------|----------|------|
+| 新项目、快速启动 | Vite | 开发体验好，配置简单 |
+| 大型遗留项目 | Webpack → Rspack | 兼容性好，逐步迁移 |
+| Next.js 项目 | Turbopack | 官方支持，性能最优 |
+| 库开发 | Rollup / tsup | 产物干净，tree-shaking 友好 |"""
+    },
+    {
+        "title": "XSS、CSRF、点击劫持等 Web 安全攻击如何防范？钱包场景有什么特殊考虑？",
+        "tags": "Web安全 / XSS / CSRF / 点击劫持 / 安全防护",
+        "content": """**一、XSS（跨站脚本攻击）**
+
+**攻击方式**:
+```html
+<!-- 存储型 XSS -->
+<div class=\"comment\">用户输入: <script>stealPrivateKey()</script></div>
+
+<!-- DOM 型 XSS -->
+<script>
+const hash = location.hash.slice(1);
+document.write(hash); // #<img src=x onerror=steal()>
+</script>
+```
+
+**防范措施**:
+```typescript
+// 1. 输入过滤
+import DOMPurify from 'dompurify';
+const clean = DOMPurify.sanitize(userInput);
+
+// 2. 输出编码
+function escapeHtml(text: string): string {
+  const map: Record<string, string> = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    \"'\": '&#x27;',
+  };
+  return text.replace(/[&<>\"']/g, (c) => map[c]);
+}
+
+// 3. CSP（内容安全策略）
+// Content-Security-Policy: default-src 'self'; script-src 'self' 'nonce-xxx'
+const csp = `
+default-src 'self';
+script-src 'self' 'nonce-${nonce}';
+style-src 'self' 'unsafe-inline';
+img-src 'self' data: https:;
+connect-src 'self' https://rpc.wallet.com;
+frame-ancestors 'none';  // 防止点击劫持
+`.replace(/\\n/g, ' ');
+
+// 4. 钱包场景特殊防护
+// 禁止内联脚本，只允许白名单域名加载脚本
+// 防止恶意脚本劫持钱包 Provider
+```
+
+**二、CSRF（跨站请求伪造）**
+
+**攻击方式**:
+```html
+<!-- 攻击者页面 -->
+<form action=\"https://wallet.com/transfer\" method=\"POST\" id=\"csrf\">
+  <input type=\"hidden\" name=\"to\" value=\"attacker\">
+  <input type=\"hidden\" name=\"amount\" value=\"1000\">
+</form>
+<script>document.getElementById('csrf').submit()</script>
+```
+
+**防范措施**:
+```typescript
+// 1. SameSite Cookie
+Set-Cookie: session=xxx; SameSite=Strict; Secure; HttpOnly
+
+// 2. CSRF Token
+const csrfToken = crypto.randomUUID();
+localStorage.setItem('csrf_token', csrfToken);
+
+fetch('/api/transfer', {
+  method: 'POST',
+  headers: {
+    'X-CSRF-Token': csrfToken,  // 后端校验
+  },
+});
+
+// 3. 钱包场景：敏感操作二次确认
+const confirmTransaction = async (tx: Transaction) => {
+  // 必须用户主动点击确认，不能自动执行
+  const confirmed = await showConfirmDialog(tx);
+  if (!confirmed) return;
+  
+  // 双重验证
+  if (!verifyOrigin(window.location.origin)) {
+    throw new Error('Invalid origin');
+  }
+};
+```
+
+**三、点击劫持（Clickjacking）**
+
+**攻击方式**:
+```html
+<!-- 攻击者页面 -->
+<style>
+iframe {
+  position: absolute;
+  top: -100px;
+  left: -100px;
+  opacity: 0.001;
+}
+button {
+  position: absolute;
+  top: 200px;
+  left: 100px;
+}
+</style>
+<button>点击领取空投</button>
+<iframe src=\"https://wallet.com/confirm\" width=\"500\" height=\"500\"></iframe>
+```
+
+**防范措施**:
+```typescript
+// 1. X-Frame-Options
+X-Frame-Options: DENY  // 完全禁止嵌入
+// 或
+X-Frame-Options: SAMEORIGIN  // 只允许同域
+
+// 2. CSP frame-ancestors
+Content-Security-Policy: frame-ancestors 'none';
+// 或
+Content-Security-Policy: frame-ancestors 'self' https://trusted-parent.com;
+
+// 3. JavaScript 检测
+if (window.top !== window.self) {
+  // 被嵌入 iframe，阻止敏感操作
+  document.body.innerHTML = '<h1>请在独立窗口中使用</h1>';
+}
+```
+
+**四、钱包场景特殊安全风险**
+
+```typescript
+// 1. Provider 劫持防护
+const originalProvider = window.ethereum;
+
+Object.defineProperty(window, 'ethereum', {
+  get() {
+    // 检测是否被恶意替换
+    if (currentProvider !== originalProvider) {
+      console.warn('Provider may have been tampered with');
+    }
+    return currentProvider;
+  },
+  set(value) {
+    // 只允许钱包插件设置
+    if (isValidWalletProvider(value)) {
+      currentProvider = value;
+    }
+  },
+});
+
+// 2. 域名白名单
+const ALLOWED_DOMAINS = [
+  'wallet.example.com',
+  'dapp.example.com',
+];
+
+const verifyDomain = () => {
+  if (!ALLOWED_DOMAINS.includes(window.location.hostname)) {
+    disableSensitiveOperations();
+  }
+};
+
+// 3. 交易签名防篡改
+const signTransaction = async (tx: Transaction) => {
+  // 显示交易详情给用户确认
+  const displayedTx = {
+    to: tx.to,
+    value: formatEther(tx.value),
+    data: decodeData(tx.data),
+  };
+  
+  // 用户确认后才能签名
+  if (!await userConfirm(displayedTx)) {
+    throw new Error('User rejected');
+  }
+  
+  return wallet.sign(tx);
+};
+```
+
+**五、安全测试清单**
+
+| 检查项 | 方法 |
+|--------|------|
+| XSS 防护 | 输入 `<script>alert(1)</script>` 测试 |
+| CSRF 防护 | 检查敏感接口是否验证 Token |
+| 点击劫持 | 尝试用 iframe 嵌入页面 |
+| CSP 配置 | 使用 CSP Evaluator 检测 |
+| HTTPS | 所有资源强制 HTTPS |
+| 私钥存储 | 确认不在内存中长时间保留 |"""
+    },
 ]
 
 # ============ Web3 题目库 (25道 - 钱包相关) ============
@@ -1025,27 +1404,484 @@ class BSCProvider extends EVMProvider {
 **BSC优势**: BSC 作为主力链，深度优化"""
     },
     {
-        "title": "硬件钱包（Ledger/Trezor）与软件钱包的集成方案？如何实现安全通信？",
-        "tags": "硬件钱包 / Ledger / 安全通信 / 离线签名",
-        "content": """**通信方式**:
-- USB HID / WebUSB
-- Bluetooth（Ledger Nano X）
-- QRCode（空气间隙）
+        "title": "ERC-20、ERC-721、ERC-1155 标准的核心差异是什么？各自解决了什么问题？",
+        "tags": "ERC标准 / ERC20 / ERC721 / ERC1155 / 代币标准",
+        "content": """**一、ERC-20（同质化代币标准）**
 
-**集成流程**:
-```
-1. 连接硬件钱包
-2. 获取公钥/地址（派生路径 m/44'/60'/0'/0/0）
-3. 构建交易并发送到硬件设备
-4. 用户在设备上确认
-5. 设备返回签名
-6. 前端广播交易
+**解决的问题**：标准化可替代代币的发行和流通
+
+```solidity
+// 核心接口
+interface IERC20 {
+    function totalSupply() external view returns (uint256);
+    function balanceOf(address account) external view returns (uint256);
+    function transfer(address to, uint256 amount) external returns (bool);
+    function allowance(address owner, address spender) external view returns (uint256);
+    function approve(address spender, uint256 amount) external returns (bool);
+    function transferFrom(address from, address to, uint256 amount) external returns (bool);
+    
+    event Transfer(address indexed from, address indexed to, uint256 value);
+    event Approval(address indexed owner, address indexed spender, uint256 value);
+}
 ```
 
-**安全要点**:
-- 所有敏感操作在硬件内完成
-- 显示地址在硬件屏幕上确认
-- 固件版本检查"""
+**前端交互**:
+```typescript
+// 获取代币余额
+const tokenContract = new Contract(tokenAddress, ERC20_ABI, provider);
+const balance = await tokenContract.balanceOf(userAddress);
+
+// 授权（Approve）
+const approveTx = await tokenContract.approve(spenderAddress, amount);
+
+// 常见陷阱：无限授权
+const MAX_UINT256 = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
+// 风险：授权恶意合约后，对方可以转走全部代币
+```
+
+**二、ERC-721（非同质化代币，NFT）**
+
+**解决的问题**：唯一性资产的所有权追踪和转移
+
+```solidity
+// 核心接口
+interface IERC721 {
+    function balanceOf(address owner) external view returns (uint256);
+    function ownerOf(uint256 tokenId) external view returns (address);
+    function safeTransferFrom(address from, address to, uint256 tokenId) external;
+    function transferFrom(address from, address to, uint256 tokenId) external;
+    function approve(address to, uint256 tokenId) external;
+    function getApproved(uint256 tokenId) external view returns (address);
+    function setApprovalForAll(address operator, bool approved) external;
+    function isApprovedForAll(address owner, address operator) external view returns (bool);
+    
+    event Transfer(address indexed from, address indexed to, uint256 indexed tokenId);
+    event Approval(address indexed owner, address indexed approved, uint256 indexed tokenId);
+}
+```
+
+**与 ERC-20 的关键差异**:
+| 特性 | ERC-20 | ERC-721 |
+|------|--------|---------|
+| 同质化 | 是（可分割、可互换） | 否（唯一不可分割） |
+| 转账参数 | `amount` | `tokenId` |
+| 授权方式 | 按额度授权 | 单token授权或全授权 |
+| 使用场景 | 货币、积分 | 数字藏品、游戏道具 |
+
+**三、ERC-1155（多代币标准）**
+
+**解决的问题**：一个合约管理多种代币，支持同质化和非同质化混合
+
+```solidity
+// 核心接口
+interface IERC1155 {
+    // 批量查询余额
+    function balanceOfBatch(address[] calldata accounts, uint256[] calldata ids) 
+        external view returns (uint256[] memory);
+    
+    // 批量转账
+    function safeBatchTransferFrom(
+        address from,
+        address to,
+        uint256[] calldata ids,
+        uint256[] calldata amounts,
+        bytes calldata data
+    ) external;
+    
+    // 批量授权
+    function setApprovalForAll(address operator, bool approved) external;
+    function isApprovedForAll(address account, address operator) external view returns (bool);
+}
+```
+
+**优势对比**:
+```
+发行 10000 个 NFT：
+- ERC-721：需要 10000 个合约调用，Gas 极高
+- ERC-1155：一个合约，批量铸造，Gas 极低
+
+游戏场景（金币+装备+皮肤）：
+- ERC-20 + ERC-721：需要多个合约
+- ERC-1155：一个合约管理所有资产
+```
+
+**四、钱包开发中的处理差异**
+
+```typescript
+// ERC-20 转账
+const transferERC20 = async (token: string, to: string, amount: bigint) => {
+  const contract = new Contract(token, ERC20_ABI, signer);
+  return await contract.transfer(to, amount);
+};
+
+// ERC-721 转账（注意使用 safeTransferFrom）
+const transferNFT = async (nft: string, to: string, tokenId: string) => {
+  const contract = new Contract(nft, ERC721_ABI, signer);
+  // 必须使用 safeTransferFrom，确保接收方能处理 NFT
+  return await contract['safeTransferFrom(address,address,uint256)'](
+    await signer.getAddress(),
+    to,
+    tokenId
+  );
+};
+
+// ERC-1155 批量转账
+const batchTransfer = async (
+  token: string,
+  to: string,
+  ids: string[],
+  amounts: string[]
+) => {
+  const contract = new Contract(token, ERC1155_ABI, signer);
+  return await contract.safeBatchTransferFrom(
+    await signer.getAddress(),
+    to,
+    ids,
+    amounts,
+    '0x' // data
+  );
+};
+```
+
+**五、安全注意事项**
+
+| 标准 | 常见风险 |
+|------|----------|
+| ERC-20 | 假代币（同名同symbol）、无限授权 |
+| ERC-721 | 伪造NFT、钓鱼空投 |
+| ERC-1155 | 批量转账参数错误、重入攻击 |"""
+    },
+    {
+        "title": "ERC-2612 Permit 和 EIP-7702 委托授权有什么创新？如何改变用户交互体验？",
+        "tags": "ERC2612 / EIP7702 / Permit / 委托授权 / Gasless",
+        "content": """**一、传统授权的问题**
+
+```
+用户想要使用 DEX：
+1. 发送 Approve 交易（花费 Gas）
+2. 等待交易确认
+3. 发送 Swap 交易
+
+痛点：需要两笔交易，两笔 Gas，两次确认
+```
+
+**二、ERC-2612 Permit（免 Gas 授权）**
+
+**核心创新**：用签名代替链上交易进行授权
+
+```solidity
+// ERC-2612 新增接口
+function permit(
+    address owner,
+    address spender,
+    uint256 value,
+    uint256 deadline,
+    uint8 v,
+    bytes32 r,
+    bytes32 s
+) external;
+
+// 保存 nonce 防止重放
+function nonces(address owner) external view returns (uint256);
+
+// EIP-712 域分隔符
+function DOMAIN_SEPARATOR() external view returns (bytes32);
+```
+
+**前端实现**:
+```typescript
+// 1. 构造 Permit 签名数据
+const permitData = {
+  primaryType: 'Permit',
+  domain: {
+    name: tokenName,
+    version: '1',
+    chainId: 1,
+    verifyingContract: tokenAddress,
+  },
+  message: {
+    owner: userAddress,
+    spender: dexAddress,
+    value: amount,
+    nonce: await tokenContract.nonces(userAddress),
+    deadline: Math.floor(Date.now() / 1000) + 3600, // 1小时过期
+  },
+};
+
+// 2. 用户签名（离线，无 Gas）
+const signature = await signer.signTypedData(
+  permitData.domain,
+  { Permit: [ /* types */ ] },
+  permitData.message
+);
+const { v, r, s } = ethers.Signature.from(signature);
+
+// 3. DEX 代为提交 permit 交易（DEX 付 Gas）
+await dexContract.swapWithPermit(
+  tokenAddress,
+  amount,
+  deadline,
+  v, r, s,  // 用户的授权签名
+  // ... swap 参数
+);
+```
+
+**用户体验提升**:
+- ✅ 无需先 Approve 再操作，一笔完成
+- ✅ 新用户无需持有 ETH 也能授权（ relayer 代付）
+- ✅ 授权有过期时间，更安全
+
+**三、EIP-7702 委托授权（更彻底的创新）**
+
+**核心概念**：EOA 临时获得智能合约的能力
+
+```
+传统模式：
+用户 → EOA签名 → 直接执行
+
+EIP-7702 模式：
+用户 → 签名授权 → EOA临时变成合约 → 执行合约逻辑 → 恢复EOA
+```
+
+**应用场景**:
+```typescript
+// 场景1：批量操作（多笔交易合并为一笔）
+const auth = {
+  chainId: 1,
+  nonce: await wallet.getNonce(),
+  address: batchContractAddress, // 授权给批量执行合约
+};
+
+// 一次签名，批量执行多笔转账
+const batchCall = [
+  { to: tokenA, data: transferToAlice },
+  { to: tokenB, data: transferToBob },
+  { to: nft, data: transferToCharlie },
+];
+```
+
+**四、Permit2（Uniswap 的优化方案）**
+
+Permit2 将 Permit 推广到所有代币（包括非 ERC-2612）：
+
+```typescript
+// 1. 首次使用：授权 Permit2 合约（一次性）
+await tokenContract.approve(permit2Address, MaxUint256);
+
+// 2. 后续所有操作都使用 Permit2 签名（无需再发 Approve）
+const permit2Data = {
+  details: {
+    token: tokenAddress,
+    amount: amount,
+    expiration: Math.floor(Date.now() / 1000) + 86400,
+    nonce: 0,
+  },
+  spender: dexAddress,
+  sigDeadline: Math.floor(Date.now() / 1000) + 3600,
+};
+
+const signature = await signTypedData(permit2Data);
+
+// 3. DEX 调用 Permit2 执行转账
+dexContract.swapWithPermit2(permit2Data, signature);
+```
+
+**优势**：
+- 支持所有 ERC-20（包括 USDT 等没有 Permit 的代币）
+- 统一的授权管理界面
+- 可以批量撤销授权
+
+**五、钱包端安全提示设计**
+
+```typescript
+const PermitWarning = ({ permit }: { permit: PermitData }) => (
+  <Alert type={permit.value === MaxUint256 ? 'error' : 'warning'}>
+    <h3>⚠️ Permit 授权风险</h3>
+    <p>
+      您正在通过签名授权 {truncateAddress(permit.spender)} 
+      {permit.value === MaxUint256 ? '无限额' : formatAmount(permit.value)} 
+      使用您的 {tokenSymbol}
+    </p>
+    <p>过期时间: {formatDate(permit.deadline)}</p>
+    <p>签名即授权，无需 Gas，但风险与 Approve 相同</p>
+  </Alert>
+);
+```
+
+**六、对比总结**
+
+| 方案 | 需 Gas | 适用代币 | 过期时间 | 批量操作 |
+|------|--------|----------|----------|----------|
+| 传统 Approve | 是 | 所有 | 无 | 否 |
+| ERC-2612 Permit | 否 | 支持代币 | 有 | 否 |
+| Permit2 | 否 | 所有 | 有 | 否 |
+| EIP-7702 | 否 | 所有 | 单次 | 是 |"""
+    },
+    {
+        "title": "硬件钱包 Ledger/Trezor/OneKey/Keystone 的统一接入协议如何设计？",
+        "tags": "硬件钱包 / Ledger / Trezor / 统一接入 / 协议设计",
+        "content": """**一、硬件钱包接入架构**
+
+基于 OKX 硬件钱包接入经验，需要统一四种主流硬件钱包的接入：
+
+| 硬件钱包 | 连接方式 | 通信协议 | 特点 |
+|----------|----------|----------|------|
+| Ledger | USB HID / Bluetooth | APDU | 最主流，固件更新频繁 |
+| Trezor | USB / Bridge | Protocol Buffers | 开源，协议清晰 |
+| OneKey | USB HID / Bluetooth | 类APDU | 国产，性价比高 |
+| Keystone | QR Code / USB | 自定义协议 |  air-gapped，最安全 |
+
+**二、统一抽象层设计**
+
+```typescript
+// 统一硬件钱包接口
+interface HardwareWallet {
+  readonly type: HardwareWalletType;
+  readonly name: string;
+  
+  // 连接管理
+  connect(): Promise<void>;
+  disconnect(): Promise<void>;
+  isConnected(): boolean;
+  
+  // 账户管理
+  getPublicKey(path: string): Promise<Uint8Array>;
+  getAddress(path: string, chainId: number): Promise<string>;
+  
+  // 签名
+  signTransaction(path: string, tx: Transaction): Promise<Signature>;
+  signMessage(path: string, message: string): Promise<Signature>;
+  
+  // 固件信息
+  getVersion(): Promise<string>;
+  checkUpdate(): Promise<boolean>;
+}
+
+// 抽象基类实现公共逻辑
+abstract class BaseHardwareWallet implements HardwareWallet {
+  protected transport: Transport | null = null;
+  protected app: EthApp | SolApp | null = null;
+  
+  abstract get type(): HardwareWalletType;
+  
+  async connect(): Promise<void> {
+    this.transport = await this.createTransport();
+    this.app = await this.createApp(this.transport);
+    await this.verifyApp();
+  }
+  
+  protected abstract createTransport(): Promise<Transport>;
+  protected abstract createApp(transport: Transport): Promise<App>;
+  protected abstract verifyApp(): Promise<void>;
+}
+```
+
+**三、Ledger 接入实现**
+
+```typescript
+class LedgerWallet extends BaseHardwareWallet {
+  get type() { return 'ledger'; }
+  
+  protected async createTransport(): Promise<Transport> {
+    // 优先尝试 WebHID，降级到 WebUSB
+    if (await TransportWebHID.isSupported()) {
+      return await TransportWebHID.create();
+    }
+    return await TransportWebUSB.create();
+  }
+  
+  protected async createApp(transport: Transport): Promise<EthApp> {
+    return new EthApp(transport);
+  }
+  
+  async signTransaction(path: string, tx: Transaction): Promise<Signature> {
+    const { r, s, v } = await this.app!.signTransaction(
+      path,
+      tx.toSerializedHex(),
+      null  // 不解析 ERC-20（我们在上层处理）
+    );
+    return { r, s, v };
+  }
+}
+```
+
+**四、Keystone QR Code 特殊处理**
+
+```typescript
+class KeystoneWallet implements HardwareWallet {
+  get type() { return 'keystone'; }
+  
+  // 二维码通信
+  async signTransaction(path: string, tx: Transaction): Promise<Signature> {
+    // 1. 编码待签数据为二维码
+    const qrData = this.encodeTransaction(tx, path);
+    this.displayQRCode(qrData);
+    
+    // 2. 等待用户扫描 Keystone 显示的签名二维码
+    const signatureQR = await this.scanSignatureQR();
+    
+    // 3. 解析签名
+    return this.decodeSignature(signatureQR);
+  }
+  
+  private encodeTransaction(tx: Transaction, path: string): QRData {
+    // UR 标准编码
+    return {
+      type: 'eth-sign-request',
+      data: encodeUR({
+        signData: tx.toSerializedHex(),
+        derivationPath: path,
+        chainId: tx.chainId,
+      }),
+    };
+  }
+}
+```
+
+**五、固件升级适配策略**
+
+```typescript
+class FirmwareManager {
+  // 检查固件版本兼容性
+  async checkCompatibility(wallet: HardwareWallet, minVersion: string): Promise<boolean> {
+    const currentVersion = await wallet.getVersion();
+    return compareVersion(currentVersion, minVersion) >= 0;
+  }
+  
+  // 破坏性变更适配
+  async handleBreakingChanges(wallet: HardwareWallet): Promise<void> {
+    const version = await wallet.getVersion();
+    
+    // Ledger 2.0.0+ 修改了签名返回格式
+    if (wallet.type === 'ledger' && compareVersion(version, '2.0.0') >= 0) {
+      wallet.setLegacyMode(false);
+    }
+  }
+}
+```
+
+**六、错误处理与用户体验**
+
+```typescript
+enum HardwareError {
+  DEVICE_LOCKED = '设备已锁定，请解锁',
+  APP_NOT_OPEN = '请在设备上打开对应 App',
+  USER_REJECTED = '用户取消操作',
+  CONNECTION_LOST = '连接已断开，请重新连接',
+  FIRMWARE_OUTDATED = '固件版本过旧，请升级',
+}
+
+// 统一的错误提示
+const handleHardwareError = (error: Error): string => {
+  if (error.message.includes('0x6a82')) {
+    return HardwareError.APP_NOT_OPEN;
+  }
+  if (error.message.includes('0x6985')) {
+    return HardwareError.USER_REJECTED;
+  }
+  return error.message;
+};
+```"""
     },
     {
         "title": "代币授权（Approve）无限额的风险是什么？前端如何实现授权额度的安全管理？",
