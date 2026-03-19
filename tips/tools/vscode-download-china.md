@@ -2,7 +2,7 @@
 
 ## 首先点击官网的下载链接
 
-到下载内容页面, 就能看到下载 vscode 的任务
+到下载内容页面，就能看到下载 vscode 的任务
 ![2021-05-28-18-52-51](http://handle-note-img.niubishanshan.top/2021-05-28-18-52-51.png)
 
 ## 替换域名
@@ -11,7 +11,7 @@
 
 [https://vscode.cdn.azure.cn/stable/054a9295330880ed74ceaedda236253b4f39a335/VSCode-darwin-universal.zip](https://vscode.cdn.azure.cn/stable/054a9295330880ed74ceaedda236253b4f39a335/VSCode-darwin-universal.zip)
 
-然后在下载, 基本上可以秒下
+然后在下载，基本上可以秒下
 
 ## 参考文章
 

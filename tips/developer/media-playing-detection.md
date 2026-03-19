@@ -2,16 +2,16 @@
 
 ## 原理思路
 
-在 `whatwg` 的 [官方规范](https://html.spec.whatwg.org/multipage/media.html#playing-the-media-resource) 里定义了媒体标签的 `paused ended played currentTime` 状态, 但是对于开发人员更加关注的 `playing` 状态并没有提供. 就很尴尬 ...
+在 `whatwg` 的 [官方规范](https://html.spec.whatwg.org/multipage/media.html#playing-the-media-resource) 里定义了媒体标签的 `paused ended played currentTime` 状态，但是对于开发人员更加关注的 `playing` 状态并没有提供。就很尴尬 ⋯⋯
 
-根据官方的规范, 如果一个视频的 [readState > 2](https://www.w3school.com.cn/tags/av_prop_readystate.asp) 也就是说资源加载没有出错. 那么此时视频的状态无非两个: 播放中或者暂停中...
+根据官方的规范，如果一个视频的 [readState > 2](https://www.w3school.com.cn/tags/av_prop_readystate.asp) 也就是说资源加载没有出错。那么此时视频的状态无非两个：播放中或者暂停中⋯⋯
 
 那么如果一个视频
 - 资源加载正常 `readyState > 2`
 - 当前视频的 `currentTime` 大于 `0`
 - 当前视频没有处在暂停状态
 - 当前视频没有处在结束状态
-那么就可以认为当前的视频处于播放中状态, 否则就没有在播放中
+那么就可以认为当前的视频处于播放中状态，否则就没有在播放中
 
 ## 火速实操
 

@@ -1,18 +1,18 @@
 ## AesGcm 加密存储
 
-本目录实现基于 Web Crypto API 的前端加密/解密演示，采用 `PBKDF2 + AES-GCM`。示例为页面组件 + 工具函数拆分结构。
+本目录实现基于 Web Crypto API 的前端加密 / 解密演示，采用 `PBKDF2 + AES-GCM`。示例为页面组件 + 工具函数拆分结构。
 
 ### 目录结构
 
 - `index.tsx`：页面组件，负责输入、按钮操作、结果展示和错误提示。
-- `utils.ts`：加解密核心能力，负责密钥派生、加解密与数据格式约定。
+- `utils.ts`：加解密核心能力，负责密钥派生加解密与数据格式约定。
 
 ### 加解密流程
 
 1. 用户输入明文和密码。
 2. 调用 `encryptWithPassword()`：
    - 随机生成 `salt`（32 字节）和 `iv`（12 字节）
-   - 使用 `PBKDF2` 从密码派生 AES 密钥（`iterations=600000`, `hash=SHA-256`）
+   - 使用 `PBKDF2` 从密码派生 AES 密钥（`iterations=600000`，`hash=SHA-256`）
    - 使用 `AES-GCM` 加密明文
    - 返回 `EncryptedPayload`
 3. 点击解密时调用 `decryptWithPassword()`：
@@ -21,7 +21,7 @@
 
 ### EncryptedPayload 字段
 
-- `version`：数据版本号，便于后续升级兼容。
+- `version`：数据版本号，作为升级时数据迁移的依据
 - `kdf`：密钥派生算法，当前固定为 `PBKDF2`。
 - `iterations`：PBKDF2 迭代次数。
 - `hash`：PBKDF2 哈希算法，当前为 `SHA-256`。

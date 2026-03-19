@@ -2,10 +2,10 @@
 
 ## 基础知识
 
-- `Math.ceil(n)` 向上取整, 返回大于等于 n 的整数
-- `Math.floor(n)` 向下取整, 返回 n 的整数部分
-- `parseInt(n)` 向下取整, 返回 n 的整数部分
-- `Math.round(n)` 四舍五入取整, 返回 n 四舍五入后的整数
+- `Math.ceil(n)` 向上取整，返回大于等于 n 的整数
+- `Math.floor(n)` 向下取整，返回 n 的整数部分
+- `parseInt(n)` 向下取整，返回 n 的整数部分
+- `Math.round(n)` 四舍五入取整，返回 n 四舍五入后的整数
 - `Math.random(n)` 生成 [0, 1) 的随机数
 - `Math.ceil(Math.random()*10)` 均衡获取 [1, 10] 之间的随机整数
   <details>
@@ -24,9 +24,9 @@
     }
     console.table(ret)
     ```
-    上述代码运行的结果如下:
+    上述代码运行的结果如下：
 
-    node 中:
+    node 中：
     ```txt
     ┌─────────┬───────────┐
     │ (index) │  Values   │
@@ -44,7 +44,7 @@
     └─────────┴───────────┘
     ```
 
-    浏览器中:
+    浏览器中：
     ```txt
     1: 100002116
     2: 99998960
@@ -76,9 +76,9 @@
     }
     console.table(ret)
     ```
-    上述代码运行的结果如下:
+    上述代码运行的结果如下：
 
-    node 中:
+    node 中：
     ```txt
     ┌─────────┬───────────┐
     │ (index) │  Values   │
@@ -96,7 +96,7 @@
     └─────────┴───────────┘
     ```
 
-    浏览器中:
+    浏览器中：
     ```txt
     0: 100006310
     1: 100000609
@@ -111,9 +111,9 @@
     ```
   </details>
 - `Math.round(Math.random())` 均衡比例获取 0 或者 1
-- `Math.round(Math.random()*10)` 获取 [0, 10]的随机整数, 其中获取 0 和 10的几率为获取其他值的一半.
+- `Math.round(Math.random()*10)` 获取 [0, 10]的随机整数，其中获取 0 和 10的几率为获取其他值的一半。
   <details>
-    <summary>详细原因, 概率一目了然</summary><br>
+    <summary>详细原因，概率一目了然</summary><br>
 
     随机值范围 | 得到的值
     --- | ---
@@ -133,14 +133,14 @@
 ## 生成一个 [min, max] 的随机整数
 
 - 生成随机数肯定要用到 `Math.random() -> [0, 1)`
-- 可以把一个数变成整数的方法有: `parseInt() Math.floor() Math.round() Math.ceil()`
+- 可以把一个数变成整数的方法有：`parseInt() Math.floor() Math.round() Math.ceil()`
 - 这里选择功能强劲([为什么这么说呢](https://luoquanquan.github.io/note/2020/02/04/basic-js/parseInt-vs-Math-floor))的 parseInt 直接截取数字的整数部分向下取整
 - 那么不难得到 `parseInt(Math.random() * 10) -> [0, 9]`
-- 所以, 如果我们想要得到一个 [0, max] 的随机数只需要 `parseInt(Math.random() * (max + 1))`
+- 所以，如果我们想要得到一个 [0, max] 的随机数只需要 `parseInt(Math.random() * (max + 1))`
 - 想要得到一个 [1, max] 的随机数只需要 `parseInt(Math.random() * (max - 1 + 1)) + 1`
-- 进而可得出, 想要得到一个 [min, max] 的随机数. 把括号里的 -1 和括号外的 +1 等量代换成 min `parseInt(Math.random() * (max - min + 1)) + min`
+- 进而可得出，想要得到一个 [min, max] 的随机数。把括号里的 -1 和括号外的 +1 等量代换成 min `parseInt(Math.random() * (max - min + 1)) + min`
 
-最终可以得出, 生成一个 [min, max] 的随机整数的代码为
+最终可以得出，生成一个 [min, max] 的随机整数的代码为
 ```js
 const randomNum = (min = 0, max = min) => {
   if (max === min) {
@@ -187,7 +187,7 @@ const randomArr = (len, min, max) => {
   }
   ```
 
-  运行结果:
+  运行结果：
   ```txt
   ┌─────────┬────────┐
   │ (index) │ Values │
@@ -206,7 +206,7 @@ const randomArr = (len, min, max) => {
   └─────────┴────────┘
   ```
 
-  通过扩大 min max 的范围并掐头去尾, 解决最大最小值概率为一半的问题
+  通过扩大 min max 的范围并掐头去尾，解决最大最小值概率为一半的问题
   ```js
   const randomNum = (min, max) => {
     if (min < 1) {
@@ -225,7 +225,7 @@ const randomArr = (len, min, max) => {
   }
   ```
 
-  修改后运行结果:
+  修改后运行结果：
   ```txt
   ┌─────────┬─────────┬──────────┐
   │ (index) │    0    │    1     │
@@ -254,7 +254,7 @@ const randomArr = (len, min, max) => {
   }
   ```
 
-  运行结果:
+  运行结果：
   ```txt
   ┌─────────┬─────────┬──────────┐
   │ (index) │    0    │    1     │
@@ -288,7 +288,7 @@ const randomArr = (len, min, max) => {
   }
   ```
 
-  运行结果:
+  运行结果：
   ```txt
   ┌─────────┬─────────┬──────────┐
   │ (index) │    0    │    1     │
@@ -322,7 +322,7 @@ const randomArr = (len, min, max) => {
   }
   ```
 
-  执行结果:
+  执行结果：
   ```txt
   ┌─────────┬─────────┬──────────┐
   │ (index) │    0    │    1     │

@@ -13,7 +13,7 @@
 
 ### 2025-09
 
-- [MetaMask 私钥存储(AesGcm)](./web3/encryption/aesGcm/readMe.md)
+- [MetaMask 私钥存储(AesGcm)](./web3/webRepo/app/pages/aesGcm)
 
 ### 2025-07
 

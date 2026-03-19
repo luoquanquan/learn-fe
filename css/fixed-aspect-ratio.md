@@ -2,9 +2,9 @@
 
 ## 利用固定比例图片撑开
 
-> 众所周知, 如果只给 img 元素设置 width or height 中的一个属性, 剩下的尺寸属性默认会根据图片的尺寸进行等比缩放. 然后利用图片的尺寸再撑起容器. 获得的容器大小应该就是和图片的宽高比一致的啦 ~
+> 众所周知，如果只给 img 元素设置 width or height 中的一个属性，剩下的尺寸属性默认会根据图片的尺寸进行等比缩放。然后利用图片的尺寸再撑起容器。获得的容器大小应该就是和图片的宽高比一致的啦 ~
 
-代码实现如下:
+代码实现如下：
 ```html
 <!DOCTYPE html>
 <html lang="en">
@@ -30,11 +30,11 @@
 
 ## 利用元素内边距撑开元素
 
-> 垂直方向上的内外边距使用百分比做单位时, 是基于包含块的宽度来计算的.
+> 垂直方向上的内外边距使用百分比做单位时，是基于包含块的宽度来计算的。
 
-也就是说, 当元素的 padding-top or padding-bottom 使用了百分比的值的时候, 其依据的值为元素的宽度. 那么我们可以直接通过设置纵向的内边距实现等比的效果
+也就是说，当元素的 padding-top or padding-bottom 使用了百分比的值的时候，其依据的值为元素的宽度。那么我们可以直接通过设置纵向的内边距实现等比的效果
 
-实现代码如下:
+实现代码如下：
 
 ```html
 <!DOCTYPE html>
@@ -63,9 +63,9 @@
 
 > The aspect-ratio  CSS property sets a preferred aspect ratio for the box, which will be used in the calculation of auto sizes and some other layout functions.
 
-aspect-ratio 应该算是 css 4 的新特性吧, 可以指定元素的宽高比. 实现此类需求更加的方便
+aspect-ratio 应该算是 css 4 的新特性吧，可以指定元素的宽高比。实现此类需求更加的方便
 
-具体的设置代码如下:
+具体的设置代码如下：
 
 ```html
 <!DOCTYPE html>

@@ -2,7 +2,7 @@
 
 ## state 含义
 
-控制组件展示形态的数据主要为数据状态和外部参数, 组件的数据结构指的就是 state. 组件作为一个状态机. 会把自身可控的信息存储到 state 中. 并通过 setState 改变 ~
+控制组件展示形态的数据主要为数据状态和外部参数，组件的数据结构指的就是 state. 组件作为一个状态机。会把自身可控的信息存储到 state 中。并通过 setState 改变 ~
 
 ```js
 import React, { Component } from 'react'
@@ -34,7 +34,7 @@ export default class App extends Component {
 
 ## 同步 or 异步
 
-使用 setState 更新数据的时候有两种更新模式, 同步 / 异步
+使用 setState 更新数据的时候有两种更新模式，同步 / 异步
 
 - 异步更新
 - 同步更新
@@ -78,12 +78,12 @@ changeName() {
 }
 ```
 
-- 组件生命周期或者 React 合成事件中, setState 是异步的
-- setTimeout 或者原生 dom 事件中, setState 是同步的
+- 组件生命周期或者 React 合成事件中，setState 是异步的
+- setTimeout 或者原生 dom 事件中，setState 是同步的
 
 ## 批量更新
 
-示例:
+示例：
 
 ```js
 // 假设初始状态为 {count: 1}
@@ -118,7 +118,7 @@ Object.assign(
 )
 ```
 
-如果想要每一次 setState 都基于最新的状态, 可以给 setState 传入一个函数. Object.assign 没法时间函数参数的合并. 自然不会覆盖了
+如果想要每一次 setState 都基于最新的状态，可以给 setState 传入一个函数。Object.assign 没法时间函数参数的合并。自然不会覆盖了
 
 ```js
 // 改成这种函数的写法就不会存在被

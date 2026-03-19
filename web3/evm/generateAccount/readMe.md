@@ -22,7 +22,7 @@ const generateAccount = (privateKey) => {
 }
 ```
 
-使用 [@ethereumjs/wallet](https://github.com/ethereumjs/ethereumjs-monorepo/tree/master/packages/wallet)生成的钱包地址均为小写字母，需要根据 [eip55](https://github.com/ethereum/ercs/blob/master/ERCS/erc-55.md)转成符合 eip 55 规范的地址格式.
+使用 [@ethereumjs/wallet](https://github.com/ethereumjs/ethereumjs-monorepo/tree/master/packages/wallet)生成的钱包地址均为小写字母，需要根据 [eip55](https://github.com/ethereum/ercs/blob/master/ERCS/erc-55.md)转成符合 eip 55 规范的地址格式。
 
 ### 通过助记词派生账户
 
