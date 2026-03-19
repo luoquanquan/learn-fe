@@ -29,7 +29,7 @@ const generateAccount = (privateKey) => {
 ```js
 // 导入助记词
 const importMnemonic = () => {
-  const mnemonic = 'sheriff educate diet concert token join pizza lend mixture tower shiver arrive'
+  const mnemonic = 'abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about'
   // 根据助记词获取拓展公 / 私钥
   const wallet = hdkey.EthereumHDKey.fromMnemonic(mnemonic)
   const childHdKey = wallet.derivePath("m/44'/60'/0'")

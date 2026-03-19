@@ -24,7 +24,7 @@ const main = async () => {
   const tx = TransactionFactory.fromTxData(txParams)
 
   const privateKey = Buffer.from(
-    '12ce7ea8d99e6c498483bdc0c1338abc53b0b538cec05b85a08f1bf5be9b77d4',
+    '1ab42cc412b618bdea3a599e3c9bae199ebf030895b039e9db1e30dafb12b727',
     'hex'
   )
 

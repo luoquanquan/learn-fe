@@ -5,7 +5,7 @@ const ECPair = ECPairFactory(tinysecp)
 
 // 私钥 - 需要自己藏起来
 // 可以通过 @ethereumjs/wallet.Wallet.generate 创建
-const privateKey = '12ce7ea8d99e6c498483bdc0c1338abc53b0b538cec05b85a08f1bf5be9b77d4'
+const privateKey = '1ab42cc412b618bdea3a599e3c9bae199ebf030895b039e9db1e30dafb12b727' // 请替换为你自己的私钥
 const privateBuffer = Buffer.from(privateKey, 'hex')
 
 // 公钥 - 可以发送给验签的人
