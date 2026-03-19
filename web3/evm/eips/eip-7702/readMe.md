@@ -49,8 +49,8 @@
 
 1. 创建 EOA 并转入代币，创建蜜罐
 2. 部署合约设置 receive 为 payable, 添加把 msg.value 直接转到收益帐户的逻辑 [合约示例](../../contract/src/HoneyPot7702.sol)
-3. 升级帐户
-4. 公开私钥
+3. 升级帐户，相关 [Dapp 代码示例](../../../webRepo/app/pages/EvmDapp/components/Eip7702/index.tsx)
+4. 公开私钥，将蜜罐的私钥或者助记词发布到社交网络
 
 #### 用户
 
