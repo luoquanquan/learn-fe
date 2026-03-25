@@ -58,7 +58,7 @@ etag 是服务器根据当前文件内容生成的一段唯一标识。只要文
 
 ### Service Woker
 
-Service Woker, 可以链接浏览器的请求。以请求粒度控制网站中各个资源的缓存情况。在 pwa 中比较常用。
+Service Woker, 可以拦截浏览器的请求。以请求粒度控制网站中各个资源的缓存情况。在 pwa 中比较常用。
 
 ### Memory Cache 和 Disk Cache
 
