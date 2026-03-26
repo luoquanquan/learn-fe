@@ -2,8 +2,6 @@
 
 ## 背景
 
-> 日常工作中，公司内部项目通常是 git 来管理。自己做的开源项目 Or 学习第三方的大佬开源的项目往往在 github 或者 coding 之类的平台上也由 git 来管理。那么问题来了⋯⋯
-
 ```shell
 git clone git@github.com:luoquanquan/handle-note.git
 正克隆到 'handle-note'...
@@ -13,7 +11,7 @@ fatal: 无法读取远程仓库。
 请确认您有正确的访问权限并且仓库存在。
 ```
 
-当要 `clone` GitHub 上的项目时会发现没有权限了。面对这种情况有三种方案
+开发电脑只配置了公司内部 gitlab 的 ssh key, 无法 clone github 优质仓库. 面对这种情况有三种方案
 
 ## 直接下载
 
@@ -79,10 +77,4 @@ remote: Total 220 (delta 40), reused 219 (delta 39), pack-reused 0
 
 ## https 和 ssh 的区别
 
-### clone 项目
-
-使用 ssh 方式 clone 项目，你必须是该项目的拥有者或者管理者。并且已经成功配置了 ssh key, 然而使用 http 方式 clone 项目没有这个限制，你可以随意克隆 github 上的项目
-
-### push 项目
-
-使用 ssh 方式 push 代码时，你不需要验证用户名和密码。但是如果你再创建 `ssh key` 时设置了密码就需要验证配对密码了。而对于使用 https 的用户每次 push 代码的时候需要验证用户名和密码(首次推送可以选择缓存)
+使用 ssh 方式 push 代码时，你不需要验证用户名和密码。而对于使用 https 的用户每次 push 代码的时候需要验证用户名和密码(首次推送可以选择缓存)
