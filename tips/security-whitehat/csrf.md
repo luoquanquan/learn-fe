@@ -166,7 +166,3 @@ CSRF 攻击的本质是：**浏览器会自动携带目标网站的 Cookie，攻
 1. ✅ 使用 CSRF Token 验证
 2. ✅ 设置 SameSite Cookie 属性
 3. ✅ 敏感操作增加二次验证
-
-![](http://handle-note-img.niubishanshan.top/2020-02-15-13-58-19.png)
-
-![](http://handle-note-img.niubishanshan.top/2020-02-15-13-59-15.png)
