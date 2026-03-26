@@ -45,19 +45,19 @@ index.html:7 div.outerText this is text
 ## script 中的 defer 和 async 的区别
 
 - 默认的 script 标签引入 js 浏览器会立即加载并执行相应的 js 文件。同时会阻塞后续文档的渲染。
-```html
-<script src="demo.js"></script>
-```
+  ```html
+  <script src="demo.js"></script>
+  ```
 
 - 添加 async 属性之后，表示 js 的加载和执行和文档的渲染是并行进行的，也就是说是异步执行的
-```html
-<script async src="demo.js"></script>
-```
+  ```html
+  <script async src="demo.js"></script>
+  ```
 
 - 添加 defer 属性后，js 文件的加载和文档的渲染是并行的。但是 js 文件只有在文档渲染完成后(DOMContentLoaded 触发后)才会执行。如果是需要获取 dom 元素的 js 文件需要使用 defer
-```html
-<script defer src="demo.js"></script>
-```
+  ```html
+  <script defer src="demo.js"></script>
+  ```
 
 1. 两者的加载过程是一样的，都是异步加载
 2. 两者的区别在于加载完成之后的执行时机，async 为加载完成之后立即执行。但是 defer 为加载完成之后等待 DOMContentLoaded 才会执行
