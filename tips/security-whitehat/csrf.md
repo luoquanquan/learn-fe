@@ -1,10 +1,4 @@
-# CSRF
-
-## 全称
-
-```bash
-Cross Site request forgery
-```
+# CSRF (Cross Site request forgery)
 
 ## 中文名称
 
