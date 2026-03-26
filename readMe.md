@@ -217,7 +217,6 @@
 - [Mac 切换 zsh 和 bash](./tips/mac/toggle-zsh-bash.md)
 - [URL 跳转漏洞](./tips/security-whitehat/url-redirect-vulnerability.md)
 - [CSRF](./tips/security-whitehat/csrf.md)
-- [点击劫持](./tips/security-whitehat/clickjacking.md)
 - [XSS](./tips/security-whitehat/xss.md)
 - [web 安全基础](./tips/security-whitehat/security-basics.md)
 
