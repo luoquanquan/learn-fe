@@ -196,7 +196,6 @@
 - [历史版本浏览器下载](./tips/mac/old-browser-download.md)
 - [前端处理 Cookie](./js/frontend-cookie.md)
 - [HTTP协议原理+实践](./tips/network/http-principles-practice.md)
-- [命令注入](./tips/security-whitehat/command-injection.md)
 - [文件操作漏洞](./tips/security-whitehat/file-operation-vulnerability.md)
 - [SQL 注入](./tips/security-whitehat/sql-injection.md)
 
