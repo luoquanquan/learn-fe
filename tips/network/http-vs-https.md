@@ -1,5 +1,3 @@
-# http vs https
-
 ## 什么是 http / https
 
 http(HyperText Transfer Protocol), 超文本传输协议，是实现网络通信的一种规范。
