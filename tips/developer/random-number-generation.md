@@ -134,7 +134,7 @@
 
 - 生成随机数肯定要用到 `Math.random() -> [0, 1)`
 - 可以把一个数变成整数的方法有：`parseInt() Math.floor() Math.round() Math.ceil()`
-- 这里选择功能强劲([为什么这么说呢](https://luoquanquan.github.io/note/2020/02/04/basic-js/parseInt-vs-Math-floor))的 parseInt 直接截取数字的整数部分向下取整
+- 这里选择功能强劲的 parseInt 直接截取数字的整数部分向下取整
 - 那么不难得到 `parseInt(Math.random() * 10) -> [0, 9]`
 - 所以，如果我们想要得到一个 [0, max] 的随机数只需要 `parseInt(Math.random() * (max + 1))`
 - 想要得到一个 [1, max] 的随机数只需要 `parseInt(Math.random() * (max - 1 + 1)) + 1`
